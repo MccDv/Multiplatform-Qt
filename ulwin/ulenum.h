@@ -1,7 +1,7 @@
 #ifndef ULENUMWINDOWS_H
 #define ULENUMWINDOWS_H
 
-#include "..\..\DAQ\C\cbw.h"
+#include "cbw.h"
 
 #define MVULVERSION             777
 #define BIADSCANOPTIONS         326

@@ -1,14 +1,14 @@
-#include "uldiscoverwindows.h"
+#include "libdiscover.h"
 #include "mvtest.h"
 
 ErrorDialog *discoverErrorDialog;
 
-UlDiscoverWindows::UlDiscoverWindows()
+LibDiscover::LibDiscover()
 {
     discoverErrorDialog = MvTest::errDialogObj;
 }
 
-int UlDiscoverWindows::mccIgnoreInstacal(QString &params)
+int LibDiscover::mccIgnoreInstacal(QString &params)
 {
     int err;
     QString funcName;
@@ -27,7 +27,7 @@ int UlDiscoverWindows::mccIgnoreInstacal(QString &params)
     return err;
 }
 
-int UlDiscoverWindows::mccGetInstacalDevs(QString &params, QHash<QString, DaqDeviceHandle> &iCalDevs)
+int LibDiscover::mccGetInstacalDevs(QString &params, QHash<QString, DaqDeviceHandle> &iCalDevs)
 {
     int err, configVal, boardNum;
     char chArr[BOARDNAMELEN];
@@ -81,7 +81,7 @@ int UlDiscoverWindows::mccGetInstacalDevs(QString &params, QHash<QString, DaqDev
     return err;
 }
 
-int UlDiscoverWindows::mccGetDaqDeviceInventory(QString &params, DaqDeviceInterface
+int LibDiscover::mccGetDaqDeviceInventory(QString &params, DaqDeviceInterface
         interfaceTypes, MccDaqDeviceDescriptor *mccDescriptors, UlNumDevs &numDescriptors)
 {
     int err;
@@ -113,7 +113,7 @@ int UlDiscoverWindows::mccGetDaqDeviceInventory(QString &params, DaqDeviceInterf
     return err;
 }
 
-DaqDeviceHandle UlDiscoverWindows::mccCreateDaqDevice(QString &params,
+DaqDeviceHandle LibDiscover::mccCreateDaqDevice(QString &params,
                         DaqDeviceHandle deviceHandle, MccDaqDeviceDescriptor mccDevDescriptor)
 {
     int err;
@@ -154,7 +154,7 @@ DaqDeviceHandle UlDiscoverWindows::mccCreateDaqDevice(QString &params,
         return deviceHandle;
 }
 
-int UlDiscoverWindows::mccIsDaqDeviceConnected(QString &params, DaqDeviceHandle deviceHandle,
+int LibDiscover::mccIsDaqDeviceConnected(QString &params, DaqDeviceHandle deviceHandle,
                                 QString devUID, int &connected)
 {
     (void)deviceHandle;
@@ -217,7 +217,7 @@ int UlDiscoverWindows::mccIsDaqDeviceConnected(QString &params, DaqDeviceHandle 
     return 0;
 }
 
-int UlDiscoverWindows::mccConnectDaqDevice(QString &params, DaqDeviceHandle deviceHandle, QString devUID)
+int LibDiscover::mccConnectDaqDevice(QString &params, DaqDeviceHandle deviceHandle, QString devUID)
 {
     /*  This is a fake implementation of the Linux connect function.
      *  It should only be used after an explicit disconnect of an
@@ -279,7 +279,7 @@ int UlDiscoverWindows::mccConnectDaqDevice(QString &params, DaqDeviceHandle devi
     return 0;
 }
 
-int UlDiscoverWindows::mccDisconnectDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
+int LibDiscover::mccDisconnectDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
 {
     /*  Only exists in Windows for compatibility with Linux (see
      *  cbReleaseDaqDevice). Used with the fake connect function
@@ -303,7 +303,7 @@ int UlDiscoverWindows::mccDisconnectDaqDevice(QString &params, DaqDeviceHandle d
     return err;
 }
 
-int UlDiscoverWindows::mccReleaseDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
+int LibDiscover::mccReleaseDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
 {
     int err;
     QString funcName, argString, argVals;

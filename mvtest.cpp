@@ -817,8 +817,8 @@ void MvTest::showSplash()
         mCurTimerJob = tjSplash;
         oneShotTimer->setSingleShot(true);
         //oneShotTimer->setInterval(3000);
-        QPixmap pixmap(":/splash/mvsplash/MvSplash.png");
-        mSplash = new QSplashScreen;
+        QPixmap pixmap(RESOURCE_STRING);
+        mSplash = new QSplashScreen(this);
         mSplash->setPixmap(pixmap);
         mSplash->show();
         qApp->processEvents();
@@ -832,7 +832,7 @@ void MvTest::showSplash()
     } else {
         mSplash->close();
         mTimesUp = false;
-        delete mSplash;
+        //delete mSplash;
         mCurTimerJob = tjNone;
     }
 }

@@ -1,16 +1,16 @@
-#ifndef ULMISCWINDOWS_H
-#define ULMISCWINDOWS_H
+#ifndef LIBMISC_H
+#define LIBMISC_H
 
 #include <QString>
 #include <QMap>
 #include "ulTypes.h"
-#include "ulenumwindows.h"
+#include "ulenum.h"
 
-class UlMiscWindows
+class LibMisc
 {
 
 public:
-    UlMiscWindows();
+    LibMisc();
 
     int mccIgnoreInstacal(QString &params);
     int mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, int flashCount);
@@ -120,4 +120,4 @@ private:
                        unsigned int index, int configItem, char *cfgString, unsigned int &length);
 };
 
-#endif // ULMISCWINDOWS_H
+#endif // LIBMISC_H

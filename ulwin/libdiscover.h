@@ -1,17 +1,17 @@
-#ifndef ULDISCOVERWINDOWS_H
-#define ULDISCOVERWINDOWS_H
+#ifndef LIBDISCOVER_H
+#define LIBDISCOVER_H
 
 #include "..\..\DAQ\C\cbw.h"
-#include "ulmiscwindows.h"
+#include "libmisc.h"
 #include "ulTypes.h"
 #include "MvErrorMap.h"
-#include "../errordialog.h"
+#include "errordialog.h"
 
-class UlDiscoverWindows
+class LibDiscover
 {
 
 public:
-    UlDiscoverWindows();
+    LibDiscover();
 
     int mccIgnoreInstacal(QString &params);
     int mccGetInstacalDevs(QString &params, QHash<QString, DaqDeviceHandle> &iCalDevs);
@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif // ULDISCOVERWINDOWS_H
+#endif // LIBDISCOVER_H

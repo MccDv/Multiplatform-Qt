@@ -1,14 +1,14 @@
-#include "ulmiscwindows.h"
+#include "libmisc.h"
 #include "mvtest.h"
 
 ErrorDialog *miscErrorDialog;
 
-UlMiscWindows::UlMiscWindows()
+LibMisc::LibMisc()
 {
     miscErrorDialog = MvTest::errDialogObj;
 }
 
-int UlMiscWindows::mccIgnoreInstacal(QString &params)
+int LibMisc::mccIgnoreInstacal(QString &params)
 {
     int err;
     QString funcName, argString, argVals;
@@ -26,7 +26,7 @@ int UlMiscWindows::mccIgnoreInstacal(QString &params)
     return err;
 }
 
-int UlMiscWindows::mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, int flashCount)
+int LibMisc::mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, int flashCount)
 {
     int err;
     QString funcName, argString, argVals;
@@ -47,7 +47,7 @@ int UlMiscWindows::mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, in
     return err;
 }
 
-QString UlMiscWindows::mccGetUlVersion(QString &params)
+QString LibMisc::mccGetUlVersion(QString &params)
 {
     QString funcName, argString, argVals;
     QTime t;
@@ -65,7 +65,7 @@ QString UlMiscWindows::mccGetUlVersion(QString &params)
     return returnStr;
 }
 
-QString UlMiscWindows::mccGetUlErrorText(int errValue)
+QString LibMisc::mccGetUlErrorText(int errValue)
 {
     char ErrMessage[ERRSTRLEN];
 
@@ -73,7 +73,7 @@ QString UlMiscWindows::mccGetUlErrorText(int errValue)
     return ErrMessage;
 }
 
-QString UlMiscWindows::mccGetErrConstText(int errValue)
+QString LibMisc::mccGetErrConstText(int errValue)
 {
     switch (errValue) {
     case BADBOARD:
@@ -525,7 +525,7 @@ QString UlMiscWindows::mccGetErrConstText(int errValue)
     }
 }
 
-int UlMiscWindows::mccGetInfoStr(QString &params, int infoItem,
+int LibMisc::mccGetInfoStr(QString &params, int infoItem,
                                  unsigned int index, char *infoValue, unsigned int &maxLen)
 {
     int err;
@@ -551,7 +551,7 @@ int UlMiscWindows::mccGetInfoStr(QString &params, int infoItem,
     return err;
 }
 
-int UlMiscWindows::mccGetConfig(QString &params, int configItem, unsigned int index, long long &configValue)
+int LibMisc::mccGetConfig(QString &params, int configItem, unsigned int index, long long &configValue)
 {
     (void)configItem;
     (void)index;
@@ -560,7 +560,7 @@ int UlMiscWindows::mccGetConfig(QString &params, int configItem, unsigned int in
     return 0;
 }
 
-int UlMiscWindows::mccGetCfgStr(QString &params, int configItem, unsigned int index,
+int LibMisc::mccGetCfgStr(QString &params, int configItem, unsigned int index,
                                 char *configValue, unsigned int &maxConfigLen)
 {
     //int err;
@@ -575,7 +575,7 @@ int UlMiscWindows::mccGetCfgStr(QString &params, int configItem, unsigned int in
     return 0;
 }
 
-int UlMiscWindows::mccSetConfig(QString &params, int configItem, unsigned int index, long long configValue)
+int LibMisc::mccSetConfig(QString &params, int configItem, unsigned int index, long long configValue)
 {
     (void)configItem;
     (void)index;
@@ -584,7 +584,7 @@ int UlMiscWindows::mccSetConfig(QString &params, int configItem, unsigned int in
     return 0;
 }
 
-int UlMiscWindows::mccDevGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDevGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                  int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err, surrogateItem;
@@ -616,7 +616,7 @@ int UlMiscWindows::mccDevGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccDevGetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDevGetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                 int configItem, unsigned int index, long long &configValue)
 {
     int err, infoType;
@@ -626,7 +626,7 @@ int UlMiscWindows::mccDevGetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccDevGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDevGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
                                    int configItem, unsigned int index, char* configValue, unsigned int &maxConfigLen)
 {
     int err, length;
@@ -637,7 +637,7 @@ int UlMiscWindows::mccDevGetCfgStr(QString &params, DaqDeviceHandle deviceHandle
     return err;
 }
 
-int UlMiscWindows::mccDevSetConfig(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDevSetConfig(QString &params, DaqDeviceHandle deviceHandle,
                                    int configItem, unsigned int index, long long configValue)
 {
     int err, infoType;
@@ -647,7 +647,7 @@ int UlMiscWindows::mccDevSetConfig(QString &params, DaqDeviceHandle deviceHandle
     return err;
 }
 
-int UlMiscWindows::mccDevSetConfigStr(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDevSetConfigStr(QString &params, DaqDeviceHandle deviceHandle,
                                       int configItem, unsigned int index, char *configValue, unsigned int &maxConfigLen)
 {
     int err, infoType;
@@ -657,7 +657,7 @@ int UlMiscWindows::mccDevSetConfigStr(QString &params, DaqDeviceHandle deviceHan
     return err;
 }
 
-int UlMiscWindows::mccAiGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAiGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                 int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err;
@@ -668,7 +668,7 @@ int UlMiscWindows::mccAiGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccAiGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAiGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                    int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -679,7 +679,7 @@ int UlMiscWindows::mccAiGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle
     return 0;
 }
 
-int UlMiscWindows::mccAiGetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAiGetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                int configItem, unsigned int index, long long &configValue)
 {
     int infoType, err;
@@ -690,7 +690,7 @@ int UlMiscWindows::mccAiGetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccAiGetCfgDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAiGetCfgDbl(QString &params, DaqDeviceHandle deviceHandle,
                                   int configItem, unsigned int index, double &configValue)
 {
     (void)deviceHandle;
@@ -701,7 +701,7 @@ int UlMiscWindows::mccAiGetCfgDbl(QString &params, DaqDeviceHandle deviceHandle,
     return 0;
 }
 
-int UlMiscWindows::mccAiGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAiGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
                                   int configItem, unsigned int index, char *configValue, unsigned int &maxConfigLen)
 {
     int err, length;
@@ -712,7 +712,7 @@ int UlMiscWindows::mccAiGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccAiSetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAiSetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                int configItem, unsigned int index, long long configValue)
 {
     int err, infoType;
@@ -722,7 +722,7 @@ int UlMiscWindows::mccAiSetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccAoGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAoGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                 int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err;
@@ -733,7 +733,7 @@ int UlMiscWindows::mccAoGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccAoGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAoGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                    int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -744,7 +744,7 @@ int UlMiscWindows::mccAoGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle
     return 0;
 }
 
-int UlMiscWindows::mccAoGetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAoGetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                int configItem, unsigned int index, long long &configValue)
 {
     int infoType, err;
@@ -755,7 +755,7 @@ int UlMiscWindows::mccAoGetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccAoSetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccAoSetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                int configItem, unsigned int index, long long configValue)
 {
     int err, infoType;
@@ -765,7 +765,7 @@ int UlMiscWindows::mccAoSetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccDioGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDioGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                 int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err;
@@ -792,7 +792,7 @@ int UlMiscWindows::mccDioGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccDioGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDioGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                     int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -803,7 +803,7 @@ int UlMiscWindows::mccDioGetInfoDbl(QString &params, DaqDeviceHandle deviceHandl
     return 0;
 }
 
-int UlMiscWindows::mccDioGetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDioGetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                 int configItem, unsigned int index, long long &configValue)
 {
     int infoType, err;
@@ -816,7 +816,7 @@ int UlMiscWindows::mccDioGetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccDioSetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDioSetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                 int configItem, unsigned int index, long long configValue)
 {
     int err, infoType;
@@ -828,7 +828,7 @@ int UlMiscWindows::mccDioSetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccCtrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccCtrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                  int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err;
@@ -847,7 +847,7 @@ int UlMiscWindows::mccCtrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccCtrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccCtrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                     int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -858,7 +858,7 @@ int UlMiscWindows::mccCtrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandl
     return 0;
 }
 
-int UlMiscWindows::mccCtrGetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccCtrGetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                 int configItem, unsigned int index, long long &configValue)
 {
     int infoType, err;
@@ -869,7 +869,7 @@ int UlMiscWindows::mccCtrGetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccCtrSetCfg(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccCtrSetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                 int configItem, unsigned int index, long long configValue)
 {
     int err, infoType;
@@ -879,7 +879,7 @@ int UlMiscWindows::mccCtrSetCfg(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlMiscWindows::mccTmrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccTmrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                  int infoItem, unsigned int index, long long &infoValue)
 {
     (void)deviceHandle;
@@ -890,7 +890,7 @@ int UlMiscWindows::mccTmrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     return 0;
 }
 
-int UlMiscWindows::mccTmrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccTmrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                     int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -901,7 +901,7 @@ int UlMiscWindows::mccTmrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandl
     return 0;
 }
 
-int UlMiscWindows::mccDaqInGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDaqInGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                    int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err;
@@ -912,7 +912,7 @@ int UlMiscWindows::mccDaqInGetInfo(QString &params, DaqDeviceHandle deviceHandle
     return err;
 }
 
-int UlMiscWindows::mccDaqInGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDaqInGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                       int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -923,7 +923,7 @@ int UlMiscWindows::mccDaqInGetInfoDbl(QString &params, DaqDeviceHandle deviceHan
     return 0;
 }
 
-int UlMiscWindows::mccDaqOutGetInfo(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDaqOutGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                     int infoItem, unsigned int index, long long &infoValue)
 {
     int infoType, err;
@@ -934,7 +934,7 @@ int UlMiscWindows::mccDaqOutGetInfo(QString &params, DaqDeviceHandle deviceHandl
     return err;
 }
 
-int UlMiscWindows::mccDaqOutGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
+int LibMisc::mccDaqOutGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
                                        int infoItem, unsigned int index, double &infoValue)
 {
     (void)deviceHandle;
@@ -945,7 +945,7 @@ int UlMiscWindows::mccDaqOutGetInfoDbl(QString &params, DaqDeviceHandle deviceHa
     return 0;
 }
 
-int UlMiscWindows::mvGetConfig(QString &params, int infoType, DaqDeviceHandle
+int LibMisc::mvGetConfig(QString &params, int infoType, DaqDeviceHandle
                                 deviceHandle, unsigned int index, int configItem, long long &configVal)
 {
     int err, cfgVal, devNum;
@@ -972,7 +972,7 @@ int UlMiscWindows::mvGetConfig(QString &params, int infoType, DaqDeviceHandle
     return err;
 }
 
-int UlMiscWindows:: mvSetConfig(QString &params, int infoType, DaqDeviceHandle deviceHandle,
+int LibMisc:: mvSetConfig(QString &params, int infoType, DaqDeviceHandle deviceHandle,
                                unsigned int index, int configItem, long long configVal)
 {
     int err, cfgVal, devNum;
@@ -999,7 +999,7 @@ int UlMiscWindows:: mvSetConfig(QString &params, int infoType, DaqDeviceHandle d
     return err;
 }
 
-int UlMiscWindows::mvSetConfigStr(QString &params, int infoType, DaqDeviceHandle deviceHandle,
+int LibMisc::mvSetConfigStr(QString &params, int infoType, DaqDeviceHandle deviceHandle,
                                   unsigned int index, int configItem, char *cfgString, unsigned int &length)
 {
     int err, devNum, cfgLength;
@@ -1027,7 +1027,7 @@ int UlMiscWindows::mvSetConfigStr(QString &params, int infoType, DaqDeviceHandle
     return err;
 }
 
-int UlMiscWindows::mvGetConfigString(QString &params, int infoType, DaqDeviceHandle deviceHandle,
+int LibMisc::mvGetConfigString(QString &params, int infoType, DaqDeviceHandle deviceHandle,
                                      int configItem, unsigned int index, char *configVal, int &length)
 {
     int err;
@@ -1053,7 +1053,7 @@ int UlMiscWindows::mvGetConfigString(QString &params, int infoType, DaqDeviceHan
 }
 
 
-QMap<int, QString> UlMiscWindows::mccGetUlInfoItems()
+QMap<int, QString> LibMisc::mccGetUlInfoItems()
 {
     QMap<int, QString> ulInfoItems;
 
@@ -1061,14 +1061,14 @@ QMap<int, QString> UlMiscWindows::mccGetUlInfoItems()
     return ulInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetUlCfgItems()
+QMap<int, QString> LibMisc::mccGetUlCfgItems()
 {
     QMap<int, QString> ulConfigItems;
     ulConfigItems.clear();
     return ulConfigItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetDevCfgItems()
+QMap<int, QString> LibMisc::mccGetDevCfgItems()
 {
     QMap<int, QString> devConfigItems;
 
@@ -1096,7 +1096,7 @@ QMap<int, QString> UlMiscWindows::mccGetDevCfgItems()
     return devConfigItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetDevInfoItems()
+QMap<int, QString> LibMisc::mccGetDevInfoItems()
 {
     QMap<int, QString> devInfoItems;
 
@@ -1114,7 +1114,7 @@ QMap<int, QString> UlMiscWindows::mccGetDevInfoItems()
     return devInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetAiInfoItems()
+QMap<int, QString> LibMisc::mccGetAiInfoItems()
 {
     QMap<int, QString> aiInfoItems;
 
@@ -1141,7 +1141,7 @@ QMap<int, QString> UlMiscWindows::mccGetAiInfoItems()
     return aiInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetAiCfgItems()
+QMap<int, QString> LibMisc::mccGetAiCfgItems()
 {
     QMap<int, QString> aiCfgItems;
 
@@ -1166,7 +1166,7 @@ QMap<int, QString> UlMiscWindows::mccGetAiCfgItems()
     return aiCfgItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetAoInfoItems()
+QMap<int, QString> LibMisc::mccGetAoInfoItems()
 {
     QMap<int, QString> aoInfoItems;
 
@@ -1183,7 +1183,7 @@ QMap<int, QString> UlMiscWindows::mccGetAoInfoItems()
     return aoInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetAoCfgItems()
+QMap<int, QString> LibMisc::mccGetAoCfgItems()
 {
     QMap<int, QString> aoCfgItems;
 
@@ -1198,7 +1198,7 @@ QMap<int, QString> UlMiscWindows::mccGetAoCfgItems()
     return aoCfgItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetDioInfoItems()
+QMap<int, QString> LibMisc::mccGetDioInfoItems()
 {
     QMap<int, QString> dioInfoItems;
 
@@ -1216,7 +1216,7 @@ QMap<int, QString> UlMiscWindows::mccGetDioInfoItems()
     return dioInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetDioCfgItems()
+QMap<int, QString> LibMisc::mccGetDioCfgItems()
 {
     QMap<int, QString> dioCfgItems;
 
@@ -1227,7 +1227,7 @@ QMap<int, QString> UlMiscWindows::mccGetDioCfgItems()
     return dioCfgItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetCtrInfoItems()
+QMap<int, QString> LibMisc::mccGetCtrInfoItems()
 {
     QMap<int, QString> ctrInfoItems;
 
@@ -1238,7 +1238,7 @@ QMap<int, QString> UlMiscWindows::mccGetCtrInfoItems()
     return ctrInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetCtrCfgItems()
+QMap<int, QString> LibMisc::mccGetCtrCfgItems()
 {
     QMap<int, QString> ctrCfgItems;
 
@@ -1248,7 +1248,7 @@ QMap<int, QString> UlMiscWindows::mccGetCtrCfgItems()
     return ctrCfgItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetTmrInfoItems()
+QMap<int, QString> LibMisc::mccGetTmrInfoItems()
 {
     QMap<int, QString> tmrInfoItems;
 
@@ -1256,7 +1256,7 @@ QMap<int, QString> UlMiscWindows::mccGetTmrInfoItems()
     return tmrInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetDaqInInfoItems()
+QMap<int, QString> LibMisc::mccGetDaqInInfoItems()
 {
     QMap<int, QString> daqInInfoItems;
 
@@ -1267,7 +1267,7 @@ QMap<int, QString> UlMiscWindows::mccGetDaqInInfoItems()
     return daqInInfoItems;
 }
 
-QMap<int, QString> UlMiscWindows::mccGetDaqOutInfoItems()
+QMap<int, QString> LibMisc::mccGetDaqOutInfoItems()
 {
     QMap<int, QString> daqOutInfoItems;
 

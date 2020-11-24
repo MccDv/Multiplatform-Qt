@@ -2,7 +2,17 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
+TARGET = UnitestWin
+
 CONFIG += c++11
+
+VERSION = 0.7.0.0
+DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
+DEFINES += RESOURCE_STRING=\\\":/win/splash/MvSplash.png\\\"
+
+DISTFILES +=
+
+DEFINES += QT_DEPRECATED_WARNINGS
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -34,6 +44,7 @@ HEADERS += \
     ulwin/libdiscover.h \
     ulwin/libmisc.h \
     ulwin/libutilities.h \
+    ulwin/mvErrorMap.h \
     ulwin/ulenum.h
 
 FORMS += \
@@ -42,9 +53,16 @@ FORMS += \
     formmvdevice.ui \
     mvtest.ui
 
+INCLUDEPATH += $$PWD/../DAQ/C
+DEPENDPATH += $$PWD/../DAQ/C
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix: LIBS += -luldaq
+
+win32: LIBS += -L$$PWD/../DAQ/C/ -lcbw32
+
+RESOURCES += \
+    resource/UnitestWin.qrc

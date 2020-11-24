@@ -1,16 +1,16 @@
-#ifndef ULUTILITIESWINDOWS_H
-#define ULUTILITIESWINDOWS_H
+#ifndef LIBUTILITIES_H
+#define LIBUTILITIES_H
 
 #include <QString>
 #include <QtMath>
 #include "ulTypes.h"
 #include "mvEnums.h"
-#include "ulenumwindows.h"
+#include "ulenum.h"
 
-class UlUtilitiesWindows
+class LibUtilities
 {
 public:
-    UlUtilitiesWindows();
+    LibUtilities();
 
     double getRangeVolts(int rangeVal);
     int getDIChanTypeIndex(int chanType);
@@ -65,4 +65,4 @@ private:
 
 };
 
-#endif // ULUTILITIESWINDOWS_H
+#endif // LIBUTILITIES_H

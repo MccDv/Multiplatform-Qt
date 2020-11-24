@@ -1,11 +1,11 @@
-#include "ulutilitieswindows.h"
+#include "libutilities.h"
 
-UlUtilitiesWindows::UlUtilitiesWindows()
+LibUtilities::LibUtilities()
 {
 
 }
 
-double UlUtilitiesWindows::getRangeVolts(int rangeVal)
+double LibUtilities::getRangeVolts(int rangeVal)
 {
     switch (rangeVal) {
     case NOTUSED:
@@ -118,7 +118,7 @@ double UlUtilitiesWindows::getRangeVolts(int rangeVal)
     }
 }
 
-QString UlUtilitiesWindows::getRangeNomo(int rangeVal)
+QString LibUtilities::getRangeNomo(int rangeVal)
 {
     double curRangeVolts;
 
@@ -283,7 +283,7 @@ QString UlUtilitiesWindows::getRangeNomo(int rangeVal)
         return QString("%1V").arg(curRangeVolts);
 }
 
-int UlUtilitiesWindows::getDIChanTypeIndex(int chanType)
+int LibUtilities::getDIChanTypeIndex(int chanType)
 {
     switch (chanType) {
     case DAQI_ANALOG_DIFF:
@@ -305,7 +305,7 @@ int UlUtilitiesWindows::getDIChanTypeIndex(int chanType)
     }
 }
 
-QString UlUtilitiesWindows::getOptionNames(int curOptions)
+QString LibUtilities::getOptionNames(int curOptions)
 {
     QString optString = "";
 
@@ -358,7 +358,7 @@ QString UlUtilitiesWindows::getOptionNames(int curOptions)
     return optString;
 }
 
-QString UlUtilitiesWindows::getDigOptionNames(int curOptions)
+QString LibUtilities::getDigOptionNames(int curOptions)
 {
     QString optString = "";
 
@@ -375,7 +375,7 @@ QString UlUtilitiesWindows::getDigOptionNames(int curOptions)
     return optString;
 }
 
-QString UlUtilitiesWindows::getCtrOptionNames(int curOptions)
+QString LibUtilities::getCtrOptionNames(int curOptions)
 {
     QString optString = "";
 
@@ -394,7 +394,7 @@ QString UlUtilitiesWindows::getCtrOptionNames(int curOptions)
     return optString;
 }
 
-QString UlUtilitiesWindows::getInfoDescription(int infoType, int infoItem,
+QString LibUtilities::getInfoDescription(int infoType, int infoItem,
                                                long long infoValue, unsigned int index)
 {
     /*  Returns the string represented by infoValue or
@@ -461,7 +461,7 @@ QString UlUtilitiesWindows::getInfoDescription(int infoType, int infoItem,
     }
 }
 
-QString UlUtilitiesWindows::getInfoDblDescription(int infoType, int infoItem,
+QString LibUtilities::getInfoDblDescription(int infoType, int infoItem,
                                                   double infoValue, unsigned int index)
 {
     /*  Returns the string represented by infoValue or
@@ -499,7 +499,7 @@ QString UlUtilitiesWindows::getInfoDblDescription(int infoType, int infoItem,
     }
 }
 
-QString UlUtilitiesWindows::getInfoStrDescription(int infoType, int infoItem, unsigned int index)
+QString LibUtilities::getInfoStrDescription(int infoType, int infoItem, unsigned int index)
 {
     (void)infoType;
     (void)infoItem;
@@ -507,7 +507,7 @@ QString UlUtilitiesWindows::getInfoStrDescription(int infoType, int infoItem, un
     return "";
 }
 
-QString UlUtilitiesWindows::getConfigDescription(int configType, int configItem,
+QString LibUtilities::getConfigDescription(int configType, int configItem,
                                                  long long configValue, unsigned int index)
 {
     /*  Returns the string represented by configValue or
@@ -557,7 +557,7 @@ QString UlUtilitiesWindows::getConfigDescription(int configType, int configItem,
     }
 }
 
-QString UlUtilitiesWindows::getConfigDblDescription(int infoType, int configItem,
+QString LibUtilities::getConfigDblDescription(int infoType, int configItem,
                                                     double configValue, unsigned int index)
 {
     /*  Returns the string represented by configValue or
@@ -595,7 +595,7 @@ QString UlUtilitiesWindows::getConfigDblDescription(int infoType, int configItem
     }
 }
 
-QString UlUtilitiesWindows::getConfigStrDescription(int infoType, int configItem, unsigned int index)
+QString LibUtilities::getConfigStrDescription(int infoType, int configItem, unsigned int index)
 {
     /*  Returns the string represented by index
      *  string followed by "|" for parsing in the calling
@@ -632,7 +632,7 @@ QString UlUtilitiesWindows::getConfigStrDescription(int infoType, int configItem
     }
 }
 
-QString UlUtilitiesWindows::getFirmwareNames(int fwType)
+QString LibUtilities::getFirmwareNames(int fwType)
 {
     switch (fwType) {
     case VER_FW_MAIN:
@@ -650,7 +650,7 @@ QString UlUtilitiesWindows::getFirmwareNames(int fwType)
     }
 }
 
-QString UlUtilitiesWindows::getRangeName(int rangeVal)
+QString LibUtilities::getRangeName(int rangeVal)
 {
     switch (rangeVal) {
     case BIP60VOLTS:
@@ -720,7 +720,7 @@ QString UlUtilitiesWindows::getRangeName(int rangeVal)
     }
 }
 
-QString UlUtilitiesWindows::getAiChanTypeName(int chanType)
+QString LibUtilities::getAiChanTypeName(int chanType)
 {
     QString chanTypeString;
 
@@ -765,7 +765,7 @@ QString UlUtilitiesWindows::getAiChanTypeName(int chanType)
     }
 }
 
-QString UlUtilitiesWindows::getAiInputModeName(int inMode)
+QString LibUtilities::getAiInputModeName(int inMode)
 {
     switch (inMode) {
     case DIFFERENTIAL:
@@ -779,7 +779,7 @@ QString UlUtilitiesWindows::getAiInputModeName(int inMode)
     }
 }
 
-QString UlUtilitiesWindows::getAiCalTableTypeName(int tableType)
+QString LibUtilities::getAiCalTableTypeName(int tableType)
 {
     //used for table type return, not index
     switch (tableType) {
@@ -792,7 +792,7 @@ QString UlUtilitiesWindows::getAiCalTableTypeName(int tableType)
     }
 }
 
-QString UlUtilitiesWindows::getAiCalTableName(int index)
+QString LibUtilities::getAiCalTableName(int index)
 {
     //used for index, not table type return
     switch (index) {
@@ -805,7 +805,7 @@ QString UlUtilitiesWindows::getAiCalTableName(int index)
     }
 }
 
-QString UlUtilitiesWindows::getAiRejFreqName(int rejType)
+QString LibUtilities::getAiRejFreqName(int rejType)
 {
     switch (rejType) {
     case 60:
@@ -817,7 +817,7 @@ QString UlUtilitiesWindows::getAiRejFreqName(int rejType)
     }
 }
 
-QString UlUtilitiesWindows::getAoSyncModeName(int syncMode)
+QString LibUtilities::getAoSyncModeName(int syncMode)
 {
     switch (syncMode) {
     case 1:
@@ -829,7 +829,7 @@ QString UlUtilitiesWindows::getAoSyncModeName(int syncMode)
     }
 }
 
-QString UlUtilitiesWindows::getDaqOChanTypeNames(int typeNum)
+QString LibUtilities::getDaqOChanTypeNames(int typeNum)
 {
     switch (typeNum) {
     case ANALOG:
@@ -845,7 +845,7 @@ QString UlUtilitiesWindows::getDaqOChanTypeNames(int typeNum)
     }
 }
 
-QString UlUtilitiesWindows::getTcTypeName(int tcType)
+QString LibUtilities::getTcTypeName(int tcType)
 {
     switch (tcType) {
     case TC_TYPE_J:
@@ -878,7 +878,7 @@ QString UlUtilitiesWindows::getTcTypeName(int tcType)
     }
 }
 
-QString UlUtilitiesWindows::getTempUnitName(int tempUnit)
+QString LibUtilities::getTempUnitName(int tempUnit)
 {
     switch (tempUnit) {
     case CELSIUS:
@@ -892,7 +892,7 @@ QString UlUtilitiesWindows::getTempUnitName(int tempUnit)
     }
 }
 
-QString UlUtilitiesWindows::getTrigTypeNames(int trigType)
+QString LibUtilities::getTrigTypeNames(int trigType)
 {
     switch (trigType) {
     case TRIG_POS_EDGE:
@@ -936,7 +936,7 @@ QString UlUtilitiesWindows::getTrigTypeNames(int trigType)
     }
 }
 
-QString UlUtilitiesWindows::getQueueTypeNames(int queueTypes)
+QString LibUtilities::getQueueTypeNames(int queueTypes)
 {
     int mask;
     int maskedVal;
@@ -964,7 +964,7 @@ QString UlUtilitiesWindows::getQueueTypeNames(int queueTypes)
     return chanName.left(loc);
 }
 
-QString UlUtilitiesWindows::getQueueLimitNames(int queueLimits)
+QString LibUtilities::getQueueLimitNames(int queueLimits)
 {
     int mask;
     int maskedVal;
@@ -990,7 +990,7 @@ QString UlUtilitiesWindows::getQueueLimitNames(int queueLimits)
     return chanName.left(loc);
 }
 
-QString UlUtilitiesWindows::getDaqIChanTypeNames(int typeNum)
+QString LibUtilities::getDaqIChanTypeNames(int typeNum)
 {
     switch (typeNum) {
     case ANALOG:
@@ -1034,7 +1034,7 @@ QString UlUtilitiesWindows::getDaqIChanTypeNames(int typeNum)
     }
 }
 
-QString UlUtilitiesWindows::getDigitalDirection(int digDir)
+QString LibUtilities::getDigitalDirection(int digDir)
 {
     switch (digDir) {
     case DIGITALIN:
@@ -1049,7 +1049,7 @@ QString UlUtilitiesWindows::getDigitalDirection(int digDir)
     }
 }
 
-QString UlUtilitiesWindows::getDioPortTypeName(int typeNum)
+QString LibUtilities::getDioPortTypeName(int typeNum)
 {
     switch (typeNum) {
     case AUXPORT0:
@@ -1128,7 +1128,7 @@ QString UlUtilitiesWindows::getDioPortTypeName(int typeNum)
     }
 }
 
-QString UlUtilitiesWindows::getDioPortTypeDesig(int typeNum)
+QString LibUtilities::getDioPortTypeDesig(int typeNum)
 {
     switch (typeNum) {
     case AUXPORT0:
@@ -1207,7 +1207,7 @@ QString UlUtilitiesWindows::getDioPortTypeDesig(int typeNum)
     }
 }
 
-QString UlUtilitiesWindows::getDPortIoTypeName(int ioType)
+QString LibUtilities::getDPortIoTypeName(int ioType)
 {
     (void)ioType;
     /*switch (ioType) {
@@ -1234,7 +1234,7 @@ QString UlUtilitiesWindows::getDPortIoTypeName(int ioType)
     return "";
 }
 
-QString UlUtilitiesWindows::getCtrTypeName(int ctrType)
+QString LibUtilities::getCtrTypeName(int ctrType)
 {
     switch (ctrType) {
     case 1:
@@ -1260,31 +1260,31 @@ QString UlUtilitiesWindows::getCtrTypeName(int ctrType)
     }
 }
 
-QString UlUtilitiesWindows::getCtrMeasTypeNames(int typeNum)
+QString LibUtilities::getCtrMeasTypeNames(int typeNum)
 {
     (void)typeNum;
     return "";
 }
 
-QString UlUtilitiesWindows::getCtrRegTypeNames(int regType)
+QString LibUtilities::getCtrRegTypeNames(int regType)
 {
     (void)regType;
     return "";
 }
 
-QString UlUtilitiesWindows::getCtrMeasModeNames(int modeNum)
+QString LibUtilities::getCtrMeasModeNames(int modeNum)
 {
     (void)modeNum;
     return "";
 }
 
-QString UlUtilitiesWindows::getTmrTypeName(int tmrType)
+QString LibUtilities::getTmrTypeName(int tmrType)
 {
     (void)tmrType;
     return "";
 }
 
-QString UlUtilitiesWindows::getEventNames(int eventMask)
+QString LibUtilities::getEventNames(int eventMask)
 {
     QString eventString;
 
@@ -1305,13 +1305,13 @@ QString UlUtilitiesWindows::getEventNames(int eventMask)
     }
 }
 
-QString UlUtilitiesWindows::getRegionNames(int memRegion)
+QString LibUtilities::getRegionNames(int memRegion)
 {
     (void)memRegion;
     return "";
 }
 
-QString UlUtilitiesWindows::getEnableDisableName(int value)
+QString LibUtilities::getEnableDisableName(int value)
 {
     switch (value) {
     case 1:
