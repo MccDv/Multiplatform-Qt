@@ -1,0 +1,7 @@
+*.pro.user
+MvTest
+*.o
+moc_*
+ui_*
+*.stash
+Makefile
