@@ -257,6 +257,7 @@ void FormAnalogIn::aInStart()
     int err, key, firstChan, lastChan, curRange;
     QString curRangeVolts;
     QString params, msg;
+    bool isDoublePointer;
 
     ui->lblError->clear();
     firstChan = ui->spnLowChan->value();
@@ -265,8 +266,8 @@ void FormAnalogIn::aInStart()
     mSamplesPerChan = mPerChanDisplayed;
 
     mDoubleData = (mAiFlags != AIN_FF_NOSCALEDATA);
-    if(USING_WINDOWS)
-        mDoubleData = (mCurOptions & MCC_SO_SCALEDATA);
+    //if ((!USING_WINDOWS) | (mCurFunction != UL_AINSCAN))
+    isDoublePointer = true;
 
     if (!mRunning) {
         mPerChanRead = 0;
@@ -292,7 +293,7 @@ void FormAnalogIn::aInStart()
         mChanIndex = 0;
         long long bufSize = mChanCount * mPerChanDisplayed;
         mBufSize = bufSize;
-        if (!USING_WINDOWS) {
+        if (isDoublePointer) {
             mDoublePointer = true;
             if (dblBuffer) {
                 delete[] dblBuffer;
@@ -730,17 +731,15 @@ void FormAnalogIn::stopScan()
 
 void FormAnalogIn::printData()
 {
-#ifdef Q_OS_WIN32
     double *bufData;
-    bufData = (double*)mHandle;
-    WORD *intData;
-    intData = (WORD*)mHandle;
-#else
-    double *bufData;
-    bufData = dblBuffer;
     int *intData;
-    intData = intBuffer;
-#endif
+    if(mCurFunction == UL_AINSCAN) {
+        bufData = (double*)mHandle;
+        intData = (int*)mHandle;
+    } else {
+        bufData = dblBuffer;
+        intData = intBuffer;
+    }
 
     int chIndex = 0;
     int samp, afterDecimal, ch;
@@ -770,12 +769,15 @@ void FormAnalogIn::printData()
         for (chIndex = 0; chIndex < mCurChanCount; chIndex++) {
             if (ch == 0)
                 msData.append("</tr><tr><td>" + QString("%1)").arg(samp) + "</td>");
-            if (mDoubleData) {
+            if (mDoublePointer) {
                 valRead = bufData[samp + chIndex];
+            } else {
+                valRead = intData[samp + chIndex];
+            }
+            if(mDoubleData) {
                 valFormatted = QString("%1%2").arg((valRead < 0) ? "" : showSign).arg
                         (valRead, 1, 'f', afterDecimal, '0');
             } else {
-                valRead = intData[samp + chIndex];
                 if (mShowHex)
                     valFormatted = QString("0x%1").arg((long)valRead, mHexResolution, 16, QLatin1Char('0'));
                 else
