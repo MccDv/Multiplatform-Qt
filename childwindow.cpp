@@ -1,7 +1,7 @@
 #include "childwindow.h"
 #include "formdiscover.h"
-/*
 #include "formanalogin.h"
+/*
 #include "formanalogout.h"
 #include "formconfig.h"
 #include "formdigitalin.h"
@@ -16,8 +16,8 @@ ChildWindow::ChildWindow(QWidget *parent, FormTypes frmType) : QMdiSubWindow(par
         msFormTypeName = "discoverform";
         break;
     case FORM_AIN:
-        //subwidget = new FormAnalogIn(this);
-        //msFormTypeName = "ainform";
+        subwidget = new FormAnalogIn(this);
+        msFormTypeName = "ainform";
         break;
     case FORM_AOUT:
         //msFormTypeName = "aoutform";

@@ -23,12 +23,15 @@ INCLUDEPATH += "ulwin/"
 SOURCES += \
     childwindow.cpp \
     errordialog.cpp \
+    formanalogin.cpp \
     formdiscover.cpp \
     formmvdevice.cpp \
     main.cpp \
     mccdiscover.cpp \
     mvtest.cpp \
     qcustomplot.cpp \
+    queuedialog.cpp \
+    ulwin/libanalog.cpp \
     ulwin/libdiscover.cpp \
     ulwin/libmisc.cpp \
     ulwin/libutilities.cpp
@@ -36,11 +39,14 @@ SOURCES += \
 HEADERS += \
     childwindow.h \
     errordialog.h \
+    formanalogin.h \
     formdiscover.h \
     formmvdevice.h \
     mccdiscover.h \
     mvtest.h \
     qcustomplot.h \
+    queuedialog.h \
+    ulwin/libanalog.h \
     ulwin/libdiscover.h \
     ulwin/libmisc.h \
     ulwin/libutilities.h \
@@ -49,9 +55,11 @@ HEADERS += \
 
 FORMS += \
     errordialog.ui \
+    formanalogin.ui \
     formdiscover.ui \
     formmvdevice.ui \
-    mvtest.ui
+    mvtest.ui \
+    queuedialog.ui
 
 INCLUDEPATH += $$PWD/../DAQ/C
 DEPENDPATH += $$PWD/../DAQ/C
