@@ -46,12 +46,13 @@ HEADERS += \
     mvtest.h \
     qcustomplot.h \
     queuedialog.h \
+    ulwin/libTypes.h \
     ulwin/libanalog.h \
     ulwin/libdiscover.h \
+    ulwin/libenum.h \
     ulwin/libmisc.h \
     ulwin/libutilities.h \
-    ulwin/mvErrorMap.h \
-    ulwin/ulenum.h
+    ulwin/mvErrorMap.h
 
 FORMS += \
     errordialog.ui \

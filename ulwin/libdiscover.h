@@ -3,8 +3,8 @@
 
 #include "..\..\DAQ\C\cbw.h"
 #include "libmisc.h"
-#include "ulTypes.h"
-#include "MvErrorMap.h"
+#include "libTypes.h"
+#include "mvErrorMap.h"
 #include "errordialog.h"
 
 class LibDiscover
