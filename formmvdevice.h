@@ -2,7 +2,7 @@
 #define FORMMVDEVICE_H
 
 //#include "../ulPlatform.h"
-#include "MvErrorMap.h"
+#include "mvErrorMap.h"
 #include "qcustomplot.h"
 
 #include "libmisc.h"
@@ -12,10 +12,10 @@
 #include <QWidget>
 #include <QSettings>
 #include <QHash>
-#include "ulTypes.h"
+#include "libTypes.h"
 //#include "mvEnums.h"
 //#include "mvtest.h"
-#include "ulenum.h"
+#include "libenum.h"
 
 class MvTest;
 

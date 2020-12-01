@@ -74,20 +74,18 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
         } else {
             //  find an unused handle (linux doesn't use 0)
             newHandle = 1;
-            if (ON_WINDOWS)
-                newHandle = 0;
             while (devHandles.contains(newHandle)) {
                 newHandle++;
             }
             deviceHandle = libDiscFunctions->mccCreateDaqDevice(params, newHandle, devDescriptors[i]);
             if (deviceHandle != newHandle)
-                return MCC_BAD_BOARD;
-            if (!ON_WINDOWS) {
-                // Linux needs to also connect to the device (Windows doesn't)
-                err = libDiscFunctions->mccConnectDaqDevice(params, deviceHandle, uidKey);
-                if (err != MCC_NOERRORS)
-                    return err;
-            }
+                return MCC_BADBOARD;
+
+            // Linux needs to also connect to the device (Windows doesn't)
+            err = libDiscFunctions->mccConnectDaqDevice(params, deviceHandle, uidKey);
+            if (err != MCC_NOERRORS)
+                return err;
+
             devHandles.append(deviceHandle);
             newList.insert(uidKey, newHandle);
         }

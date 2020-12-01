@@ -9,7 +9,7 @@
 #include <QMenu>
 
 #include "mvEnums.h"
-#include "ulenum.h"
+#include "libenum.h"
 #include "childwindow.h"
 #include "errordialog.h"
 #include "mccdiscover.h"

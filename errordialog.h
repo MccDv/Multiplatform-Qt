@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
-#include "ulTypes.h"
+#include "libTypes.h"
 //#include "ulPlatform.h"
 
 namespace Ui {

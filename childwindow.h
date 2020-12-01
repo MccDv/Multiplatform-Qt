@@ -7,7 +7,7 @@
 #include <QMdiSubWindow>
 #include <QList>
 #include "mvEnums.h"
-#include "ulTypes.h"
+#include "libTypes.h"
 
 namespace Ui {
 class ChildWindow;

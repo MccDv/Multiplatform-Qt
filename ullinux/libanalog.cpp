@@ -1,13 +1,13 @@
-#include "ulanaloglinux.h"
+#include "libanalog.h"
 
 ErrorDialog *errorDialog;
 
-UlAnalogLinux::UlAnalogLinux()
+LibAnalog::LibAnalog()
 {
     errorDialog = MvTest::errDialogObj;
 }
 
-int UlAnalogLinux::mccAIn(QString &params, DaqDeviceHandle deviceHandle,
+int LibAnalog::mccAIn(QString &params, DaqDeviceHandle deviceHandle,
                           int channel, int iMode, int aiFlags, int Gain, double &dataValue)
 {
     int err;
@@ -40,7 +40,7 @@ int UlAnalogLinux::mccAIn(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlAnalogLinux::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
+int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
                               int highChan, int inputMode, long samples, double &rate,
                               int range, int options, int flags, double *dblData)
 {
@@ -79,7 +79,7 @@ int UlAnalogLinux::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int
     return err;
 }
 
-int UlAnalogLinux::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
+int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
                               int highChan, int inputMode, long samples, double &rate,
                               int range, int options, int flags, HGLOBAL intHandle)
 {
@@ -98,7 +98,7 @@ int UlAnalogLinux::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int
     return MCC_BADBOARD;
 }
 
-int UlAnalogLinux::mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle)
+int LibAnalog::mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle)
 {
     int err;
     QString funcName, argString, argVals;
@@ -117,7 +117,7 @@ int UlAnalogLinux::mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle)
     return err;
 }
 
-int UlAnalogLinux::mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandle,
+int LibAnalog::mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandle,
                                     int &status, long &curIndex, long &curCount)
 {
     int err;
@@ -146,7 +146,7 @@ int UlAnalogLinux::mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandl
     return err;
 }
 
-int UlAnalogLinux::mccTIn(QString &params, DaqDeviceHandle deviceHandle,
+int LibAnalog::mccTIn(QString &params, DaqDeviceHandle deviceHandle,
                           int channel, TempScale scale, TInFlag flags, double &dataValue)
 {
     int err;
@@ -177,7 +177,7 @@ int UlAnalogLinux::mccTIn(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
-int UlAnalogLinux::mccTInArray(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
+int LibAnalog::mccTInArray(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
                                int highChan, TempScale scale, TInArrayFlag flags, double *dataValue)
 {
     int err;
@@ -207,7 +207,7 @@ int UlAnalogLinux::mccTInArray(QString &params, DaqDeviceHandle deviceHandle, in
     return err;
 }
 
-int UlAnalogLinux::mccLoadQueue(QString &params, DaqDeviceHandle deviceHandle, QHash<int, int> chanList,
+int LibAnalog::mccLoadQueue(QString &params, DaqDeviceHandle deviceHandle, QHash<int, int> chanList,
                                 QHash<int, int> gainList, QHash<int, int> modeList, int numElements)
 {
     int err;
@@ -239,7 +239,7 @@ int UlAnalogLinux::mccLoadQueue(QString &params, DaqDeviceHandle deviceHandle, Q
     return err;
 }
 
-int UlAnalogLinux::mccAOut(QString &params, DaqDeviceHandle deviceHandle, int channel, int aoFlags, int Gain, double dataValue)
+int LibAnalog::mccAOut(QString &params, DaqDeviceHandle deviceHandle, int channel, int aoFlags, int Gain, double dataValue)
 {
     int err;
     QString funcName, argString, argVals;
@@ -266,7 +266,7 @@ int UlAnalogLinux::mccAOut(QString &params, DaqDeviceHandle deviceHandle, int ch
     return err;
 }
 
-int UlAnalogLinux::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan, int highChan,
+int LibAnalog::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan, int highChan,
                                long samples, double &rate, int range, int options, int flags, double *dblData)
 {
     int err, sampsPerChan;
@@ -303,7 +303,7 @@ int UlAnalogLinux::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, in
     return err;
 }
 
-int UlAnalogLinux::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan, int highChan,
+int LibAnalog::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan, int highChan,
                                long samples, double &rate, int range, int options, int flags, HGLOBAL intHandle)
 {
     params = "";
@@ -319,7 +319,7 @@ int UlAnalogLinux::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, in
     return 0;
 }
 
-int UlAnalogLinux::mccAOutScanStop(QString &params, DaqDeviceHandle deviceHandle)
+int LibAnalog::mccAOutScanStop(QString &params, DaqDeviceHandle deviceHandle)
 {
     int err;
     QString funcName, argString, argVals;
@@ -338,7 +338,7 @@ int UlAnalogLinux::mccAOutScanStop(QString &params, DaqDeviceHandle deviceHandle
     return err;
 }
 
-int UlAnalogLinux::mccAOutScanStatus(QString &params, DaqDeviceHandle deviceHandle, int &status, long &curIndex, long &curCount)
+int LibAnalog::mccAOutScanStatus(QString &params, DaqDeviceHandle deviceHandle, int &status, long &curIndex, long &curCount)
 {
     int err;
     ScanStatus scanStatus;

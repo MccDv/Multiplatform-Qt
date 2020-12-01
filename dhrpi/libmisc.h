@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QMap>
+#include <QFile>
 #include "libTypes.h"
 //#include "ulenumlinux.h"
 #include "mvErrorMap.h"

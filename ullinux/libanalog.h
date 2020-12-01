@@ -1,21 +1,21 @@
-#ifndef ULANALOGLINUX_H
-#define ULANALOGLINUX_H
+#ifndef LIBANALOG_H
+#define LIBANALOG_H
 
 #include <QString>
 #include <QTime>
-#include "ulTypes.h"
-#include "ulenumlinux.h"
-#include "MvErrorMap.h"
+#include "libTypes.h"
+#include "libenum.h"
+#include "mvErrorMap.h"
 #include "mvtest.h"
-#include "../errordialog.h"
+#include "errordialog.h"
 
 typedef void *HGLOBAL ;
 
-class UlAnalogLinux
+class LibAnalog
 {
 
 public:
-    UlAnalogLinux();
+    LibAnalog();
 
     int mccAIn(QString &params, DaqDeviceHandle deviceHandle, int channel,
                int iMode, int aiFlags, int Gain, double &dataValue);
@@ -52,4 +52,4 @@ private:
 
 };
 
-#endif // ULANALOGLINUX_H
+#endif // LIBANALOG_H

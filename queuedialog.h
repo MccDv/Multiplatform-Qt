@@ -3,7 +3,7 @@
 
 #include <QDialog>
 
-#include "ulenum.h"
+#include "libenum.h"
 #include "libutilities.h"
 
 typedef QHash<int, int> chanListType;

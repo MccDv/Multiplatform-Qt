@@ -4,8 +4,8 @@
 #include <QHash>
 #include <QString>
 #include <QList>
-#include "ulTypes.h"
-#include "MvErrorMap.h"
+#include "libTypes.h"
+#include "mvErrorMap.h"
 
 #include "libdiscover.h"
 #include "libmisc.h"
@@ -17,7 +17,7 @@ public:
     MccDiscover();
 
     int ignoreInstacal(QString &params);
-    int updateInventory(QString &params, DaqDeviceInterface interfaceType, UlNumDevs &numFound);
+    int updateInventory(QString &params, DaqDeviceInterface hatFilter, UlNumDevs &numFound);
     QString getBoardName(QString uniqueID);
     UlNumDevs getProductID(QString uniqueID);
     DaqDeviceInterface getDevInterface(QString uniqueID);

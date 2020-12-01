@@ -1,22 +1,13 @@
-#ifndef ULTYPES_H
-#define ULTYPES_H
+#ifndef LIBTYPES_H
+#define LIBTYPES_H
 
 #include <QString>
 #include <QHash>
-
-#ifdef Q_OS_WIN32
-#define MCC_BAD_BOARD   BADBOARD
-
-#define ON_WINDOWS true
-#include "..\..\DAQ\C\cbw.h"
-typedef int DaqDeviceHandle;
-typedef int UlNumDevs;
-#else
 #include "uldaq.h"
+
 #define MCC_BAD_BOARD   ERR_BAD_DEV_HANDLE
 #define ON_WINDOWS false
 typedef unsigned int UlNumDevs;
-#endif // Q_OS_WIN32
 
 #define MAX_DEV_COUNT  10
 
@@ -42,4 +33,4 @@ typedef enum
     InfoTypeMemory      = 8
 }MccCfgType;
 
-#endif // ULTYPES_H
+#endif // LIBTYPES_H

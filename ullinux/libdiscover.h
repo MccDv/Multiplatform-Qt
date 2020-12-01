@@ -3,8 +3,8 @@
 
 #include "uldaq.h"
 //#include "ulmisclinux.h"
-#include "ulTypes.h"
-#include "MvErrorMap.h"
+#include "libTypes.h"
+#include "mvErrorMap.h"
 //#include "mvtest.h"
 #include "../errordialog.h"
 

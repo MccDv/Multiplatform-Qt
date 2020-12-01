@@ -229,7 +229,7 @@ void FormMvDevice::updatePlot(QCustomPlot *dataPlot, bool autoScale)
         double center = dataPlot->yAxis->range().center();
         dataPlot->yAxis->scaleRange(1.2, center);
     } else {
-        if (mRange == MCC_BIPPT078VOLTS) {
+        /*if (mRange == MCC_BIPPT078VOLTS) {
             infoItems = libMiscFunctions->mccGetAiInfoItems();
             foreach (QString itemName, infoItems.values()) {
                 if (itemName == "0:0:Resolution") {
@@ -243,7 +243,7 @@ void FormMvDevice::updatePlot(QCustomPlot *dataPlot, bool autoScale)
                                               configItem, index, configValue);
             if ((err == MCC_NOERRORS) && (configValue == 2))
                 setTCRange = true;
-        }
+        }*/
         if (mCurFunction == UL_TIN)
             setTCRange = true;
         if (setTCRange) {

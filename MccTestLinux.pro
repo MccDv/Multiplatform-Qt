@@ -2,7 +2,17 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
+TARGET = UnitestLinux
+
 CONFIG += c++11
+
+VERSION = 0.7.0.0
+DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
+DEFINES += RESOURCE_STRING=\\\":/win/splash/MvSplash.png\\\"
+
+DISTFILES +=
+
+DEFINES += QT_DEPRECATED_WARNINGS
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -21,7 +31,10 @@ SOURCES += \
     qcustomplot.cpp \
     ullinux/libdiscover.cpp \
     ullinux/libmisc.cpp \
-    ullinux/libutilities.cpp
+    ullinux/libutilities.cpp \
+    queuedialog.cpp \
+    formanalogin.cpp \
+    ullinux/libanalog.cpp
 
 HEADERS += \
     childwindow.h \
@@ -34,13 +47,21 @@ HEADERS += \
     ullinux/libdiscover.h \
     ullinux/libmisc.h \
     ullinux/libutilities.h \
-    ullinux/ulenum.h
+    ullinux/ulenum.h \
+    queuedialog.h \
+    formanalogin.h \
+    ullinux/libanalog.h \
+    ullinux/mvErrorMap.h \
+    ullinux/libenum.h \
+    ullinux/libTypes.h
 
 FORMS += \
     errordialog.ui \
     formdiscover.ui \
     formmvdevice.ui \
-    mvtest.ui
+    mvtest.ui \
+    queuedialog.ui \
+    formanalogin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
