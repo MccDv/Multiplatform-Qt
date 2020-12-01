@@ -3,9 +3,9 @@
 
 #include <QString>
 #include <QtMath>
-#include "ulTypes.h"
+#include "libTypes.h"
 #include "mvEnums.h"
-#include "ulenum.h"
+#include "libenum.h"
 
 class LibUtilities
 {

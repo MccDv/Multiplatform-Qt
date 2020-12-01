@@ -3,8 +3,8 @@
 
 #include <QString>
 #include <QMap>
-#include "ulTypes.h"
-#include "ulenum.h"
+#include "libTypes.h"
+#include "libenum.h"
 
 class LibMisc
 {

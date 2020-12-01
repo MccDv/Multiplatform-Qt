@@ -4,9 +4,9 @@
 #include <QString>
 #include <QTime>
 //#include <QHash>
-#include "ulTypes.h"
-#include "ulenum.h"
-#include "MvErrorMap.h"
+#include "libTypes.h"
+#include "libenum.h"
+#include "mvErrorMap.h"
 #include "libutilities.h"
 #include "mvtest.h"
 #include "../errordialog.h"
