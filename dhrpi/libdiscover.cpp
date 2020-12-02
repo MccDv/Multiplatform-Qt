@@ -18,7 +18,7 @@ int LibDiscover::mccGetInstacalDevs(QString &params, QHash<QString, DaqDeviceHan
 {
     params = "";
     iCalDevs.clear();
-    return 0;
+    return MCC_NOERRORS;
 }
 
 int LibDiscover::mccGetDaqDeviceInventory(QString &params, DaqDeviceInterface
@@ -57,7 +57,7 @@ int LibDiscover::mccGetDaqDeviceInventory(QString &params, DaqDeviceInterface
         strcpy(mccDescriptors->mccUniqueId, chrAddress);
     }
     numDescriptors = mNumHats;
-    return 0;
+    return MCC_NOERRORS;
 }
 
 DaqDeviceHandle LibDiscover::mccCreateDaqDevice(QString &params,
@@ -132,7 +132,7 @@ int LibDiscover::mccIsDaqDeviceConnected(QString &params,
     params = funcName + argString + funcName + argVals;
     discoverErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(RESULT_SUCCESS));
     connected = isOpen;
-    return 0;
+    return MCC_NOERRORS;
 }
 
 int LibDiscover::mccConnectDaqDevice(QString &params, DaqDeviceHandle deviceHandle, QString devUID)
@@ -199,14 +199,6 @@ int LibDiscover::mccConnectDaqDevice(QString &params, DaqDeviceHandle deviceHand
 
 int LibDiscover::mccDisconnectDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
 {
-    (void)deviceHandle;
-
-    params = "";
-    return 0;
-}
-
-int LibDiscover::mccReleaseDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
-{
     int err;
     QString funcName, hatName;
     QString argString, argVals;
@@ -266,6 +258,12 @@ int LibDiscover::mccReleaseDaqDevice(QString &params, DaqDeviceHandle deviceHand
     return err;
 }
 
+int LibDiscover::mccReleaseDaqDevice(QString &params, DaqDeviceHandle deviceHandle)
+{
+    params = "";
+    (void)deviceHandle;
+    return MCC_NOERRORS;
+}
 
 int LibDiscover::detectHats(QString &params, uint16_t hatFilter)
 {

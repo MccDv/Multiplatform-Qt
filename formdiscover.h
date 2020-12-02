@@ -2,6 +2,7 @@
 #define FORMDISCOVER_H
 
 #include <QWidget>
+
 //#include "../ulPlatform.h"
 #include "mccdiscover.h"
 //#include "../remotedialog.h"

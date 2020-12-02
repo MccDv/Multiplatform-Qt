@@ -173,7 +173,7 @@ void FormDiscover::updateDevDetails()
         tableText.append("<td>" + ifcStr + "</td><td>" + interfacStr + "</td></tr><tr>");
         ui->textEdit->setHtml(tableText);
 
-        err = ulDiscFunctions->mccIsDaqDeviceConnected(params,devHandle, uniqueIDStr, connected);
+        err = cDiscover->isDeviceConnected(params, devHandle, uniqueIDStr, connected);
         if (err == MCC_NOERRORS) {
             mDevHandle = devHandle;
             msUniqueId = uniqueIDStr;
@@ -190,11 +190,11 @@ void FormDiscover::disconnectClicked()
     int err, connected;
     QString params;
 
-    err = ulDiscFunctions->mccDisconnectDaqDevice(params, mDevHandle);
+    err = cDiscover->disconnectDevice(params, mDevHandle);
     if (err != MCC_NOERRORS)
         return;
 
-    err = ulDiscFunctions->mccIsDaqDeviceConnected(params, mDevHandle, msUniqueId, connected);
+    err = cDiscover->isDeviceConnected(params, mDevHandle, msUniqueId, connected);
     ui->cmdConnect->setEnabled(!connected);
     ui->cmdDisconnect->setEnabled(connected);
 }
@@ -204,18 +204,24 @@ void FormDiscover::connectClicked()
     int err, connected;
     QString params;
 
-    err = ulDiscFunctions->mccConnectDaqDevice(params, mDevHandle, msUniqueId);
+    err = cDiscover->connectDevice(params, mDevHandle, msUniqueId);
     if (err != MCC_NOERRORS)
         return;
 
-    err = ulDiscFunctions->mccIsDaqDeviceConnected(params, mDevHandle, msUniqueId, connected);
+    err = cDiscover->isDeviceConnected(params, mDevHandle, msUniqueId, connected);
     ui->cmdConnect->setEnabled(!connected);
     ui->cmdDisconnect->setEnabled(connected);
 }
 
 void FormDiscover::createClicked()
 {
-    //err = ulDiscFunctions->mccCreateDaqDevice()
+    DaqDeviceHandle devHandle;
+    QString params;
+    MccDaqDeviceDescriptor devDescriptor;
+
+    devDescriptor = cDiscover->getDescriptor(msUniqueId);
+    devHandle = cDiscover->createDevice(params, mDevHandle, devDescriptor);
+    mDevHandle = devHandle;
 }
 
 void FormDiscover::isConnectedClicked()

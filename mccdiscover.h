@@ -18,10 +18,15 @@ public:
 
     int ignoreInstacal(QString &params);
     int updateInventory(QString &params, DaqDeviceInterface hatFilter, UlNumDevs &numFound);
+    int connectDevice(QString &params, DaqDeviceHandle devHandle, QString uniqueIDStr);
+    DaqDeviceHandle createDevice(QString &params, DaqDeviceHandle &deviceHandle, MccDaqDeviceDescriptor mccDevDescriptor);
+    int isDeviceConnected(QString &params, DaqDeviceHandle devHandle, QString uniqueIDStr, int &connected);
+    int disconnectDevice(QString &params, DaqDeviceHandle devHandle);
     QString getBoardName(QString uniqueID);
     UlNumDevs getProductID(QString uniqueID);
     DaqDeviceInterface getDevInterface(QString uniqueID);
     QString getDevString(QString uniqueID);
+    MccDaqDeviceDescriptor getDescriptor(QString uniqueId);
 
     QHash<QString, DaqDeviceHandle> getListedDevices();
 

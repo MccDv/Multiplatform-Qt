@@ -186,6 +186,50 @@ QHash<QString, DaqDeviceHandle> MccDiscover::getListedDevices()
     return devList;
 }
 
+MccDaqDeviceDescriptor MccDiscover::getDescriptor(QString uniqueId)
+{
+    QString testId;
+
+    for (int i = 0; i < mnNumListed; i++) {
+        testId = QString("%1").arg(devDescriptors[i].mccUniqueId);
+        if (testId == uniqueId) {
+            return devDescriptors[i];
+        }
+    }
+}
+
+DaqDeviceHandle MccDiscover::createDevice(QString &params, DaqDeviceHandle &deviceHandle, MccDaqDeviceDescriptor mccDevDescriptor)
+{
+    DaqDeviceHandle devHandle;
+
+    devHandle = libDiscFunctions->mccCreateDaqDevice(params, deviceHandle, mccDevDescriptor);
+    return devHandle;
+}
+
+int MccDiscover::connectDevice(QString &params, DaqDeviceHandle devHandle, QString uniqueIDStr)
+{
+    int err;
+
+    err = libDiscFunctions->mccConnectDaqDevice(params, devHandle, uniqueIDStr);
+    return err;
+}
+
+int MccDiscover::isDeviceConnected(QString &params, DaqDeviceHandle devHandle, QString uniqueIDStr, int &connected)
+{
+    int err;
+
+    err = libDiscFunctions->mccIsDaqDeviceConnected(params, devHandle, uniqueIDStr, connected);
+    return err;
+}
+
+int MccDiscover::disconnectDevice(QString &params, DaqDeviceHandle devHandle)
+{
+    int err;
+
+    err = libDiscFunctions->mccDisconnectDaqDevice(params, devHandle);
+    return err;
+}
+
 void MccDiscover::callClassConstructors()
 {
     libDiscFunctions = new LibDiscover;
