@@ -33,6 +33,8 @@ MvTest* FormMvDevice::getMainWindow()
 
 void FormMvDevice::setCurDevice(DaqDeviceHandle devHandle, QString uID, QString pID, QString bdName)
 {
+    bool ok;
+
     mDevHandle = devHandle;
     msUniqueID = uID;
     msProductID = pID;
@@ -42,6 +44,8 @@ void FormMvDevice::setCurDevice(DaqDeviceHandle devHandle, QString uID, QString 
     else
         this->setWindowTitle(QString("%1  [%2]").arg(bdName).arg(devHandle));
     getDevProperties();
+    if (msProductID.contains("0x"))
+        mProductID = msProductID.mid(msProductID.indexOf("0x") + 2).toInt(&ok, 16);
     emit deviceChanged();
 }
 

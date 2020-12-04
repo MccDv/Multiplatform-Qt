@@ -11,7 +11,76 @@ LibAnalog::LibAnalog()
 int LibAnalog::mccAIn(QString &params, DaqDeviceHandle deviceHandle,
                           int channel, int iMode, int aiFlags, int Gain, double &dataValue)
 {
-    return 0;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    int multiplier, prec, err;
+    double data = 0.0;
+    uint devType;
+    uint8_t address;
+    uint32_t options;
+    bool ok;
+
+    devType = 0;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+    hatName = testUtils->getHatTypeName(devType);
+    address = deviceHandle;
+    if (iMode != mAiMode) {
+        mAiMode = iMode;
+        err = aInModeWrite(devType, address, mAiMode);
+    }
+    if (Gain != mRange) {
+        mRange = Gain;
+        aInRangeWrite(devType, address, mRange);
+    }
+    options = aiFlags;
+
+    multiplier = 1;
+    prec = 6;
+    funcName = hatName.append(": AInRead");
+    argString = "(mAddress, curChan, mScanOptions, &data)\n";
+    switch (devType) {
+    case HAT_ID_MCC_118:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc118_a_in_read(address, channel, options, &data);
+        break;
+#ifdef HAT_03
+    case HAT_ID_MCC_134:
+        multiplier = 1000;
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc134_a_in_read(address, channel, options, &data);
+        break;
+#endif
+#ifdef HAT_06
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_read(address, channel, options, &data);
+        break;
+#endif
+    default:
+        argString = "(~)\n";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        argVals = "(~)";
+        break;
+    }
+
+    if(argVals == "")
+        argVals = QStringLiteral("(%1, %2, %3, %4)")
+                .arg(address)
+                .arg(channel)
+                .arg(options)
+                .arg(data * multiplier, 0, 'f', prec);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(RESULT_SUCCESS));
+    if(err == RESULT_SUCCESS)
+        dataValue = data * multiplier;
+    return err;
 }
 
 int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
@@ -384,33 +453,33 @@ double LibAnalog::getAInVoltsMax(QString &params, uint16_t devType, uint8_t inde
     prec = 6;
     switch (devType) {
     case HAT_ID_MCC_118:
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = mcc118_info()->AI_MAX_VOLTAGE;
         break;
 #ifdef HAT_03
     case HAT_ID_MCC_134:
         prec = 9;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = (mcc134_info()->AI_MAX_VOLTAGE) * 1000;
         break;
 #endif
 #ifdef HAT_05
     case HAT_ID_MCC_172:
         prec = 12;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = mcc172_info()->AI_MAX_VOLTAGE;
         break;
 #endif
 #ifdef HAT_06
     case HAT_ID_MCC_128:
         prec = 12;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = mcc128_info()->AI_MAX_VOLTAGE[index];
         break;
 #endif
     default:
         argString = "(~) = 0\n";
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = 0;
         break;
     }
@@ -438,33 +507,33 @@ double LibAnalog::getAInVoltsMin(QString &params, uint16_t devType, uint8_t inde
     prec = 6;
     switch (devType) {
     case HAT_ID_MCC_118:
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = mcc118_info()->AI_MIN_VOLTAGE;
         break;
 #ifdef HAT_03
     case HAT_ID_MCC_134:
         prec = 9;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = (mcc134_info()->AI_MIN_VOLTAGE) * 1000;
         break;
 #endif
 #ifdef HAT_05
     case HAT_ID_MCC_172:
         prec = 12;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = mcc172_info()->AI_MIN_VOLTAGE;
         break;
 #endif
 #ifdef HAT_06
     case HAT_ID_MCC_128:
         prec = 12;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = mcc128_info()->AI_MIN_VOLTAGE[index];
         break;
 #endif
     default:
         argString = "(~) = 0\n";
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = 0;
         break;
     }
@@ -728,19 +797,19 @@ int LibAnalog::aInRead(QString &params, uint16_t devType, uint8_t address, uint8
 #ifdef HAT_03
     case HAT_ID_MCC_134:
         multiplier = 1000;
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         err = mcc134_a_in_read(address, chan, options, &data);
         break;
 #endif
 #ifdef HAT_06
     case HAT_ID_MCC_128:
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         err = mcc128_a_in_read(address, chan, options, &data);
         break;
 #endif
     default:
         argString = "(~)\n";
-        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "~";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         err = RESULT_INVALID_DEVICE;
         argVals = "(~)";
         break;
@@ -754,8 +823,174 @@ int LibAnalog::aInRead(QString &params, uint16_t devType, uint8_t address, uint8
                 .arg(data * multiplier, 0, 'f', prec);
 
     params = funcName + argString + funcName + argVals;
-    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(RESULT_SUCCESS));
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
     if(err == RESULT_SUCCESS)
         value = data * multiplier;
     return err;
 }
+
+#ifdef HAT_06
+
+int LibAnalog::aInModeRead(uint16_t devType, uint8_t address, uint8_t &mode)
+{
+    int err;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName, params;
+
+    hatName = testUtils->getHatTypeName(devType);
+
+    funcName = hatName.append(": modeRead");
+    argString = "(mAddress, mode)\n";
+    switch (devType) {
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_mode_read(address, &mode);
+        break;
+    default:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        break;
+    }
+    argVals = QStringLiteral("(%1, %2)")
+            .arg(address)
+            .arg(mode);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    return err;
+}
+
+int LibAnalog::aInModeWrite(uint16_t devType, uint8_t address, uint8_t mode)
+{
+    int err;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName, params;
+
+    hatName = testUtils->getHatTypeName(devType);
+
+    funcName = hatName.append(": modeWrite");
+    argString = "(mAddress, mode)\n";
+    switch (devType) {
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_mode_write(address, mode);
+        break;
+    default:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        break;
+    }
+    argVals = QStringLiteral("(%1, %2)")
+            .arg(address)
+            .arg(mode);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    return err;
+}
+
+int LibAnalog::aInRangeRead(uint16_t devType, uint8_t address, uint8_t &range)
+{
+    int err;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName, params;
+
+    hatName = testUtils->getHatTypeName(devType);
+
+    funcName = hatName.append(": rangeRead");
+    argString = "(mAddress, &range)\n";
+    switch (devType) {
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_range_read(address, &range);
+        break;
+    default:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        break;
+    }
+    argVals = QStringLiteral("(%1, %2)")
+            .arg(address)
+            .arg(range);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    return err;
+}
+
+int LibAnalog::aInRangeWrite(uint16_t devType, uint8_t address, uint8_t range)
+{
+    int err;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName, params;
+
+    hatName = testUtils->getHatTypeName(devType);
+
+    funcName = hatName.append(": rangeWrite");
+    argString = "(mAddress, range)\n";
+    switch (devType) {
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_range_write(address, range);
+        break;
+    default:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        break;
+    }
+    argVals = QStringLiteral("(%1, %2)")
+            .arg(address)
+            .arg(range);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    return err;
+}
+
+#else
+
+int LibAnalog::aInModeRead(uint16_t devType, uint8_t address, uint8_t &value)
+{
+    (void)devType;
+    (void)address;
+    (void)value;
+    return RESULT_INVALID_DEVICE;
+}
+
+int LibAnalog::aInModeWrite(uint16_t devType, uint8_t address, uint8_t value)
+{
+    (void)devType;
+    (void)address;
+    (void)value;
+    return RESULT_INVALID_DEVICE;
+}
+
+int LibAnalog::aInRangeRead(uint16_t devType, uint8_t address, uint8_t &value)
+{
+    (void)devType;
+    (void)address;
+    (void)value;
+    return RESULT_INVALID_DEVICE;
+}
+
+int LibAnalog::aInRangeWrite(uint16_t devType, uint8_t address, uint8_t value)
+{
+    (void)devType;
+    (void)address;
+    (void)value;
+    return RESULT_INVALID_DEVICE;
+}
+
+#endif

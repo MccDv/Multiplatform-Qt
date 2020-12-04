@@ -5,6 +5,7 @@
 #include <QHash>
 #include "uldaq.h"
 
+#define LIB_PLATFORM    2
 #define MCC_BAD_BOARD   ERR_BAD_DEV_HANDLE
 #define ON_WINDOWS false
 typedef unsigned int UlNumDevs;

@@ -81,12 +81,10 @@ int LibDiscover::mccIsDaqDeviceConnected(QString &params,
     uint8_t address;
 
     devType = 0;
-    foreach (int addr, mHatList.keys()) {
-        if(addr == deviceHandle) {
-            address = deviceHandle;
-            devType = mHatList.value(address);
-        }
-    }
+    address = deviceHandle;
+    if (mHatList.contains(address))
+        devType = mHatList.value(address);
+
     hatName = testUtils->getHatTypeName(devType);
     funcName = hatName.append(": IsOpen");
     argString = "(address) = result\n";
@@ -147,12 +145,10 @@ int LibDiscover::mccConnectDaqDevice(QString &params, DaqDeviceHandle deviceHand
     uint8_t address;
 
     devType = 0;
-    foreach (int addr, mHatList.keys()) {
-        if(addr == deviceHandle) {
-            address = deviceHandle;
-            devType = mHatList.value(address);
-        }
-    }
+    address = deviceHandle;
+    if (mHatList.contains(address))
+        devType = mHatList.value(address);
+
     hatName = testUtils->getHatTypeName(devType);
     funcName = hatName.append(": Open");
     argString = "(mAddress)\n";
@@ -208,12 +204,10 @@ int LibDiscover::mccDisconnectDaqDevice(QString &params, DaqDeviceHandle deviceH
     uint8_t address;
 
     devType = 0;
-    foreach (int addr, mHatList.keys()) {
-        if(addr == deviceHandle) {
-            address = deviceHandle;
-            devType = mHatList.value(address);
-        }
-    }
+    address = deviceHandle;
+    if (mHatList.contains(address))
+        devType = mHatList.value(address);
+
     hatName = testUtils->getHatTypeName(devType);
     funcName = hatName.append(": Close");
     argString = "(mAddress)\n";

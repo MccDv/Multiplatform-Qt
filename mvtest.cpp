@@ -22,6 +22,9 @@ MvTest::MvTest(QWidget *parent)
     cDiscover = new MccDiscover;
     discoveryObj = cDiscover;
     callClassConstructors();
+    mShowWindows = (LIB_PLATFORM == 1);
+    mShowLinux = (LIB_PLATFORM == 2);
+    mShowRpi = (LIB_PLATFORM == 3);
 
     msAppName = QApplication::applicationName();
     this->setWindowTitle(msAppName);
@@ -504,6 +507,29 @@ void MvTest::setChildData()
 
 void MvTest::configureRangeMenu()
 {
+    ui->actionBip4Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip4Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip2_5Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip1_25Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip0_625Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip0_5Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip0_25Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip0_2Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip0_1Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionBip0_078Volts->setVisible(mShowWindows | mShowLinux);
+
+    ui->actionUni2_5Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni10Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni5Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni4Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni2_5Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni2Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni1_25Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni1Volts->setVisible(mShowWindows | mShowLinux);
+    ui->actionUni0_625Volts->setVisible(mShowWindows | mShowLinux);
+
+    ui->actionOther_range->setVisible(mShowWindows | mShowLinux);
+
     ui->actionBip10Volts->setData(MCC_BIP10VOLTS);
     ui->actionBip5Volts->setData(MCC_BIP5VOLTS);
     ui->actionBip4Volts->setData(MCC_BIP4VOLTS);
@@ -557,26 +583,75 @@ void MvTest::configureRangeMenu()
 
 void MvTest::configureOptionsMenu()
 {
+    QString extTBText, tBaseOutText, pacerOutText;
+    QString scaleText, hiResText;
+    int extTBInt, tBaseOutInt, pacerOutInt;
+    int resRateInt;
+
+    extTBInt = MCC_SO_NOCALIBRATEDATA;
+    tBaseOutInt = MCC_SO_TIMEBASEOUT;
+    pacerOutInt = MCC_SO_PACEROUT;
+    resRateInt = MCC_SO_HIGHRESRATE;
+
+    if (mShowWindows) {
+        scaleText = "ScaleData";
+        extTBText = "ExtTimebase";
+        tBaseOutText = "TimebaseOut";
+        pacerOutText = "PacerOut";
+        hiResText = "HighResRate";
+    } else if (mShowLinux) {
+        scaleText = "NoScaleData";
+        extTBText = "NoCalibrateData";
+        tBaseOutText = "ADCClock";
+        pacerOutText = "RetrigMode";
+        hiResText = "HighResRate";
+        extTBInt = MCC_SO_EXTTIMEBASE;
+        tBaseOutInt = MCC_SO_ADCCLOCK;
+        pacerOutInt = MCC_SO_RETRIGGER;
+        resRateInt = MCC_SO_HIGHRESRATE;
+    } else {
+        scaleText = "NoScaleData";
+        hiResText = "NoCalData";
+        resRateInt = MCC_SO_NOCALIBRATEDATA;
+        ui->actionScaleData->setChecked(false);
+    }
+
+    ui->actionScaleData->setText(scaleText);
+    ui->actionExtTimebase->setText(extTBText);
+    ui->actionTimebaseOut->setText(tBaseOutText);
+    ui->actionPacerOut->setText(pacerOutText);
+    ui->actionHighResRate->setText(hiResText);
+
+    ui->actionExtTimebase->setData(extTBInt);
+    ui->actionTimebaseOut->setData(tBaseOutInt);
+    ui->actionPacerOut->setData(pacerOutInt);
+    ui->actionHighResRate->setData(resRateInt);
+
+    ui->actionDefaultIO->setVisible(mShowWindows | mShowLinux);
+    ui->actionSingleIO->setVisible(mShowWindows | mShowLinux);
+    ui->actionBlockIO->setVisible(mShowWindows | mShowLinux);
+    ui->actionBurstIO->setVisible(mShowWindows | mShowLinux);
+    ui->actionDMAIo->setVisible(mShowWindows | mShowLinux);
+    ui->actionBackground->setVisible(mShowWindows);
+    ui->actionADCClockTrig->setVisible(mShowWindows);
+    ui->actionNoFilter->setVisible(mShowWindows);
+    ui->actionHighResRate->setVisible(mShowWindows | mShowRpi);
+    ui->actionConvertData->setVisible(mShowWindows);
+    ui->actionWaitForData->setVisible(mShowWindows);
+    ui->actionDMAIo->setVisible(mShowWindows);
+    ui->actionPacerOut->setVisible(mShowWindows);
+    ui->actionTimebaseOut->setVisible(mShowWindows);
+    ui->actionExtTimebase->setVisible(mShowWindows);
+
+    ui->actionDefault_Flag->setVisible(mShowWindows | mShowLinux);
+    ui->actionNoScaleData_Flag->setVisible(mShowWindows | mShowLinux);
+    ui->actionNoCalDataFlag->setVisible(mShowWindows | mShowLinux);
+
     ui->actionDefaultIO->setData(MCC_SO_DEFAULTIO);
     ui->actionSingleIO->setData(MCC_SO_SINGLEIO);
     ui->actionBlockIO->setData(MCC_SO_BLOCKIO);
     ui->actionBurstIO->setData(MCC_SO_BURSTIO);
     ui->actionDMAIo->setData(MCC_SO_DMAIO);
-    ui->actionDMAIo->setVisible(mWindowsPlatform);
-
-    ioOptionGroup->addAction(ui->actionDefaultIO);
-    ioOptionGroup->addAction(ui->actionSingleIO);
-    ioOptionGroup->addAction(ui->actionBlockIO);
-    ioOptionGroup->addAction(ui->actionBurstIO);
-    ioOptionGroup->addAction(ui->actionDMAIo);
-
-    ui->actionBackground->setVisible(mWindowsPlatform);
-    ui->actionADCClockTrig->setVisible(mWindowsPlatform);
-    ui->actionNoFilter->setVisible(mWindowsPlatform);
-    ui->actionScaleData->setVisible(mWindowsPlatform);
-    ui->actionHighResRate->setVisible(mWindowsPlatform);
-    ui->actionConvertData->setVisible(mWindowsPlatform);
-    ui->actionWaitForData->setVisible(mWindowsPlatform);
 
     ui->actionResetOptions->setData(-1);
     ui->actionContinuous->setData(MCC_SO_CONTINUOUS);
@@ -585,23 +660,36 @@ void MvTest::configureOptionsMenu()
     ui->actionBurstMode->setData(MCC_SO_BURSTMODE);
     ui->actionBackground->setData(MCC_SO_BACKGROUND);
     ui->actionScaleData->setData(MCC_SO_SCALEDATA);
-    ui->actionHighResRate->setData(MCC_SO_HIGHRESRATE);
     ui->actionConvertData->setData(MCC_SO_CONVERTDATA);
     ui->actionADCClockTrig->setData(MCC_SO_ADCCLOCKTRIG);
     ui->actionNoFilter->setData(MCC_SO_NOFILTER);
     ui->actionWaitForData->setData(MCC_SO_WAITFORNEWDATA);
-    if (mWindowsPlatform) {
-        ui->actionExtTimebase->setData(MCC_SO_NOCALIBRATEDATA);
-        ui->actionTimebaseOut->setData(MCC_SO_ADCCLOCK);
-        ui->actionPacerOut->setData(MCC_SO_RETRIGGER);
-        ui->actionExtTimebase->setText("NoCalibrateData");
-        ui->actionTimebaseOut->setText("ADCClock");
-        ui->actionPacerOut->setText("RetrigMode");
-    } else {
-        ui->actionPacerOut->setData(MCC_SO_PACEROUT);
-        ui->actionTimebaseOut->setData(MCC_SO_TIMEBASEOUT);
-        ui->actionExtTimebase->setData(MCC_SO_EXTTIMEBASE);
-    }
+
+    ui->actionDefault_Flag->setData(AIN_FF_DEFAULT);
+    ui->actionNoScaleData_Flag->setData(AIN_FF_NOSCALEDATA);
+    ui->actionNoCalDataFlag->setData(AIN_FF_NOCALIBRATEDATA);
+
+    ui->actionDifferential_Input->setData(AI_DIFFERENTIAL);
+    ui->actionSingle_ended_Input->setData(AI_SINGLE_ENDED);
+    ui->actionPsuedo_Differential->setData(AI_PSEUDO_DIFFERENTIAL);
+
+    aInputModeGroup->addAction(ui->actionDifferential_Input);
+    aInputModeGroup->addAction(ui->actionSingle_ended_Input);
+    aInputModeGroup->addAction(ui->actionPsuedo_Differential);
+
+    functionGroup->addAction(ui->actionF1);
+    functionGroup->addAction(ui->actionF2);
+    functionGroup->addAction(ui->actionF4);
+    functionGroup->addAction(ui->actionF3);
+    functionGroup->addAction(ui->actionF5);
+    functionGroup->addAction(ui->actionF6);
+    functionGroup->addAction(ui->actionF7);
+
+    ioOptionGroup->addAction(ui->actionDefaultIO);
+    ioOptionGroup->addAction(ui->actionSingleIO);
+    ioOptionGroup->addAction(ui->actionBlockIO);
+    ioOptionGroup->addAction(ui->actionBurstIO);
+    ioOptionGroup->addAction(ui->actionDMAIo);
 
     scanOptionGroup->addAction(ui->actionResetOptions);
     scanOptionGroup->addAction(ui->actionContinuous);
@@ -620,29 +708,9 @@ void MvTest::configureOptionsMenu()
     scanOptionGroup->addAction(ui->actionConvertData);
     scanOptionGroup->setExclusive(false);
 
-    ui->actionDefault_Flag->setData(AIN_FF_DEFAULT);
-    ui->actionNoScaleData_Flag->setData(AIN_FF_NOSCALEDATA);
-    ui->actionNoCalDataFlag->setData(AIN_FF_NOCALIBRATEDATA);
-
     flagOptionGroup->addAction(ui->actionDefault_Flag);
     flagOptionGroup->addAction(ui->actionNoScaleData_Flag);
     flagOptionGroup->addAction(ui->actionNoCalDataFlag);
-
-    ui->actionDifferential_Input->setData(AI_DIFFERENTIAL);
-    ui->actionSingle_ended_Input->setData(AI_SINGLE_ENDED);
-    ui->actionPsuedo_Differential->setData(AI_PSEUDO_DIFFERENTIAL);
-
-    aInputModeGroup->addAction(ui->actionDifferential_Input);
-    aInputModeGroup->addAction(ui->actionSingle_ended_Input);
-    aInputModeGroup->addAction(ui->actionPsuedo_Differential);
-
-    functionGroup->addAction(ui->actionF1);
-    functionGroup->addAction(ui->actionF2);
-    functionGroup->addAction(ui->actionF4);
-    functionGroup->addAction(ui->actionF3);
-    functionGroup->addAction(ui->actionF5);
-    functionGroup->addAction(ui->actionF6);
-    functionGroup->addAction(ui->actionF7);
 
     connect(ioOptionGroup, SIGNAL(triggered(QAction*)), this, SLOT(setChildIoMode(QAction*)));
     connect(scanOptionGroup, SIGNAL(triggered(QAction*)), this, SLOT(setChildOption(QAction*)));

@@ -51,6 +51,7 @@ private:
     ErrorDialog *errDialog;
     ChildWindow *mCurChild = NULL;
     bool mWindowsPlatform = false;
+    bool mShowWindows, mShowLinux, mShowRpi;
 
     QTimer *oneShotTimer;
 

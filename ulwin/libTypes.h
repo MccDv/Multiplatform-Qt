@@ -1,6 +1,7 @@
 #ifndef LIBTYPES_H
 #define LIBTYPES_H
 
+#define LIB_PLATFORM    1
 #include <QString>
 #include <QHash>
 

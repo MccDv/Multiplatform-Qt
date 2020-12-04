@@ -1,9 +1,10 @@
 #ifndef LIBTYPES_H
 #define LIBTYPES_H
 
-typedef unsigned int UlNumDevs;
+#define LIB_PLATFORM    3
 #define MAX_DEV_COUNT  10
 
+typedef unsigned int UlNumDevs;
 typedef int DaqDeviceHandle;
 
 typedef enum

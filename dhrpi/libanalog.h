@@ -64,7 +64,13 @@ public:
 
 private:
     LibUtilities *testUtils;
+    int mAiMode = 0;
+    int mRange = -1;
 
+    int aInModeRead(uint16_t devType, uint8_t address, uint8_t &mode);
+    int aInRangeRead(uint16_t devType, uint8_t address, uint8_t &range);
+    int aInModeWrite(uint16_t devType, uint8_t address, uint8_t mode);
+    int aInRangeWrite(uint16_t devType, uint8_t address, uint8_t range);
 };
 
 #endif // LIBANALOG_H

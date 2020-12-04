@@ -6,6 +6,8 @@ FormAnalogIn::FormAnalogIn(QWidget *parent) :
     FormMvDevice(parent),
     ui(new Ui::FormAnalogIn)
 {
+    QString curRangeVolts;
+
     ui->setupUi(this);
     pacerEmulator = new QTimer(this);
     oneShotTimer = new QTimer(this);
@@ -37,10 +39,11 @@ FormAnalogIn::FormAnalogIn(QWidget *parent) :
     ui->spnLowChan->setObjectName("LowChan");
     dblBuffer = NULL;
     mDoubleData = true;
-    mRange = MCC_BIP5VOLTS;
     mCurFunction = UL_AIN;
     ui->leSampsPerChan->setText(QString::number(mBufSize));
-    ui->lblRange0->setText(QString("%1%2V").arg(plusMinus).arg(5));
+    mRange = (MccRange)0;
+    curRangeVolts = libTestUtils->getRangeNomo(mRange);
+    ui->lblRange0->setText(curRangeVolts);
     callClassConstructors();
 }
 
@@ -349,6 +352,7 @@ int FormAnalogIn::aInCheckParameters(QString &params)
 
     chan = mChanList.value(0);
     range = mRangeList.value(0);
+    params = msProductID;
     err = aInFunctions->mccAIn(params, mDevHandle,
                 chan, mAiMode, mAiFlags, range, dataValue);
     if (err != MCC_NOERRORS)
@@ -356,6 +360,7 @@ int FormAnalogIn::aInCheckParameters(QString &params)
 
     chan = mChanList.value(mChanList.count() - 1);
     range = mRangeList.value(mRangeList.count() - 1);
+    params = msProductID;
     err = aInFunctions->mccAIn(params, mDevHandle,
                 chan, mAiMode, mAiFlags, range, dataValue);
 
@@ -622,17 +627,22 @@ void FormAnalogIn::readInput()
     int firstChan, lastChan;
     double dataValue;
     double *valueArray;
-    int range;
+    int range, flagOpts;
 
+    flagOpts = mAiFlags;
+    if (LIB_PLATFORM == 3) {
+        flagOpts = mCurOptions;
+    }
     valueArray = new double[mChanCount];
     for (chanIndex = mChanIndex; chanIndex < mChanIndex + mNumPacedChans; chanIndex++) {
         chan = mChanList.value(chanIndex);
         range = mRangeList.value(chanIndex);
+        params = msProductID;
         switch (mCurFunction) {
         case UL_AIN:
             mSampleIndex++;
             err = aInFunctions->mccAIn(params, mDevHandle,
-                    chan, mAiMode, mAiFlags, range, dataValue);
+                    chan, mAiMode, flagOpts, range, dataValue);
             if (mDoublePointer)
                 dblBuffer[mSampleIndex] = dataValue;
             else
@@ -1118,10 +1128,7 @@ void FormAnalogIn::enablePlot(int paramValue)
     if (mPlot)
         setupPlot(qCustomPlot);
 
-    if (USING_WINDOWS)
-        bufferExists = (mHandle != NULL);
-    else
-        bufferExists = (dblBuffer != NULL);
+    bufferExists = (dblBuffer != NULL);
     if (bufferExists) {
         mPerChanRead = 0;
         printData();
@@ -1279,6 +1286,7 @@ void FormAnalogIn::setUiForFunction()
         mainForm = getMainWindow();
         if (mainForm) {
             mainForm->refreshChildMenu(this, MENU_PLOT);
+            mainForm->refreshChildMenu(this, MENU_RANGE);
         }
         mBreakScan = true;
         break;

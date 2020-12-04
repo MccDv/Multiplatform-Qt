@@ -52,6 +52,7 @@ protected:
 
     QString msUniqueID = "";
     QString msProductID = "";
+    int mProductID = 0;
     QString msDevName = "";
     const QChar plusMinus = 0x00B1;
 
