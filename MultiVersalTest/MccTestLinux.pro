@@ -20,6 +20,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH += "ullinux/"
 
+DEFINES += USE_AIN
+#DEFINES += USE_AOUT
+#DEFINES += USE_CFG
+#DEFINES += USE_DIG
+#DEFINES += USE_CTR
+#DEFINES += USE_MISC
+
 SOURCES += \
     childwindow.cpp \
     errordialog.cpp \
@@ -69,3 +76,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 unix: LIBS += -luldaq
+
+RESOURCES += \
+    ../resource/UnitestWin.qrc

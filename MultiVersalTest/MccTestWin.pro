@@ -81,4 +81,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 win32: LIBS += -L$$PWD/../DAQ/C/ -lcbw32
 
 RESOURCES += \
-    ../resource/UnitestWin.qrc \
+    ../resource/UnitestWin.qrc
