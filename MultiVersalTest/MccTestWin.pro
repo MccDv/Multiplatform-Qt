@@ -20,6 +20,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH += "ulwin/"
 
+DEFINES += USE_AIN
+#DEFINES += USE_AOUT
+#DEFINES += USE_CFG
+#DEFINES += USE_DIG
+#DEFINES += USE_CTR
+#DEFINES += USE_MISC
+
 SOURCES += \
     childwindow.cpp \
     errordialog.cpp \
@@ -31,10 +38,10 @@ SOURCES += \
     mvtest.cpp \
     qcustomplot.cpp \
     queuedialog.cpp \
-    ulwin/libanalog.cpp \
-    ulwin/libdiscover.cpp \
-    ulwin/libmisc.cpp \
-    ulwin/libutilities.cpp
+    ../ulwin/libanalog.cpp \
+    ../ulwin/libdiscover.cpp \
+    ../ulwin/libmisc.cpp \
+    ../ulwin/libutilities.cpp
 
 HEADERS += \
     childwindow.h \
@@ -46,13 +53,13 @@ HEADERS += \
     mvtest.h \
     qcustomplot.h \
     queuedialog.h \
-    ulwin/libTypes.h \
-    ulwin/libanalog.h \
-    ulwin/libdiscover.h \
-    ulwin/libenum.h \
-    ulwin/libmisc.h \
-    ulwin/libutilities.h \
-    ulwin/mvErrorMap.h
+    ../ulwin/libTypes.h \
+    ../ulwin/libanalog.h \
+    ../ulwin/libdiscover.h \
+    ../ulwin/libenum.h \
+    ../ulwin/libmisc.h \
+    ../ulwin/libutilities.h \
+    ../ulwin/mvErrorMap.h
 
 FORMS += \
     errordialog.ui \
@@ -74,4 +81,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 win32: LIBS += -L$$PWD/../DAQ/C/ -lcbw32
 
 RESOURCES += \
-    resource/UnitestWin.qrc
+    ../resource/UnitestWin.qrc \

@@ -1,11 +1,19 @@
 #include "childwindow.h"
 #include "formdiscover.h"
+
+#ifdef USE_AIN
 #include "formanalogin.h"
-/*
+#endif  //USE_AIN
+#ifdef USE_AOUT
 #include "formanalogout.h"
+#endif  //USE_AOUT
+#ifdef USE_CFG
 #include "formconfig.h"
+#endif  //USE_CFG
+#ifdef USE_DIG
 #include "formdigitalin.h"
-*/
+#endif
+
 ChildWindow::ChildWindow(QWidget *parent, FormTypes frmType) : QMdiSubWindow(parent)
 {
     mFormType = frmType;
@@ -20,36 +28,50 @@ ChildWindow::ChildWindow(QWidget *parent, FormTypes frmType) : QMdiSubWindow(par
         msFormTypeName = "ainform";
         break;
     case FORM_AOUT:
-        //msFormTypeName = "aoutform";
-        //subwidget = new FormAnalogOut(this);
+        msFormTypeName = "aoutform";
+#ifdef USE_AOUT
+        subwidget = new FormAnalogOut(this);
+#endif
         break;
     case FORM_DIN:
-        //msFormTypeName = "dinform";
-        //subwidget = new FormDigitalIn(this);
+        msFormTypeName = "dinform";
+#ifdef USE_DIG
+        subwidget = new FormDigitalIn(this);
+#endif
         break;
     case FORM_DOUT:
-        //msFormTypeName = "doutform";
-        //subwidget = new FormMvDevice(this);
+        msFormTypeName = "doutform";
+#ifdef USE_DIG
+        subwidget = new FormMvDevice(this);
+#endif
         break;
     case FORM_CTR:
-        //msFormTypeName = "ctrform";
-        //subwidget = new FormMvDevice(this);
+        msFormTypeName = "ctrform";
+#ifdef USE_CTR
+        subwidget = new FormMvDevice(this);
+#endif
         break;
     case FORM_CONF:
-        //msFormTypeName = "configform";
-        //subwidget = new FormConfig(this);
+        msFormTypeName = "configform";
+#ifdef USE_CFG
+        subwidget = new FormConfig(this);
+#endif
         break;
     case FORM_MISC:
-        //msFormTypeName = "miscform";
-        //subwidget = new FormMvDevice(this);
+        msFormTypeName = "miscform";
+#ifdef USE_MISC
+        subwidget = new FormMvDevice(this);
+#endif
         break;
     case FORM_HIST:
         msFormTypeName = "histform";
         break;
     }
-    subwidget->show();
-    this->setWidget(subwidget);
-    this->adjustSize();
+    if (subwidget) {
+        subwidget->show();
+        this->setWidget(subwidget);
+        this->adjustSize();
+    }
 }
 
 void ChildWindow::closeEvent(QCloseEvent *event)
@@ -57,6 +79,7 @@ void ChildWindow::closeEvent(QCloseEvent *event)
     mInstanceClosed = true;
     event->accept();
 }
+
 ChildWindow::~ChildWindow()
 {
     subwidget->~QWidget();

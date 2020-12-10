@@ -29,7 +29,7 @@ public:
     bool isChildClosed();
 
 private:
-    QWidget *subwidget;
+    QWidget *subwidget = nullptr;
     FormTypes mFormType;
     int mTypeInstance;
     bool mInstanceClosed = false;

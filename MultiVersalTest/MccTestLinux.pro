@@ -29,12 +29,12 @@ SOURCES += \
     mccdiscover.cpp \
     mvtest.cpp \
     qcustomplot.cpp \
-    ullinux/libdiscover.cpp \
-    ullinux/libmisc.cpp \
-    ullinux/libutilities.cpp \
+    ../ullinux/libdiscover.cpp \
+    ../ullinux/libmisc.cpp \
+    ../ullinux/libutilities.cpp \
     queuedialog.cpp \
     formanalogin.cpp \
-    ullinux/libanalog.cpp
+    ../ullinux/libanalog.cpp
 
 HEADERS += \
     childwindow.h \
@@ -44,16 +44,16 @@ HEADERS += \
     mccdiscover.h \
     mvtest.h \
     qcustomplot.h \
-    ullinux/libdiscover.h \
-    ullinux/libmisc.h \
-    ullinux/libutilities.h \
-    ullinux/ulenum.h \
+    ../ullinux/libdiscover.h \
+    ../ullinux/libmisc.h \
+    ../ullinux/libutilities.h \
+    ../ullinux/ulenum.h \
     queuedialog.h \
     formanalogin.h \
-    ullinux/libanalog.h \
-    ullinux/mvErrorMap.h \
-    ullinux/libenum.h \
-    ullinux/libTypes.h
+    ../ullinux/libanalog.h \
+    ../ullinux/mvErrorMap.h \
+    ../ullinux/libenum.h \
+    ../ullinux/libTypes.h
 
 FORMS += \
     errordialog.ui \

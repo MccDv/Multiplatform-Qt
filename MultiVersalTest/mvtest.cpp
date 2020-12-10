@@ -245,6 +245,8 @@ void MvTest::createDiscChild()
 
 void MvTest::createAInChild()
 {
+    ui->lblError->clear();
+#ifdef USE_AIN
     FormTypes frmType = FORM_AIN;
     ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
     childWindow->show();
@@ -253,10 +255,15 @@ void MvTest::createAInChild()
     mCurChild = childWindow;
     mCurTimerJob = tjChildStatus;
     oneShotTimer->start(100);
+#else
+    ui->lblError->setText("AIn is not defined in project");
+#endif
 }
 
 void MvTest::createAOutChild()
 {
+    ui->lblError->clear();
+#ifdef USE_AOUT
     FormTypes frmType = FORM_AOUT;
     ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
     childWindow->show();
@@ -265,12 +272,16 @@ void MvTest::createAOutChild()
     mCurChild = childWindow;
     mCurTimerJob = tjChildStatus;
     oneShotTimer->start(100);
+#else
+    ui->lblError->setText("AOut is not defined in project");
+#endif
 }
 
 void MvTest::createDInChild()
 {
+    ui->lblError->clear();
+#ifdef USE_DIG
     FormTypes frmType = FORM_DIN;
-
     ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
     childWindow->show();
     setChildDevice();
@@ -278,34 +289,66 @@ void MvTest::createDInChild()
     mCurChild = childWindow;
     mCurTimerJob = tjChildStatus;
     oneShotTimer->start(100);
+#else
+    ui->lblError->setText("DIO is not defined in project");
+#endif
 }
 
 void MvTest::createDOutChild()
 {
-    //FormTypes frmType = FormDOut;
+    ui->lblError->clear();
+#ifdef USE_DIG
+    FormTypes frmType = FORM_DOUT;
+    ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
+    childWindow->show();
+    setChildDevice();
+    setChildInt(IPARAM_FUNCTYPE, UL_DCONFIG_PORT);
+    mCurChild = childWindow;
+    mCurTimerJob = tjChildStatus;
+    oneShotTimer->start(100);
+#else
+    ui->lblError->setText("DIO is not defined in project");
+#endif
 }
 
 void MvTest::createCtrChild()
 {
-    //FormTypes frmType = FormCtr;
-    QString mTxt;
-    QString curText;
-    mTxt = "Function";
-    curText = ui->menuFunction->title();
-    if (curText == "Function")
-        mTxt = "";
-    //ui->menuFunction->menuAction()->setText(mTxt);
-    ui->menuFunction->setTitle(mTxt);
-    menuBar()->updateGeometry();
+    ui->lblError->clear();
+#ifdef USE_CTR
+    FormTypes frmType = FORM_CTR;
+    ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
+    childWindow->show();
+    setChildDevice();
+    setChildInt(IPARAM_FUNCTYPE, UL_DCONFIG_PORT);
+    mCurChild = childWindow;
+    mCurTimerJob = tjChildStatus;
+    oneShotTimer->start(100);
+#else
+    ui->lblError->setText("CTR is not defined in project");
+#endif
 }
 
 void MvTest::createMiscChild()
 {
-    //FormTypes frmType = FormMisc;
+    ui->lblError->clear();
+#ifdef USE_MISC
+    FormTypes frmType = FORM_MISC;
+    ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
+    childWindow->show();
+    setChildDevice();
+    setChildInt(IPARAM_FUNCTYPE, UL_GET_INFO);
+    mCurChild = childWindow;
+    mCurTimerJob = tjChildStatus;
+    oneShotTimer->start(100);
+#else
+    ui->lblError->setText("Misc is not defined in project");
+#endif
 }
 
 void MvTest::createConfigChild()
 {
+    ui->lblError->clear();
+#ifdef USE_CFG
     FormTypes frmType = FORM_CONF;
     ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
     childWindow->show();
@@ -314,6 +357,9 @@ void MvTest::createConfigChild()
     mCurChild = childWindow;
     mCurTimerJob = tjChildStatus;
     oneShotTimer->start(100);
+#else
+    ui->lblError->setText("Info is not defined in project");
+#endif
 }
 
 void MvTest::setChildDevice()
