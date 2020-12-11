@@ -58,6 +58,7 @@ void ErrorDialog::showHistory()
 {
     LibMisc             *miscFunctions;
 
+    miscFunctions = new LibMisc;
     QStringList funcParts;
     QString fStr, bStr, eStr, tStr, errText;
     QString alertHtml = "<font color=\"Red\">";
@@ -101,6 +102,7 @@ void ErrorDialog::showHistory()
     }
     ui->txtErrList->setHtml(str);
     ui->lblNumListed->setText(QString("List size: %1").arg(mFuncHistoryList.size()));
+    delete miscFunctions;
 }
 
 void ErrorDialog::configureFilterSelector()

@@ -4,7 +4,7 @@
 #include <QString>
 #include <QtMath>
 #include "libTypes.h"
-#include "mvEnums.h"
+#include "../mvEnums.h"
 #include "daqhats.h"
 #include "libenum.h"
 //#include "ulenumlinux.h"

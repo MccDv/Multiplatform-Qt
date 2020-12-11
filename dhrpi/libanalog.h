@@ -1,7 +1,7 @@
 #ifndef LIBANALOG_H
 #define LIBANALOG_H
 
-#include "errordialog.h"
+#include "../errordialog.h"
 #include "libutilities.h"
 
 typedef void *HGLOBAL ;

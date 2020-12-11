@@ -18,7 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += "dhrpi/"
+INCLUDEPATH += "../dhrpi/"
+INCLUDEPATH += "../"
 
 # MCC 128 development: HAT_06
 # MCC 172 development: HAT_05
@@ -30,47 +31,54 @@ DEFINES += HAT_04
 DEFINES += HAT_05
 DEFINES += HAT_06
 
+DEFINES += USE_AIN
+#DEFINES += USE_AOUT
+#DEFINES += USE_CFG
+#DEFINES += USE_DIG
+#DEFINES += USE_CTR
+#DEFINES += USE_MISC
+
 SOURCES += \
-    childwindow.cpp \
-    errordialog.cpp \
-    formanalogin.cpp \
-    formdiscover.cpp \
-    formmvdevice.cpp \
-    main.cpp \
-    mccdiscover.cpp \
-    mvtest.cpp \
-    qcustomplot.cpp \
-    queuedialog.cpp \
-    dhrpi/libanalog.cpp \
-    dhrpi/libdiscover.cpp \
-    dhrpi/libmisc.cpp \
-    dhrpi/libutilities.cpp
+    ../childwindow.cpp \
+    ../errordialog.cpp \
+    ../formdiscover.cpp \
+    ../formmvdevice.cpp \
+    ../main.cpp \
+    ../mccdiscover.cpp \
+    ../mvtest.cpp \
+    ../dhrpi/libdiscover.cpp \
+    ../dhrpi/libmisc.cpp \
+    ../dhrpi/libutilities.cpp \
+    ../dhrpi/libanalog.cpp \
+    ../qcustomplot.cpp \
+    ../queuedialog.cpp \
+    formanalogin.cpp
 
 HEADERS += \
-    childwindow.h \
-    errordialog.h \
-    formanalogin.h \
-    formdiscover.h \
-    formmvdevice.h \
-    mccdiscover.h \
-    mvtest.h \
-    qcustomplot.h \
-    queuedialog.h \
-    dhrpi/libanalog.h \
-    dhrpi/libdiscover.h \
-    dhrpi/libmisc.h \
-    dhrpi/libutilities.h \
-    dhrpi/mvErrorMap.h \
-    dhrpi/libTypes.h \
-    dhrpi/libenum.h
+    ../childwindow.h \
+    ../errordialog.h \
+    ../formdiscover.h \
+    ../formmvdevice.h \
+    ../mccdiscover.h \
+    ../mvtest.h \
+    ../dhrpi/libdiscover.h \
+    ../dhrpi/libmisc.h \
+    ../dhrpi/libutilities.h \
+    ../dhrpi/mvErrorMap.h \
+    ../dhrpi/libTypes.h \
+    ../dhrpi/libenum.h \
+    ../dhrpi/libanalog.h \
+    ../qcustomplot.h \
+    ../queuedialog.h \
+    formanalogin.h
 
 FORMS += \
-    errordialog.ui \
-    formanalogin.ui \
-    formdiscover.ui \
-    formmvdevice.ui \
-    mvtest.ui \
-    queuedialog.ui
+    ../errordialog.ui \
+    ../formdiscover.ui \
+    ../formmvdevice.ui \
+    ../mvtest.ui \
+    ../queuedialog.ui \
+    formanalogin.ui
 
 target.path = /home/pi
 INSTALLS += target
@@ -81,4 +89,4 @@ INCLUDEPATH += $$PWD/../../../../opt/qtrpi/raspbian/sysroot-minimal/usr/include/
 DEPENDPATH += $$PWD/../../../../opt/qtrpi/raspbian/sysroot-minimal/usr/include/daqhats
 
 RESOURCES += \
-    resource/UnitestWin.qrc
+    ../resource/UnitestWin.qrc

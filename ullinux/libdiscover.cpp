@@ -1,5 +1,5 @@
 #include "libdiscover.h"
-#include "mvtest.h"
+#include "../mvtest.h"
 
 ErrorDialog *discoverErrorDialog;
 

@@ -2,7 +2,7 @@
 #define LIBDISCOVER_H
 
 #include "daqhats/daqhats.h"
-#include "errordialog.h"
+#include "../errordialog.h"
 #include "daqhatutils.h"
 
 //#include "daqhattest.h"

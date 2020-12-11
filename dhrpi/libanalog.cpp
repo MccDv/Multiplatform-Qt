@@ -1,5 +1,5 @@
 #include "libanalog.h"
-#include "mvtest.h"
+#include "../mvtest.h"
 
 ErrorDialog *hatAnalogErrorDialog;
 

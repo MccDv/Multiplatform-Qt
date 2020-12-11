@@ -6,8 +6,8 @@
 #include "libTypes.h"
 #include "libenum.h"
 #include "mvErrorMap.h"
-#include "mvtest.h"
-#include "errordialog.h"
+#include "../mvtest.h"
+#include "../errordialog.h"
 
 typedef void *HGLOBAL ;
 

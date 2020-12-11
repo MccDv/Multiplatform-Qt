@@ -195,13 +195,11 @@ void FormMvDevice::setupPlot(QCustomPlot *dataPlot)
 
 void FormMvDevice::updatePlot(QCustomPlot *dataPlot, bool autoScale)
 {
-    QString params;
     bool setTCRange = false;
     bool bipolar;
     double rangeBuf;
     double rangeUpper, rangeLower;
-    int err, configItem, startElement;
-    QMap<int, QString> infoItems;
+    int startElement;
     double *xData = xValues.data();
 
     if (mChanList.count()) {

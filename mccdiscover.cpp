@@ -189,13 +189,16 @@ QHash<QString, DaqDeviceHandle> MccDiscover::getListedDevices()
 MccDaqDeviceDescriptor MccDiscover::getDescriptor(QString uniqueId)
 {
     QString testId;
+    MccDaqDeviceDescriptor descriptor;
 
-    for (int i = 0; i < mnNumListed; i++) {
+    descriptor = devDescriptors[0];
+    for (uint i = 0; i < mnNumListed; i++) {
         testId = QString("%1").arg(devDescriptors[i].mccUniqueId);
         if (testId == uniqueId) {
-            return devDescriptors[i];
+            descriptor = devDescriptors[i];
         }
     }
+    return descriptor;
 }
 
 DaqDeviceHandle MccDiscover::createDevice(QString &params, DaqDeviceHandle &deviceHandle, MccDaqDeviceDescriptor mccDevDescriptor)

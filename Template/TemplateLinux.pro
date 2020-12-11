@@ -39,8 +39,7 @@ SOURCES += \
     ../ullinux/libdiscover.cpp \
     ../ullinux/libmisc.cpp \
     ../ullinux/libutilities.cpp \
-    ../queuedialog.cpp \
-    ../ullinux/libanalog.cpp
+    ../queuedialog.cpp
 
 HEADERS += \
     ../childwindow.h \
@@ -53,9 +52,7 @@ HEADERS += \
     ../ullinux/libdiscover.h \
     ../ullinux/libmisc.h \
     ../ullinux/libutilities.h \
-    ../ullinux/ulenum.h \
     ../queuedialog.h \
-    ../ullinux/libanalog.h \
     ../ullinux/mvErrorMap.h \
     ../ullinux/libenum.h \
     ../ullinux/libTypes.h

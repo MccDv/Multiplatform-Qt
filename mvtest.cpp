@@ -2,7 +2,7 @@
 #include "ui_mvtest.h"
 //#include "libsupport.h"
 #include "mvEnums.h"
-#include "formmvdevice.h"
+#include "../formmvdevice.h"
 
 /*#include "formanalogin.h"
 #include "formdiscover.h"*/
