@@ -2,13 +2,13 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-TARGET = UnitestWin
+TARGET = DOutSpeedWin
 
 CONFIG += c++11
 
 VERSION = 0.7.0.0
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
-DEFINES += RESOURCE_STRING=\\\":/win/splash/MvSplash.png\\\"
+DEFINES += RESOURCE_STRING=\\\":/win/splash/Resource/MvSplash.png\\\"
 
 DISTFILES +=
 
@@ -20,7 +20,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 INCLUDEPATH += "../ulwin/"
 
-DEFINES += USE_AIN
+#DEFINES += USE_AIN
 #DEFINES += USE_AOUT
 #DEFINES += USE_CFG
 #DEFINES += USE_DIG
@@ -30,15 +30,12 @@ DEFINES += USE_AIN
 SOURCES += \
     ../childwindow.cpp \
     ../errordialog.cpp \
-    formanalogin.cpp \
     ../formdiscover.cpp \
     ../formmvdevice.cpp \
     ../main.cpp \
     ../mccdiscover.cpp \
     ../mvtest.cpp \
     ../qcustomplot.cpp \
-    ../queuedialog.cpp \
-    ../ulwin/libanalog.cpp \
     ../ulwin/libdiscover.cpp \
     ../ulwin/libmisc.cpp \
     ../ulwin/libutilities.cpp
@@ -46,15 +43,12 @@ SOURCES += \
 HEADERS += \
     ../childwindow.h \
     ../errordialog.h \
-    formanalogin.h \
     ../formdiscover.h \
     ../formmvdevice.h \
     ../mccdiscover.h \
     ../mvtest.h \
     ../qcustomplot.h \
-    ../queuedialog.h \
     ../ulwin/libTypes.h \
-    ../ulwin/libanalog.h \
     ../ulwin/libdiscover.h \
     ../ulwin/libenum.h \
     ../ulwin/libmisc.h \
@@ -63,7 +57,6 @@ HEADERS += \
 
 FORMS += \
     ../errordialog.ui \
-    formanalogin.ui \
     ../formdiscover.ui \
     ../formmvdevice.ui \
     ../mvtest.ui \
@@ -81,4 +74,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 win32: LIBS += -L$$PWD/../../DAQ/C/ -lcbw32
 
 RESOURCES += \
-    ../resource/UnitestWin.qrc
+    ../resource/UnitestWin.qrc \
+    DOutSpeed.qrc

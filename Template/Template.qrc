@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/win/splash">
+        <file>Resource/MvSplash.png</file>
+    </qresource>
+</RCC>

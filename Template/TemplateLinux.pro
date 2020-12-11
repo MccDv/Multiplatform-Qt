@@ -2,13 +2,13 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-TARGET = UnitestWin
+TARGET = TemplateWin
 
 CONFIG += c++11
 
 VERSION = 0.7.0.0
 DEFINES += VERSION_STRING=\\\"$${VERSION}\\\"
-DEFINES += RESOURCE_STRING=\\\":/win/splash/MvSplash.png\\\"
+DEFINES += RESOURCE_STRING=\\\":/win/splash/Resource/MvSplash.png\\\"
 
 DISTFILES +=
 
@@ -18,9 +18,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += "../ulwin/"
+INCLUDEPATH += "../ullinux/"
 
-DEFINES += USE_AIN
+#DEFINES += USE_AIN
 #DEFINES += USE_AOUT
 #DEFINES += USE_CFG
 #DEFINES += USE_DIG
@@ -30,55 +30,50 @@ DEFINES += USE_AIN
 SOURCES += \
     ../childwindow.cpp \
     ../errordialog.cpp \
-    formanalogin.cpp \
     ../formdiscover.cpp \
     ../formmvdevice.cpp \
     ../main.cpp \
     ../mccdiscover.cpp \
     ../mvtest.cpp \
     ../qcustomplot.cpp \
+    ../ullinux/libdiscover.cpp \
+    ../ullinux/libmisc.cpp \
+    ../ullinux/libutilities.cpp \
     ../queuedialog.cpp \
-    ../ulwin/libanalog.cpp \
-    ../ulwin/libdiscover.cpp \
-    ../ulwin/libmisc.cpp \
-    ../ulwin/libutilities.cpp
+    ../ullinux/libanalog.cpp
 
 HEADERS += \
     ../childwindow.h \
     ../errordialog.h \
-    formanalogin.h \
     ../formdiscover.h \
     ../formmvdevice.h \
     ../mccdiscover.h \
     ../mvtest.h \
     ../qcustomplot.h \
+    ../ullinux/libdiscover.h \
+    ../ullinux/libmisc.h \
+    ../ullinux/libutilities.h \
+    ../ullinux/ulenum.h \
     ../queuedialog.h \
-    ../ulwin/libTypes.h \
-    ../ulwin/libanalog.h \
-    ../ulwin/libdiscover.h \
-    ../ulwin/libenum.h \
-    ../ulwin/libmisc.h \
-    ../ulwin/libutilities.h \
-    ../ulwin/mvErrorMap.h
+    ../ullinux/libanalog.h \
+    ../ullinux/mvErrorMap.h \
+    ../ullinux/libenum.h \
+    ../ullinux/libTypes.h
 
 FORMS += \
     ../errordialog.ui \
-    formanalogin.ui \
     ../formdiscover.ui \
     ../formmvdevice.ui \
     ../mvtest.ui \
-    ../queuedialog.ui
-
-INCLUDEPATH += $$PWD/../../DAQ/C
-DEPENDPATH += $$PWD/../../DAQ/C
+    ../queuedialog.ui \
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-
-win32: LIBS += -L$$PWD/../../DAQ/C/ -lcbw32
+unix: LIBS += -luldaq
 
 RESOURCES += \
-    ../resource/UnitestWin.qrc
+    ../resource/UnitestWin.qrc \
+    Template.qrc

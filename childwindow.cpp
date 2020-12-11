@@ -24,7 +24,9 @@ ChildWindow::ChildWindow(QWidget *parent, FormTypes frmType) : QMdiSubWindow(par
         msFormTypeName = "discoverform";
         break;
     case FORM_AIN:
+#ifdef USE_AIN
         subwidget = new FormAnalogIn(this);
+#endif
         msFormTypeName = "ainform";
         break;
     case FORM_AOUT:

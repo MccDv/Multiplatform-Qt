@@ -1,11 +1,11 @@
 #ifndef LIBDISCOVER_H
 #define LIBDISCOVER_H
 
-#include "..\..\DAQ\C\cbw.h"
+#include "../../DAQ/C/cbw.h"
 #include "libmisc.h"
 #include "libTypes.h"
 #include "mvErrorMap.h"
-#include "errordialog.h"
+#include "../errordialog.h"
 
 class LibDiscover
 {

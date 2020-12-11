@@ -8,7 +8,7 @@
 #include "libenum.h"
 #include "mvErrorMap.h"
 #include "libutilities.h"
-#include "mvtest.h"
+#include "../mvtest.h"
 #include "../errordialog.h"
 
 typedef void *HGLOBAL;

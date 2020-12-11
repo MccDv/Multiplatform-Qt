@@ -1,6 +1,6 @@
 ﻿#include "formanalogin.h"
 #include "ui_formanalogin.h"
-#include "mvtest.h"
+#include "../mvtest.h"
 
 FormAnalogIn::FormAnalogIn(QWidget *parent) :
     FormMvDevice(parent),

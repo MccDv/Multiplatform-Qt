@@ -3,8 +3,8 @@
 
 #include <QTimer>
 #include <QLabel>
-#include "formmvdevice.h"
-#include "queuedialog.h"
+#include "../formmvdevice.h"
+#include "../queuedialog.h"
 
 #include "libanalog.h"
 
