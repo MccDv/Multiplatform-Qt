@@ -10,7 +10,10 @@
 #ifdef USE_CFG
 #include "formconfig.h"
 #endif  //USE_CFG
-#ifdef USE_DIG
+#ifdef USE_DOUT
+#include "formdigitalout.h"
+#endif
+#ifdef USE_DIN
 #include "formdigitalin.h"
 #endif
 
@@ -37,20 +40,20 @@ ChildWindow::ChildWindow(QWidget *parent, FormTypes frmType) : QMdiSubWindow(par
         break;
     case FORM_DIN:
         msFormTypeName = "dinform";
-#ifdef USE_DIG
+#ifdef USE_DIN
         subwidget = new FormDigitalIn(this);
 #endif
         break;
     case FORM_DOUT:
         msFormTypeName = "doutform";
-#ifdef USE_DIG
-        subwidget = new FormMvDevice(this);
+#ifdef USE_DOUT
+        subwidget = new FormDigitalOut(this);
 #endif
         break;
     case FORM_CTR:
         msFormTypeName = "ctrform";
 #ifdef USE_CTR
-        subwidget = new FormMvDevice(this);
+        subwidget = new FormCounter(this);
 #endif
         break;
     case FORM_CONF:

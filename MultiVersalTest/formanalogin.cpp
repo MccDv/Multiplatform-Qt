@@ -52,6 +52,7 @@ FormAnalogIn::~FormAnalogIn()
     if (dblBuffer)
         delete[] dblBuffer;
     delete aInFunctions;
+    delete ui;
 }
 
 void FormAnalogIn::keyPressEvent(QKeyEvent *event)

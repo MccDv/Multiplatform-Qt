@@ -19,11 +19,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += "../ulwin/"
+INCLUDEPATH += "../"
 
 #DEFINES += USE_AIN
 #DEFINES += USE_AOUT
 #DEFINES += USE_CFG
-#DEFINES += USE_DIG
+#DEFINES += USE_DIN
+DEFINES += USE_DOUT
 #DEFINES += USE_CTR
 #DEFINES += USE_MISC
 
@@ -38,7 +40,9 @@ SOURCES += \
     ../qcustomplot.cpp \
     ../ulwin/libdiscover.cpp \
     ../ulwin/libmisc.cpp \
-    ../ulwin/libutilities.cpp
+    ../ulwin/libutilities.cpp \
+    ../ulwin/libdigital.cpp \
+    formdigitalout.cpp
 
 HEADERS += \
     ../childwindow.h \
@@ -53,14 +57,17 @@ HEADERS += \
     ../ulwin/libenum.h \
     ../ulwin/libmisc.h \
     ../ulwin/libutilities.h \
-    ../ulwin/mvErrorMap.h
+    ../ulwin/mvErrorMap.h \
+    ../ulwin/libdigital.h \
+    formdigitalout.h
 
 FORMS += \
     ../errordialog.ui \
     ../formdiscover.ui \
     ../formmvdevice.ui \
     ../mvtest.ui \
-    ../queuedialog.ui
+    ../queuedialog.ui \
+    formdigitalout.ui
 
 INCLUDEPATH += $$PWD/../../DAQ/C
 DEPENDPATH += $$PWD/../../DAQ/C

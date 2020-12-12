@@ -30,6 +30,14 @@ DEFINES += HAT_04
 DEFINES += HAT_05
 DEFINES += HAT_06
 
+#DEFINES += USE_AIN
+#DEFINES += USE_AOUT
+#DEFINES += USE_CFG
+#DEFINES += USE_DIN
+#DEFINES += USE_DOUT
+#DEFINES += USE_CTR
+#DEFINES += USE_MISC
+
 SOURCES += \
     childwindow.cpp \
     errordialog.cpp \

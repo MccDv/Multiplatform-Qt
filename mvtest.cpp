@@ -280,7 +280,7 @@ void MvTest::createAOutChild()
 void MvTest::createDInChild()
 {
     ui->lblError->clear();
-#ifdef USE_DIG
+#ifdef USE_DIN
     FormTypes frmType = FORM_DIN;
     ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
     childWindow->show();
@@ -290,14 +290,14 @@ void MvTest::createDInChild()
     mCurTimerJob = tjChildStatus;
     oneShotTimer->start(100);
 #else
-    ui->lblError->setText("DIO is not defined in project");
+    ui->lblError->setText("DIn is not defined in project");
 #endif
 }
 
 void MvTest::createDOutChild()
 {
     ui->lblError->clear();
-#ifdef USE_DIG
+#ifdef USE_DOUT
     FormTypes frmType = FORM_DOUT;
     ChildWindow *childWindow = new ChildWindow(ui->mdiArea, frmType);
     childWindow->show();
@@ -307,7 +307,7 @@ void MvTest::createDOutChild()
     mCurTimerJob = tjChildStatus;
     oneShotTimer->start(100);
 #else
-    ui->lblError->setText("DIO is not defined in project");
+    ui->lblError->setText("DOut is not defined in project");
 #endif
 }
 

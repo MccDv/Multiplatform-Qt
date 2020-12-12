@@ -49,6 +49,10 @@
 #define BINETCONNECTIONCODE     341
 #define BINETIOTIMEOUT          247
 
+#define MCC_DIG_NUMDEVS         BIDINUMDEVS
+#define MCC_DIG_DEVTYPE         DIDEVTYPE
+#define MCC_DIG_NUMBITS         DINUMBITS
+
 typedef enum
 {
     AI_DIFFERENTIAL = DIFFERENTIAL,
