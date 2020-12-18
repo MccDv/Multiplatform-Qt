@@ -85,6 +85,13 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
                     }
                 }
             }
+            if (LIB_PLATFORM == 2) {
+                int requestedHandle = tempHandle;
+                tempHandle = libDiscFunctions->mccCreateDaqDevice(params, requestedHandle, devDescriptors[discDev]);
+                if (tempHandle != requestedHandle)
+                    continue;
+                devHandles.append(tempHandle);
+            }
             err = libDiscFunctions->mccConnectDaqDevice(params, tempHandle, uidKey);
             if (err == MCC_NOERRORS) {
                 // add if connect success

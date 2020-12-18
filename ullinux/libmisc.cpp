@@ -1134,6 +1134,11 @@ int LibMisc::mccDaqOutGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
+void LibMisc::setPortDirInfo(int portDirType)
+{
+    mPortDirType = portDirType;
+}
+
 /*  Map parameters start with #:#:. The first number indicates index applies
  *  (0 = no index, 1 = index is used), the second number indicates
  *  which function to call (0 = standard, 1 = string, 2 = double.           */

@@ -24,7 +24,6 @@ FormDigitalOut::FormDigitalOut(QWidget *parent) :
 
 FormDigitalOut::~FormDigitalOut()
 {
-    delete digitalFuncs;
     delete libMiscFunctions;
     delete ui;
 }

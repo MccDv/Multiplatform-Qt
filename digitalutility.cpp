@@ -7,7 +7,7 @@ DigitalUtility::DigitalUtility(LibMisc *miscFuncs)
 
 int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int &progAbility, int &defaultPort, int &defaultNumBits, int &firstBit)
 {
-    int thisType, numPorts;
+    int numPorts;
     int portsFound, numBits;
     int configVal, typeNum, i;
     int inMask;
@@ -62,14 +62,30 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
     }
     for (dioDev = 0; dioDev < numPorts; dioDev++) {
         progAbility = -1;
-        err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_PORTIOTYPE, dioDev, configValue);
-        inMask = configValue;
+        switch (LIB_PLATFORM) {
+        case MV_WIN:
+            err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_PORTIOTYPE, dioDev, configValue);
+            break;
+        case MV_LINUX:
+        default:
+            err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_PORTIOTYPE, dioDev, configValue);
+            break;
+        }
+        inMask = 0;
+        if (err == MCC_NOERRORS)
+            inMask = configValue;
         if ((inMask == DPIOT_IN) | (inMask == DPIOT_OUT) | (inMask == DPIOT_NONCONFIG))
             progAbility = FIXEDPORT;
-        err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_DEVTYPE, dioDev, configValue);
-        thisType = configValue;
-        if (err != MCC_NOERRORS)
-            curPort = thisType;
+        switch (LIB_PLATFORM) {
+        case MV_WIN:
+            err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_DEVTYPE, dioDev, configValue);
+            break;
+        case MV_LINUX:
+        default:
+            err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_DEVTYPE, dioDev, configValue);
+        }
+        if (err == MCC_NOERRORS)
+            curPort = configValue;
         if ((dioDev == 0) & (curPort = MCC_FIRSTPORTCL))
             /* a few devices (USB-SSR08 for example)
              * start at FIRSTPORTCL and number the bits
@@ -104,7 +120,7 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
                 if (progAbility == FIXEDPORT)
                     params = "FIXEDPORT";
                 libMiscFuncs->setPortDirInfo(portType);
-                err = libMiscFuncs->mccDioGetInfo(params, devHandle, dioDev, MCC_DIG_NUMBITS, infoValue);
+                err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_NUMBITS, dioDev, infoValue);
                 numBits = infoValue;
                 defaultNumBits = numBits;
                 defaultPort = curPort;

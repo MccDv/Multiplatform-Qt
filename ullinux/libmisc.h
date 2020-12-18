@@ -14,6 +14,7 @@ public:
 
     LibMisc();
 
+    void setPortDirInfo(int portDirType);
     int mccIgnoreInstacal(QString &params);
     int mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, int flashCount);
     QString mccGetUlVersion(QString &params);
@@ -108,6 +109,8 @@ public:
     QMap<int, QString> mccGetDaqOutInfoItems();
 
 private:
+
+    int mPortDirType;
 
 };
 

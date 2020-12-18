@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
-TARGET = UnitestLinux
+TARGET = DOutSpeedLinux
 
 CONFIG += c++11
 
@@ -19,17 +19,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 INCLUDEPATH += "../ullinux/"
+INCLUDEPATH += "../"
 
 #DEFINES += USE_AIN
 #DEFINES += USE_AOUT
 #DEFINES += USE_CFG
 #DEFINES += USE_DIN
-#DEFINES += USE_DOUT
+DEFINES += USE_DOUT
 #DEFINES += USE_CTR
 #DEFINES += USE_MISC
 
 SOURCES += \
     ../childwindow.cpp \
+    ../digitalutility.cpp \
     ../errordialog.cpp \
     ../formdiscover.cpp \
     ../formmvdevice.cpp \
@@ -40,10 +42,12 @@ SOURCES += \
     ../ullinux/libdiscover.cpp \
     ../ullinux/libmisc.cpp \
     ../ullinux/libutilities.cpp \
-    ../ullinux/libanalog.cpp
+    ../ullinux/libdigital.cpp \
+    formdigitalout.cpp
 
 HEADERS += \
     ../childwindow.h \
+    ../digitalutility.h \
     ../errordialog.h \
     ../formdiscover.h \
     ../formmvdevice.h \
@@ -53,16 +57,18 @@ HEADERS += \
     ../ullinux/libdiscover.h \
     ../ullinux/libmisc.h \
     ../ullinux/libutilities.h \
-    ../ullinux/libanalog.h \
     ../ullinux/mvErrorMap.h \
     ../ullinux/libenum.h \
-    ../ullinux/libTypes.h
+    ../ullinux/libTypes.h \
+    ../ullinux/libdigital.h \
+    formdigitalout.h
 
 FORMS += \
     ../errordialog.ui \
     ../formdiscover.ui \
     ../formmvdevice.ui \
     ../mvtest.ui \
+    formdigitalout.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
