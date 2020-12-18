@@ -887,6 +887,7 @@ int LibMisc::mccDioGetCfg(QString &params, DaqDeviceHandle deviceHandle,
         configValue = 0;
         err = mvGetConfig(params, infoType, deviceHandle, index,  configItem, configValue);
     }
+    delete libDigitalFuncs;
     return err;
 }
 
