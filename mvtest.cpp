@@ -1,11 +1,7 @@
 #include "mvtest.h"
 #include "ui_mvtest.h"
-//#include "libsupport.h"
 #include "mvEnums.h"
 #include "../formmvdevice.h"
-
-/*#include "formanalogin.h"
-#include "formdiscover.h"*/
 
 MccDiscover* MvTest::discoveryObj;
 ErrorDialog* MvTest::errDialogObj;
@@ -25,6 +21,8 @@ MvTest::MvTest(QWidget *parent)
     mShowWindows = (LIB_PLATFORM == 1);
     mShowLinux = (LIB_PLATFORM == 2);
     mShowRpi = (LIB_PLATFORM == 3);
+    oneShotTimer = new QTimer(this);
+    oneShotTimer->setSingleShot(true);
 
     msAppName = QApplication::applicationName();
     this->setWindowTitle(msAppName);
@@ -60,8 +58,10 @@ MvTest::MvTest(QWidget *parent)
     configureOptionsMenu();
     configureMiscMenus();
     activeChildSetVisibleMenus(FORM_NONE);
+    QCoreApplication::processEvents();
+    mInterfaceType = (DaqDeviceInterface)(USB_IFC | BLUETOOTH_IFC);
     mCurTimerJob = tjInitVars;
-    oneShotTimer->start(100);
+    oneShotTimer->start(500);
 }
 
 MvTest::~MvTest()
@@ -768,7 +768,6 @@ void MvTest::configureOptionsMenu()
 
 void MvTest::configureMiscMenus()
 {
-    oneShotTimer = new QTimer(this);
     ui->actionText->setData(0);
     ui->actionVolts_vs_Time->setData(1);
 

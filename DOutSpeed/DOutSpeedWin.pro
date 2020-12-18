@@ -31,6 +31,7 @@ DEFINES += USE_DOUT
 
 SOURCES += \
     ../childwindow.cpp \
+    ../digitalutility.cpp \
     ../errordialog.cpp \
     ../formdiscover.cpp \
     ../formmvdevice.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
 
 HEADERS += \
     ../childwindow.h \
+    ../digitalutility.h \
     ../errordialog.h \
     ../formdiscover.h \
     ../formmvdevice.h \

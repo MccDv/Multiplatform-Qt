@@ -1,7 +1,6 @@
 #ifndef FORMMVDEVICE_H
 #define FORMMVDEVICE_H
 
-//#include "../ulPlatform.h"
 #include "mvErrorMap.h"
 #include "qcustomplot.h"
 
@@ -13,8 +12,6 @@
 #include <QSettings>
 #include <QHash>
 #include "libTypes.h"
-//#include "mvEnums.h"
-//#include "mvtest.h"
 #include "libenum.h"
 
 class MvTest;
@@ -96,9 +93,6 @@ protected:
     void initPlotCtlProps();
     void replot(QCustomPlot *dataPlot, bool autoScale);
     void plotXLengthConfig(QCustomPlot *dataPlot, bool autoScale);
-
-protected slots:
-    //void plotSelect(QCustomPlot *dataPlot, bool autoScale);
 
 signals:
     void intEnumChanged(int paramEnum, int paramValue);

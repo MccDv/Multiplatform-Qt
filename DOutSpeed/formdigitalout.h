@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "formmvdevice.h"
 #include "libdigital.h"
+#include "digitalutility.h"
 
 namespace Ui {
 class FormDigitalOut;
@@ -20,6 +21,7 @@ public:
 private:
     Ui::FormDigitalOut *ui;
     LibDigital *digitalFuncs;
+    DigitalUtility * digitalUtils;
 
     int mNumBits = 0;
     int mFirstBit = 0;
@@ -37,12 +39,16 @@ private:
 
     void callClassConstructors();
     void getPortType();
+    bool checkForDigital();
+    void configureOutputs(bool setOutputs);
+    void configureData();
 
 private slots:
     void updateIntValue(int paramEnum, int paramValue);
     void updateDevice();
     void flashLED();
     void cmdStartClicked();
+    void optPortBitClicked();
 };
 
 #endif // FORMDIGITALOUT_H

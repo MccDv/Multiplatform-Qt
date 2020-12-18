@@ -43,6 +43,7 @@ SOURCES += \
     ../ulwin/libanalog.cpp \
     ../ulwin/libdiscover.cpp \
     ../ulwin/libmisc.cpp \
+    ../ulwin/libdigital.cpp \
     ../ulwin/libutilities.cpp
 
 HEADERS += \
@@ -61,6 +62,7 @@ HEADERS += \
     ../ulwin/libenum.h \
     ../ulwin/libmisc.h \
     ../ulwin/libutilities.h \
+    ../ulwin/libdigital.h \
     ../ulwin/mvErrorMap.h
 
 FORMS += \

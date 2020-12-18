@@ -10,13 +10,14 @@ FormDiscover::FormDiscover(QWidget *parent) :
     this->setWindowTitle("Device Discovery");
     cDiscover = MvTest::discoveryObj;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(boardContextMenu(QPoint)));
 
+    connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(boardContextMenu(QPoint)));
     connect(ui->cmdDiscover, SIGNAL(clicked(bool)), this, SLOT(refreshDevices()));
     connect(ui->listWidget, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(updateDevDetails()));
     connect(ui->cmdConnect, SIGNAL(clicked(bool)), this, SLOT(connectClicked()));
     connect(ui->cmdDisconnect, SIGNAL(clicked(bool)), this, SLOT(disconnectClicked()));
     connect(ui->cmdIsConnected, SIGNAL(clicked(bool)), this, SLOT(isConnectedClicked()));
+    connect(ui->cmdFlashLED, SIGNAL(clicked(bool)), this, SLOT(flashLED()));
     updateList();
 }
 
@@ -235,7 +236,7 @@ void FormDiscover::isConnectedClicked()
     connectStr = "not connected";
     if (connected)
         connectStr = "connected";
-    ui->lblInfo->setText(msCurDevName + QString(" [%1] is " + connectStr));
+    ui->lblInfo->setText(msCurDevName + QString(" [%1] is ").arg(mDevHandle) + connectStr);
     ui->cmdConnect->setEnabled(!connected);
     ui->cmdDisconnect->setEnabled(connected);
 }
@@ -260,4 +261,14 @@ void FormDiscover::openTestForm(QAction *menuAction)
         mainForm->openFormType(FORM_AIN, msMenuUId);
     if (typeName == "Get Info")
         mainForm->openFormType(FORM_CONF, msMenuUId);
+}
+
+void FormDiscover::flashLED()
+{
+    QString params;
+    int err;
+
+    err = ulMiscFunctions->mccFlashLed(params, mDevHandle, 4);
+    if (err != MCC_NOERRORS)
+        ui->lblInfo->setText(ulMiscFunctions->mccGetErrConstText(err));
 }

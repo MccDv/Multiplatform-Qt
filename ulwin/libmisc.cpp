@@ -1,6 +1,8 @@
 #include "libmisc.h"
 #include "../mvtest.h"
+#include "libdigital.h"
 
+LibDigital *libDigitalFuncs;
 ErrorDialog *miscErrorDialog;
 
 LibMisc::LibMisc()
@@ -788,7 +790,30 @@ int LibMisc::mccDioGetInfo(QString &params, DaqDeviceHandle deviceHandle,
     }
 
     infoValue = 0;
-    err = mvGetConfig(params, infoType, deviceHandle, index,  infoItem, infoValue);
+    if (infoItem == MCC_DIG_NUMBITS) {
+        int bitVals, inMask, outMask, curBit;
+        int bitWeight, totalVal;
+
+        curBit = 0;
+        if (params == "FIXEDPORT") {
+            //could have different number of input and output bits
+            err = cbGetConfig(DIGITALINFO, deviceHandle, index, DIINMASK, &inMask);
+            err = cbGetConfig(DIGITALINFO, deviceHandle, index, DIOUTMASK, &outMask);
+            bitVals = outMask;
+            if (mPortDirType == 2)  //PORTIN = 2
+                bitVals = inMask;
+            do {
+                bitWeight = pow(2, curBit);
+                totalVal += bitWeight;
+                curBit++;
+            } while (totalVal < bitVals);
+            infoValue = curBit;
+        } else {
+            err = mvGetConfig(params, infoType, deviceHandle, index,  infoItem, infoValue);
+        }
+    } else {
+        err = mvGetConfig(params, infoType, deviceHandle, index,  infoItem, infoValue);
+    }
     return err;
 }
 
@@ -807,12 +832,61 @@ int LibMisc::mccDioGetCfg(QString &params, DaqDeviceHandle deviceHandle,
                                 int configItem, unsigned int index, long long &configValue)
 {
     int infoType, err;
+    bool isPortProgrammable, isBitProgammable, isWritable;
+
+    isBitProgammable = false;
+    isPortProgrammable = false;
     infoType = BOARDINFO;
     if (configItem == DIDISABLEDIRCHECK)
         infoType = DIGITALINFO;
 
-    configValue = 0;
-    err = mvGetConfig(params, infoType, deviceHandle, index,  configItem, configValue);
+    libDigitalFuncs = new LibDigital();
+
+    if (configItem == MCC_DIG_PORTIOTYPE) {
+        int inMask, outMask, portType;
+
+        err = mvGetConfig(params, DIGITALINFO, deviceHandle, index, MCC_DIG_DEVTYPE, configValue);
+        portType = configValue;
+        configValue = 0;
+        // check configuration to eliminate bit programmed devices
+        err = libDigitalFuncs->mccDConfigPort(params, deviceHandle, portType, MCC_DIG_DIRIN);
+        if (err == MCC_NOERRORS) {
+            isPortProgrammable = true;
+            err = libDigitalFuncs->mccDConfigBit(params, deviceHandle, portType, 0, MCC_DIG_DIRIN);
+            if (err == MCC_NOERRORS)
+                isBitProgammable = true;
+        } else {
+            isPortProgrammable = false;
+            unsigned long long inVal;
+            isWritable = false;
+            err = libDigitalFuncs->mccDIn(params, deviceHandle, portType, inVal);
+            if (err == MCC_NOERRORS)
+                isWritable = true;
+        }
+        err = cbGetConfig(DIGITALINFO, deviceHandle, index, DICONFIG, &inMask);
+        if (inMask == 3)
+            configValue = DPIOT_BITIO;
+        err = cbGetConfig(DIGITALINFO, deviceHandle, index, DIINMASK, &inMask);
+        err = cbGetConfig(DIGITALINFO, deviceHandle, index, DIOUTMASK, &outMask);
+        if ((inMask & outMask) > 0) {
+            // either fixed input or fixed output,
+            if (inMask > 0)
+                if (isWritable)
+                    configValue = DPIOT_NONCONFIG;
+                else
+                    configValue = DPIOT_IN;
+            else
+                configValue = DPIOT_OUT;
+        } else {
+            if (isPortProgrammable)
+                configValue = DPIOT_IO;
+            if (isBitProgammable)
+                configValue = DPIOT_BITIO;
+        }
+    } else {
+        configValue = 0;
+        err = mvGetConfig(params, infoType, deviceHandle, index,  configItem, configValue);
+    }
     return err;
 }
 
@@ -1052,6 +1126,11 @@ int LibMisc::mvGetConfigString(QString &params, int infoType, DaqDeviceHandle de
     return err;
 }
 
+
+void LibMisc::setPortDirInfo(int portDirType)
+{
+    mPortDirType = portDirType;
+}
 
 QMap<int, QString> LibMisc::mccGetUlInfoItems()
 {

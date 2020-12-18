@@ -7,7 +7,7 @@
 
 #define MCC_BAD_BOARD   BADBOARD
 
-#define ON_WINDOWS true
+#define ON_WINDOWS
 #include "..\..\DAQ\C\cbw.h"
 typedef int DaqDeviceHandle;
 typedef int UlNumDevs;

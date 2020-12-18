@@ -15,10 +15,8 @@ int MccDiscover::ignoreInstacal(QString &params)
 
 int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceType, UlNumDevs &numFound)
 {
-    UlNumDevs numDevs;
-
-    DaqDeviceHandle deviceHandle, newHandle;
-    int err;
+    int exDev, connected, err, tempHandle;
+    bool uniqueHandle;
     QString uidKey, discoverParams;
     QList<DaqDeviceHandle> devHandles;
     QHash<QString, DaqDeviceHandle> newList, icalDevs;
@@ -27,10 +25,11 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
     /*  If Windows, check Instacal installed devices.
      *  Add to devList if not there already             */
 
+    devList.clear();
+    newList.clear();
     err = libDiscFunctions->mccGetInstacalDevs(params, icalDevs);
     if (err == MCC_NOERRORS) {
         foreach (QString iD, icalDevs.keys()) {
-            devHandles.append(icalDevs.value(iD));
             if (!devList.contains(iD))
                 devList.insert(iD, icalDevs.value(iD));
         }
@@ -38,77 +37,67 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
 
     /*  Disconnect all previously listed devices
      *  (required because of DT implementation)
-     *  and preserve their handles in a list      */
+     *  and preserve their handles in newList      */
 
-    foreach (DaqDeviceHandle exDev, devList.values()) {
-        err = libDiscFunctions->mccDisconnectDaqDevice(params, exDev);
-        devHandles.append(exDev);
+    foreach (QString exDevId, devList.keys()) {
+        exDev = devList.value(exDevId);
+        err = libDiscFunctions->mccIsDaqDeviceConnected(params, exDev, exDevId, connected);
+        if (connected) {
+            err = libDiscFunctions->mccDisconnectDaqDevice(params, exDev);
+            newList.insert(exDevId, exDev);
+            devHandles.append(exDev);
+        } else {
+            // in Instacal, but not attached
+            devList.remove(exDevId);
+            err = libDiscFunctions->mccReleaseDaqDevice(params, exDev);
+        }
     }
 
-    numDevs = MAX_DEV_COUNT;
+    numFound = MAX_DEV_COUNT;
     memset(devDescriptors, 0, sizeof(devDescriptors));
 
-    err = libDiscFunctions->mccGetDaqDeviceInventory(params, interfaceType, devDescriptors, numDevs);
-    numFound = numDevs;
+    err = libDiscFunctions->mccGetDaqDeviceInventory(params, interfaceType, devDescriptors, numFound);
     discoverParams = params;
-
-    if(err != 0)
+    if (err != MCC_NOERRORS)
         return err;
 
-    /*  Go through discovered devices and, if in old list,
-     *  reconnect with existing number and add to new list.
-     *  If not, create it with a free handle.
-     *  If Linux, connect it also (Windows connects on create)  */
+    /*  Go through discovered devices and, if in Instacal list, reconnect
+     *  with existing number. If not, create it with a free handle.
+     *  If Linux, connect it also (Windows connects on create)
+     *
+     *  First, find number of unique devices between Instacal and discovery   */
 
-    uidKey = "";
-    for (UlNumDevs i = 0; i < numDevs; i++) {
-        deviceHandle = -1;
-        uidKey = devDescriptors[i].mccUniqueId;
-        if (devList.contains(uidKey)) {
-            //  previously connected - use old number
-            deviceHandle = devList.value(uidKey);
-            err = libDiscFunctions->mccConnectDaqDevice(params, deviceHandle, uidKey);
-            if (err != MCC_NOERRORS)
-                return err;
-            newList.insert(uidKey, deviceHandle);
-        } else {
-            //  find an unused handle (linux doesn't use 0)
-            newHandle = 1;
-            while (devHandles.contains(newHandle)) {
-                newHandle++;
+    for (int discDev = 0; discDev < numFound; discDev++) {
+        uidKey = devDescriptors[discDev].mccUniqueId;
+        if (!devList.contains(uidKey)) {
+            /*  Not an Instacal device - try to create and connect it
+             *  Find an unused handle (linux doesn't use 0) */
+            tempHandle = 1;
+            if (LIB_PLATFORM == 1)
+                tempHandle = 0;
+            uniqueHandle = false;
+            while (!uniqueHandle) {
+                uniqueHandle = true;
+                foreach (int curHandle, devHandles) {
+                    if (curHandle == tempHandle) {
+                        uniqueHandle = false;
+                        tempHandle++;
+                    }
+                }
             }
-            deviceHandle = libDiscFunctions->mccCreateDaqDevice(params, newHandle, devDescriptors[i]);
-            if (deviceHandle != newHandle)
-                return MCC_BADBOARD;
-
-            // Linux needs to also connect to the device (Windows doesn't)
-            err = libDiscFunctions->mccConnectDaqDevice(params, deviceHandle, uidKey);
-            if (err != MCC_NOERRORS)
-                return err;
-
-            devHandles.append(deviceHandle);
-            newList.insert(uidKey, newHandle);
+            err = libDiscFunctions->mccConnectDaqDevice(params, tempHandle, uidKey);
+            if (err == MCC_NOERRORS) {
+                // add if connect success
+                devList.insert(uidKey, tempHandle);
+            }
+        } else {
+            err = libDiscFunctions->mccIsDaqDeviceConnected(params, tempHandle, uidKey, connected);
+            if (!connected) {
+                tempHandle = newList.value(uidKey);
+                err = libDiscFunctions->mccConnectDaqDevice(params, tempHandle, uidKey);
+            }
         }
     }
-
-    /*  Go through the old list and release any
-     *  devices not re-discovered. Swap the new
-     *  list into the global list.               */
-
-    foreach (QString devID, devList.keys()) {
-        if (!newList.contains(devID)) {
-            deviceHandle = devList.value(devID);
-            err = libDiscFunctions->mccReleaseDaqDevice(params, deviceHandle);
-        }
-    }
-
-    devList.clear();
-    devList = newList;
-    newList.clear();
-
-    /*  Add iCal devices to list
-    foreach (QString iD, icalDevs.keys())
-        devList.insert(iD, icalDevs.value(iD));*/
 
     mnNumListed = devList.count();
     params = discoverParams;
@@ -192,7 +181,7 @@ MccDaqDeviceDescriptor MccDiscover::getDescriptor(QString uniqueId)
     MccDaqDeviceDescriptor descriptor;
 
     descriptor = devDescriptors[0];
-    for (uint i = 0; i < mnNumListed; i++) {
+    for (uint i = 0; i < (uint)mnNumListed; i++) {
         testId = QString("%1").arg(devDescriptors[i].mccUniqueId);
         if (testId == uniqueId) {
             descriptor = devDescriptors[i];
@@ -236,5 +225,4 @@ int MccDiscover::disconnectDevice(QString &params, DaqDeviceHandle devHandle)
 void MccDiscover::callClassConstructors()
 {
     libDiscFunctions = new LibDiscover;
-    //ulMiscFuntions = new UlMiscLinux;
 }

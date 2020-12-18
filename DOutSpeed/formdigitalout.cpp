@@ -10,30 +10,46 @@ FormDigitalOut::FormDigitalOut(QWidget *parent) :
     connect(this, SIGNAL(deviceChanged()), this, SLOT(updateDevice()));
     connect(ui->cmdFlashLED, SIGNAL(clicked(bool)), this, SLOT(flashLED()));
     connect(ui->cmdStart, SIGNAL(clicked(bool)), this, SLOT(cmdStartClicked()));
+    connect(ui->optPort, SIGNAL(toggled(bool)), this, SLOT(optPortBitClicked()));
     callClassConstructors();
+
+    ui->txtFirstBit->setVisible(false);
+    ui->txtLastBit->setVisible(false);
+    ui->lblFirstBit->setVisible(false);
+    ui->lblLastBit->setVisible(false);
+    ui->cmbBoardSelect->setVisible(false);
+    ui->chkErrors->setVisible(false);
+    ui->lblBoardNumber->setVisible(false);
 }
 
 FormDigitalOut::~FormDigitalOut()
 {
     delete digitalFuncs;
+    delete libMiscFunctions;
     delete ui;
 }
 
 void FormDigitalOut::flashLED()
 {
     QString params;
+    int err;
 
-    libMiscFunctions->mccFlashLed(params, mDevHandle, 4);
+    err = libMiscFunctions->mccFlashLed(params, mDevHandle, 4);
+    if (err != MCC_NOERRORS)
+        ui->lblStatus->setText(libMiscFunctions->mccGetUlErrorText(err));
 }
 
 void FormDigitalOut::cmdStartClicked()
 {
     QString params, msg, formatString;
-    int err, iterations;
+    int err, iterations, bitPort, curBit;
+    int numBits, i, arrayElement, lastArrayPort;
     bool spanPorts;
     double outputRate, elapsedTime, rateDivisor;
+    double rateInSeconds;
     QElapsedTimer funcTimer;
 
+    numBits = (mLastBit - mFirstBit) + 1;
     spanPorts = false;
     ui->cmdStart->setEnabled(false);
     ui->txtResult->clear();
@@ -44,31 +60,42 @@ void FormDigitalOut::cmdStartClicked()
     mDataValLow = 0;
 
     if (mbDoBits) {
-        err = digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValLow);
+        bitPort = MCC_FIRSTPORTA;
+        if (mPortNum < 10)
+            bitPort = MCC_AUXPORT;
+        err = digitalFuncs->mccDBitOut(params, mDevHandle, bitPort, mFirstBit, mDataValLow);
+        if (err != MCC_NOERRORS) {
+            ui->lblStatus->setText(libMiscFunctions->mccGetUlErrorText(err));
+            return;
+        }
+        funcTimer.start();
+        for (i = 0; i < iterations; i++) {
+            for (curBit = mFirstBit; curBit <= mLastBit; curBit++) {
+                err = digitalFuncs->mccDBitOut(params, mDevHandle, bitPort, curBit, 1);
+            }
+            for (curBit = mFirstBit; curBit <= mLastBit; curBit++) {
+                err = digitalFuncs->mccDBitOut(params, mDevHandle, bitPort, curBit, 0);
+            }
+        }
+        elapsedTime = (funcTimer.elapsed()) / (numBits * 2);
     } else {
         if (spanPorts) {
-           /*ReDim OutArrayLow(mlNumArrayPorts - 1) As Long
-           ReDim OutArrayHigh(mlNumArrayPorts - 1) As Long
-           For arrayElement& = 0 To mlNumArrayPorts - 1
-              OutArrayLow(arrayElement&) = mnDataValLow
-              OutArrayHigh(arrayElement&) = mnDataValHigh
-           Next
-           LastArrayPort& = mlPortNum + (mlNumArrayPorts - 1)
-           ULStat& = cbDOutArray(mlBoardNum, mlPortNum, _
-              LastArrayPort&, OutArrayLow(0))
-           If ULStat& <> 0 Then
-              ErrMessage$ = GetULError(ULStat&)
-              txtResult.Text = ErrMessage$
-              Exit Sub
-           End If
-           StartTime! = Timer
-           For i& = 0 To Iterations&
-              ULStat& = cbDOutArray(mlBoardNum, mlPortNum, _
-                 LastArrayPort&, OutArrayHigh(0))
-              ULStat& = cbDOutArray(mlBoardNum, mlPortNum, _
-                 LastArrayPort&, OutArrayLow(0))
-           Next
-           elapsedTime! = (Timer - StartTime!) / 2 */
+            unsigned long long  outArrayHigh[mNumArrayPorts];
+            unsigned long long  outArrayLow[mNumArrayPorts];
+            for (arrayElement = 0; arrayElement < mNumArrayPorts; arrayElement++) {
+                outArrayLow[arrayElement] = mDataValLow;
+                outArrayHigh[arrayElement] = mDataValHigh;
+            }
+            lastArrayPort = mPortNum + mNumArrayPorts + 1;
+            err = digitalFuncs->mccDOutArray(params, mDevHandle, mPortNum, lastArrayPort, outArrayLow);
+            if (err != MCC_NOERRORS)
+                return;
+            funcTimer.start();
+            for (i = 0; i < iterations; i++) {
+                err = digitalFuncs->mccDOutArray(params, mDevHandle, mPortNum, lastArrayPort, outArrayHigh);
+                err = digitalFuncs->mccDOutArray(params, mDevHandle, mPortNum, lastArrayPort, outArrayLow);
+            }
+            elapsedTime = funcTimer.elapsed() / 2;
         } else {
             err = digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValLow);
             if (err != MCC_NOERRORS) {
@@ -84,8 +111,9 @@ void FormDigitalOut::cmdStartClicked()
             elapsedTime = (funcTimer.elapsed()) / 2;
         }
     }
+    rateInSeconds = elapsedTime /1000;
     ui->cmdStart->setEnabled(true);
-    outputRate = 1 / (elapsedTime / iterations);
+    outputRate = 1 / (rateInSeconds / iterations);
     formatString = "Hz";
     rateDivisor = 1.00;
     if (outputRate > 999) {
@@ -100,65 +128,56 @@ void FormDigitalOut::updateIntValue(int paramEnum, int paramValue)
     switch (paramEnum) {
     case IPARAM_FUNCTYPE:
         mCurFunction = paramValue;
-        //setUiForFunction();
         break;
     case IPARAM_RANGE:
-        if (paramValue == MCC_SETQUEUE)
-            //showQueueConfig();
-            break;
-        else {
-            mRange = (MccRange)paramValue;
-            //curRangeVolts = libTestUtils->getRangeNomo(mRange);
-            //ui->lblRange0->setText(curRangeVolts);
-        }
         break;
     case IPARAM_AINMODE:
-        //mAiMode = (AiInputMode)paramValue;
         break;
     case IPARAM_FLAGS:
-        //mAiFlags = (AInFlag)paramValue;
         break;
     case IPARAM_OPTIONS:
         mCurOptions = paramValue;
-        //ui->lblFunction->setText("Options set to: " + libTestUtils->getOptionNames(mCurOptions));
         break;
     case IPARAM_WAITDATA:
-        //mTiFlags = TIN_FF_DEFAULT;
-        //if (paramValue)
-        //    mTiFlags = TIN_FF_WAIT_FOR_NEW_DATA;
         break;
     case IPARAM_PLOTTYPE:
-        //enablePlot(paramValue);
         break;
     default:
         break;
     }
-    //cmdStopClicked();
 }
 
 void FormDigitalOut::updateDevice()
 {
+    bool addBoard;
+
     if (mDevHandle == -1) {
         ui->fraMain->setEnabled(false);
         return;
     }
     ui->fraMain->setEnabled(true);
-    getPortType();
+    addBoard = checkForDigital();
+    if (addBoard) {
+        ui->cmdStart->setEnabled(true);
+        getPortType();
+        if (mNumPorts > 0)
+            configureOutputs(true);
+    }
 }
 
 void FormDigitalOut::getPortType()
 {
     int err;
-    bool overBit;
     bool arrayEnabled;
-    int trimVal, devType, devNum, numDevs, numBits;
-    int prevDevType, curLast, curFirst, offset;
+    int devType, devNum, numDevs, numBits;
+    int prevDevType, curFirst, offset;
     long long infoValue;
     QString sPortList, params, bitList;
-    LibUtilities *libUtils;
 
     prevDevType = 0;
     arrayEnabled = ui->chkArray->isChecked();
+    ui->lblPortType->clear();
+
     if (arrayEnabled) {
         mTotalBits = 0;
         err = libMiscFunctions->mccDioGetInfo(params, mDevHandle, MCC_DIG_NUMDEVS, 0, infoValue);
@@ -176,7 +195,7 @@ void FormDigitalOut::getPortType()
                     break;
                 }
                 if (!mbDoBits) {
-                    sPortList = sPortList + ", " + libUtils->getDioPortTypeName(devType);
+                    sPortList = sPortList + ", " + libTestUtils->getDioPortTypeName(devType);
                 } else {
                     ui->txtLastBit->setText(QString("%1").arg(mTotalBits - 1));
                 }
@@ -184,7 +203,7 @@ void FormDigitalOut::getPortType()
                 mNumArrayPorts = 1;
                 mNumBits = numBits;
                 prevDevType = devType;
-                sPortList = libUtils->getDioPortTypeName(devType);
+                sPortList = libTestUtils->getDioPortTypeName(devType);
             }
         }
         msPortList = sPortList;
@@ -196,13 +215,11 @@ void FormDigitalOut::getPortType()
             ui->cmdStart->setEnabled(false);
         } else {
             mPortNum = devType;
-            msPortList = libUtils->getDioPortTypeName(devType);
+            msPortList = libTestUtils->getDioPortTypeName(devType);
             ui->cmdStart->setEnabled(true);
         }
         err = libMiscFunctions->mccDioGetInfo(params, mDevHandle, MCC_DIG_NUMBITS, mPortIndex, infoValue);
         numBits = infoValue;
-        curLast = ui->txtLastBit->text().toInt();
-        overBit = !(curLast < numBits);
         mLastBit = numBits - 1;
         ui->txtLastBit->setText(QString("%1").arg(mLastBit));
         curFirst = ui->txtFirstBit->text().toInt();
@@ -213,7 +230,7 @@ void FormDigitalOut::getPortType()
     }
 
     offset = 0;
-    //offset = GetBitOffset(mDevHandle, mPortIndex);
+    offset = digitalUtils->getBitOffset(mDevHandle, mPortIndex);
     mFirstBit = ui->txtFirstBit->text().toInt() + offset;
     mLastBit = ui->txtLastBit->text().toInt() + offset;
     bitList = "";
@@ -223,7 +240,73 @@ void FormDigitalOut::getPortType()
 
 }
 
+bool FormDigitalOut::checkForDigital()
+{
+    bool validBoard;
+    int firstBit, defaultPort, defaultNumBits;
+    int channelType, numDIChans, portIOType;
+
+    validBoard = false;
+    numDIChans = 1;
+    channelType = PORTOUT;
+    portIOType = PROGPORT;
+    numDIChans = digitalUtils->findPortsOfType(mDevHandle, channelType, portIOType, defaultPort, defaultNumBits, firstBit);
+    mNumPorts = numDIChans;
+    if(numDIChans != 0) {
+       validBoard = true;
+       mPortNum = defaultPort;
+       mResolution = defaultNumBits;
+    } else {
+       ui->txtResult->setText("");
+    }
+    ui->cmdStart->setEnabled(validBoard);
+    return validBoard;
+}
+
+void FormDigitalOut::optPortBitClicked()
+{
+    mbDoBits = ui->optBit->isChecked();
+    if (mbDoBits)
+       ui->chkArray->setText("Span ports");
+    else
+       ui->chkArray->setText("Use DOutArray");
+
+    ui->txtFirstBit->setVisible(mbDoBits);
+    ui->txtLastBit->setVisible(mbDoBits);
+    ui->lblFirstBit->setVisible(mbDoBits);
+    ui->lblLastBit->setVisible(mbDoBits);
+    getPortType();
+}
+
+void FormDigitalOut::configureOutputs(bool setOutputs)
+{
+    int direction, portNum, i, err;
+    long long infoValue;
+    QString params;
+
+    direction = MCC_DIG_DIRIN;
+    if (setOutputs)
+        direction = MCC_DIG_DIROUT;
+    for (i = 0; i < mNumPorts; i++) {
+        err = libMiscFunctions->mccDioGetInfo(params, mDevHandle, MCC_DIG_DEVTYPE, i, infoValue);
+        if (err == MCC_NOERRORS)
+            portNum = infoValue;
+        err = digitalFuncs->mccDConfigPort(params, mDevHandle, portNum, direction);
+    }
+}
+
+void FormDigitalOut::configureData()
+{
+    int FS, HS;
+
+    FS = pow(2, mResolution);
+    HS = FS / 2;
+    mDataValHigh = (HS + (HS) - 1);  //ULongValToInt
+    mDataValLow = (HS - (HS));       //ULongValToInt
+}
+
 void FormDigitalOut::callClassConstructors()
 {
-    digitalFuncs = new LibDigital();
+    libMiscFunctions = new LibMisc();
+    digitalUtils = new DigitalUtility(libMiscFunctions);
 }

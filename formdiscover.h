@@ -26,10 +26,8 @@ public:
 private:
     LibMisc *ulMiscFunctions;
     LibDiscover *ulDiscFunctions;
-    //const bool mWindowsPlatform = false;
 
     Ui::FormDiscover *ui;
-    //RemoteDialog *remoteDialog;
     MccDiscover *cDiscover;
 
     unsigned int mnNumDevs;
@@ -50,6 +48,7 @@ private slots:
     void isConnectedClicked();
     void boardContextMenu(QPoint listIndex);
     void openTestForm(QAction* menuAction);
+    void flashLED();
 };
 
 #endif // FORMDISCOVER_H
