@@ -24,6 +24,7 @@ FormDigitalOut::FormDigitalOut(QWidget *parent) :
 
 FormDigitalOut::~FormDigitalOut()
 {
+    delete digitalFuncs;
     delete libMiscFunctions;
     delete ui;
 }
@@ -308,4 +309,5 @@ void FormDigitalOut::callClassConstructors()
 {
     libMiscFunctions = new LibMisc();
     digitalUtils = new DigitalUtility(libMiscFunctions);
+    digitalFuncs = new LibDigital();
 }
