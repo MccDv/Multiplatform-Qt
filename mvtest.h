@@ -19,7 +19,6 @@
 #define MV_RPI      3
 
 //#include "../remotedialog.h"
-//#include "libsupport.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MvTest; }

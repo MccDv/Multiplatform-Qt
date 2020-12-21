@@ -197,5 +197,26 @@ int LibDigital::mccDConfigPort(QString &params, DaqDeviceHandle deviceHandle,
 
 int LibDigital::mccDConfigBit(QString &params, DaqDeviceHandle deviceHandle, int portType, int bitNum, int direction)
 {
+    int err;
+    QString funcName, argString, argVals;
+    DigitalPortType port;
+    DigitalDirection direc;
+    QTime t;
+    QString sStartTime;
 
+    port = (DigitalPortType)portType;
+    direc = (DigitalDirection)direction;
+    funcName = "ulDConfigBit";
+    argString = "(deviceHandle, portType, bitNum, direction)\n";
+    sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+    err = ulDConfigBit(deviceHandle, port, bitNum, direc);
+    argVals = QString("(%1, %2, %3, %4)")
+            .arg(deviceHandle)
+            .arg(port)
+            .arg(bitNum)
+            .arg(direc);
+    params = funcName + argString + funcName + argVals;
+    dIOErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+
+    return err;
 }

@@ -26,7 +26,6 @@ public:
 
 private:
     LibAnalog                   *aInFunctions;
-    bool                        USING_WINDOWS = true;
 
     Ui::FormAnalogIn            *ui;
     AiInputMode                 mAiMode = AI_DIFFERENTIAL;

@@ -56,8 +56,8 @@ void FormDigitalOut::cmdStartClicked()
     iterations = ui->leRateEstimate->text().toInt();
     elapsedTime = 0;
 
-    mDataValHigh = 255;
-    mDataValLow = 0;
+    //mDataValHigh = 255;
+    //mDataValLow = 0;
 
     if (mbDoBits) {
         bitPort = MCC_FIRSTPORTA;
@@ -160,8 +160,10 @@ void FormDigitalOut::updateDevice()
     if (addBoard) {
         ui->cmdStart->setEnabled(true);
         getPortType();
-        if (mNumPorts > 0)
+        if (mNumPorts > 0) {
             configureOutputs(true);
+            configureData();
+        }
     }
 }
 

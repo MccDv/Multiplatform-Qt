@@ -67,7 +67,7 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
      *
      *  First, find number of unique devices between Instacal and discovery   */
 
-    for (int discDev = 0; discDev < numFound; discDev++) {
+    for (uint discDev = 0; discDev < numFound; discDev++) {
         uidKey = devDescriptors[discDev].mccUniqueId;
         if (!devList.contains(uidKey)) {
             /*  Not an Instacal device - try to create and connect it

@@ -1,9 +1,13 @@
 #ifndef FORMMVDEVICE_H
 #define FORMMVDEVICE_H
 
-#include "mvErrorMap.h"
+#ifdef USES_PLOT
 #include "qcustomplot.h"
+#else
+typedef int QCustomPlot;
+#endif
 
+#include "mvErrorMap.h"
 #include "libmisc.h"
 #include "libutilities.h"
 
@@ -77,9 +81,12 @@ protected:
     int                         mPlotOffset = 0;
     long                        mSampleIndex;
     long                        mPerChanRead;
+#ifdef USES_PLOT
     QRadioButton                *rbPlotSel[8]={};
     QLabel                      *rbPlotLabels[8]={};
     QLabel                      *rbRangeLabels[8]={};
+#endif //USES_PLOT
+
     QString                     mFontHTML[8];
     QVector<double>             xValues;
 

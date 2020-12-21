@@ -130,7 +130,7 @@ void FormAnalogIn::aInScanStart()
     mFirstChan = ui->spnLowChan->value();
     mLastChan = ui->spnHighChan->value();
     mChanCount = (mLastChan - mFirstChan) + 1;
-    if (USING_WINDOWS) {
+    if (LIB_PLATFORM == MV_WIN) {
         sampleMultiplier = mChanCount;
     }
     if(mChanCount < 1) mChanCount = 1;
@@ -156,7 +156,7 @@ void FormAnalogIn::aInScanStart()
     if(mPlot)
         setupPlot(qCustomPlot);
 
-    if (!USING_WINDOWS) {
+    if (LIB_PLATFORM != MV_WIN) {
         if (dblBuffer) {
             delete[] dblBuffer;
             dblBuffer = NULL;
@@ -461,7 +461,7 @@ void FormAnalogIn::tInStart()
         mChanIndex = 0;
         long long bufSize = mChanCount * mPerChanDisplayed;
         mBufSize = bufSize;
-        if (!USING_WINDOWS) {
+        if (LIB_PLATFORM != MV_WIN) {
             mDoublePointer = true;
             if (dblBuffer) {
                 delete[] dblBuffer;

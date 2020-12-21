@@ -31,29 +31,26 @@ DEFINES += USE_DOUT
 
 SOURCES += \
     ../childwindow.cpp \
-    ../digitalutility.cpp \
     ../errordialog.cpp \
     ../formdiscover.cpp \
     ../formmvdevice.cpp \
     ../main.cpp \
     ../mccdiscover.cpp \
     ../mvtest.cpp \
-    ../qcustomplot.cpp \
     ../ullinux/libdiscover.cpp \
     ../ullinux/libmisc.cpp \
     ../ullinux/libutilities.cpp \
     ../ullinux/libdigital.cpp \
+    ../digitalutility.cpp \
     formdigitalout.cpp
 
 HEADERS += \
     ../childwindow.h \
-    ../digitalutility.h \
     ../errordialog.h \
     ../formdiscover.h \
     ../formmvdevice.h \
     ../mccdiscover.h \
     ../mvtest.h \
-    ../qcustomplot.h \
     ../ullinux/libdiscover.h \
     ../ullinux/libmisc.h \
     ../ullinux/libutilities.h \
@@ -61,6 +58,7 @@ HEADERS += \
     ../ullinux/libenum.h \
     ../ullinux/libTypes.h \
     ../ullinux/libdigital.h \
+    ../digitalutility.h \
     formdigitalout.h
 
 FORMS += \

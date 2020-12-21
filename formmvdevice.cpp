@@ -81,6 +81,8 @@ int FormMvDevice::getIntParam(int paramEnum)
 
 void FormMvDevice::initPlotCtlProps()
 {
+#ifdef USES_PLOT
+
     mFontHTML[0] = " <font color=blue>";
     mFontHTML[1] = " <font color=red>";
     mFontHTML[2] = " <font color=green>";
@@ -95,10 +97,15 @@ void FormMvDevice::initPlotCtlProps()
         rbPlotSel[i]->setVisible(false);
         rbPlotLabels[i]->setVisible(false);
     }
+#endif //USES_PLOT
 }
 
 void FormMvDevice::setupPlot(QCustomPlot *dataPlot)
 {
+#ifndef USES_PLOT
+    (void)dataPlot;
+#else
+
     QColor penColor;
     QPalette brushColor;
     int ctlIndex;
@@ -191,10 +198,17 @@ void FormMvDevice::setupPlot(QCustomPlot *dataPlot)
     dataPlot->replot();
     dataPlot->axisRect()->setRangeDrag(Qt::Horizontal);
     dataPlot->setInteraction(QCP::iRangeDrag, true);
+
+#endif //USES_PLOT
 }
 
 void FormMvDevice::updatePlot(QCustomPlot *dataPlot, bool autoScale)
 {
+#ifndef USES_PLOT
+    (void)dataPlot;
+    (void)autoScale;
+#else
+
     bool setTCRange = false;
     bool bipolar;
     double rangeBuf;
@@ -270,6 +284,8 @@ void FormMvDevice::updatePlot(QCustomPlot *dataPlot, bool autoScale)
         dataPlot->yAxis->setRangeUpper(rangeUpper + rangeBuf);
     }
     dataPlot->replot();
+
+#endif //USES_PLOT
 }
 
 void FormMvDevice::replot(QCustomPlot *dataPlot, bool autoScale)
