@@ -57,6 +57,58 @@ int LibAnalog::mccAIn(QString &params, DaqDeviceHandle deviceHandle, int channel
     return err;
 }
 
+int LibAnalog::mccAIn32(QString &params, DaqDeviceHandle deviceHandle, int channel, int iMode, int aiFlags, int Gain, double &dataValue)
+{
+    int err;
+    QString funcName, argString, argVals;
+    ULONG data;
+    QTime t;
+    int options;
+    QString sStartTime;
+
+    err = setInputMode(params, deviceHandle, iMode);
+    options = 0;
+
+    funcName = "cbAIn32";
+    argString = "(boardNum, Chan, Gain, &DataValue, options)\n";
+    sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+    err = cbAIn32(deviceHandle, channel, Gain, &data, options);
+    argVals = QString("(%1, %2, %3, %4, %5)")
+            .arg(deviceHandle)
+            .arg(channel)
+            .arg(Gain)
+            .arg(data)
+            .arg(options);
+    params = funcName + argString + funcName + argVals;
+    errorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    if (err != MCC_NOERRORS) {
+        dataValue = (double)data;
+        return err;
+    }
+
+    if (aiFlags != AInFlag::AIN_FF_NOSCALEDATA) {
+        //  return engineering units
+        double engUnits;
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = cbToEngUnits32(deviceHandle, Gain, data, &engUnits);
+        if (err != MCC_NOERRORS) {
+            funcName = "cbToEngUnits32";
+            argString = "(deviceHandle, Gain, data, &engUnits)\n";
+            argVals = QString("(%1, %2, %3, %4)")
+                    .arg(deviceHandle)
+                    .arg(Gain)
+                    .arg(data)
+                    .arg(engUnits);
+            params = funcName + argString + funcName + argVals;
+            errorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+            return err;
+        }
+        dataValue = engUnits;
+    } else
+        dataValue = (double)data;
+    return err;
+}
+
 HGLOBAL LibAnalog::mccGetScaledBuf(QString &params, long numPoints)
 {
     QString funcName, argString, argVals;

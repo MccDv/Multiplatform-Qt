@@ -23,6 +23,8 @@ public:
     int mccFreeBuf(QString &params, HGLOBAL handle);
     int mccAIn(QString &params, DaqDeviceHandle deviceHandle, int channel,
                int iMode, int aiFlags, int Gain, double &dataValue);
+    int mccAIn32(QString &params, DaqDeviceHandle deviceHandle, int channel,
+               int iMode, int aiFlags, int Gain, double &dataValue);
     int mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
                    int highChan, int inputMode, long samples, double &rate,
                    int range, int options, int flags, double *dblData);

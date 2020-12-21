@@ -172,6 +172,7 @@ void FormAnalogIn::aInScanStart()
         mDoubleData = false;
         if (mCurOptions & MCC_SO_SCALEDATA) {
             mDoubleData = true;
+            mDoublePointer = true;
         }
         if (intBuffer) {
             delete[] intBuffer;
@@ -354,16 +355,24 @@ int FormAnalogIn::aInCheckParameters(QString &params)
     chan = mChanList.value(0);
     range = mRangeList.value(0);
     params = msProductID;
-    err = aInFunctions->mccAIn(params, mDevHandle,
-                chan, mAiMode, mAiFlags, range, dataValue);
+    if (mAiResolution > 16)
+        err = aInFunctions->mccAIn32(params, mDevHandle,
+                                     chan, mAiMode, mAiFlags, range, dataValue);
+    else
+        err = aInFunctions->mccAIn(params, mDevHandle,
+                                   chan, mAiMode, mAiFlags, range, dataValue);
     if (err != MCC_NOERRORS)
         return err;
 
     chan = mChanList.value(mChanList.count() - 1);
     range = mRangeList.value(mRangeList.count() - 1);
     params = msProductID;
-    err = aInFunctions->mccAIn(params, mDevHandle,
-                chan, mAiMode, mAiFlags, range, dataValue);
+    if (mAiResolution > 16)
+        err = aInFunctions->mccAIn32(params, mDevHandle,
+                                     chan, mAiMode, mAiFlags, range, dataValue);
+    else
+        err = aInFunctions->mccAIn(params, mDevHandle,
+                                   chan, mAiMode, mAiFlags, range, dataValue);
 
     return err;
 }
@@ -642,8 +651,12 @@ void FormAnalogIn::readInput()
         switch (mCurFunction) {
         case UL_AIN:
             mSampleIndex++;
-            err = aInFunctions->mccAIn(params, mDevHandle,
-                    chan, mAiMode, flagOpts, range, dataValue);
+            if (mAiResolution > 16)
+                err = aInFunctions->mccAIn32(params, mDevHandle,
+                                             chan, mAiMode, mAiFlags, range, dataValue);
+            else
+                err = aInFunctions->mccAIn(params, mDevHandle,
+                                           chan, mAiMode, flagOpts, range, dataValue);
             if (mDoublePointer)
                 dblBuffer[mSampleIndex] = dataValue;
             else
@@ -814,6 +827,8 @@ void FormAnalogIn::plotData()
 #ifdef Q_OS_WIN32
     double *bufData;
     bufData = (double*)mHandle;
+    DWORD *longData;
+    longData = (DWORD*)mHandle;
     WORD *intData;
     intData = (WORD*)mHandle;
 #else
@@ -842,8 +857,12 @@ void FormAnalogIn::plotData()
             bufIndex = samp + chan;
             if (mDoublePointer)
                 value = bufData[bufIndex];
-            else
-                value = intData[bufIndex];
+            else {
+                if (mAiResolution > 16)
+                    value = longData[bufIndex];
+                else
+                    value = intData[bufIndex];
+            }
             ui->plotOutput->graph(chan)->addData(index, value);
             if (mBufSize <= index) {
                 index = 0;
@@ -1323,6 +1342,7 @@ void FormAnalogIn::updateDevice()
     }
     ui->fraControl->setEnabled(true);
     cmdStopClicked();
+    mSubSysResolution = mAiResolution;
 }
 
 void FormAnalogIn::callClassConstructors()
