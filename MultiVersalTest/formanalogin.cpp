@@ -834,6 +834,8 @@ void FormAnalogIn::plotData()
 #else
     double *bufData;
     bufData = dblBuffer;
+    int *longData;
+    longData = intBuffer;
     int *intData;
     intData = intBuffer;
 #endif
