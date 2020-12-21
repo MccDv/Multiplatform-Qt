@@ -375,6 +375,7 @@ void FormMvDevice::getAiProperties()
         }
     }
 
+    configItem = 0;
     err = libMiscFunctions->mccAiGetInfo(params, mDevHandle, configItem, 0, configVal);
     if (err == MCC_NOERRORS)
         mAiResolution = configVal;

@@ -190,12 +190,16 @@ void MvTest::refreshChildMenu(FormMvDevice *childForm, MenuTypes menuType)
     case MENU_RANGE:
         if (childForm) {
             int curRange = childForm->getIntParam(IPARAM_RANGE);
+            bool validRangeSet = false;
             foreach (QAction *rangeAction, rangeGroup->actions()) {
                 if (rangeAction->data().toInt() == curRange) {
                     rangeAction->setChecked(true);
+                    validRangeSet = true;
                     break;
                 }
             }
+            if (!validRangeSet)
+                setChildRange(rangeGroup->checkedAction());
         }
         break;
     case MENU_PLOT:

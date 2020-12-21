@@ -841,7 +841,6 @@ void FormAnalogIn::plotData()
 #endif
 
     int index, curIndex, curStart, bufIndex, chan, samp;
-    index = 0;
     bool autoScale;
     double value;
 
@@ -850,7 +849,6 @@ void FormAnalogIn::plotData()
     if ((mPerChanRead == 0) & (mPlotIndex == 0))
         setupPlot(qCustomPlot);
 
-    chan = 0;
     index = mPlotIndex;
     curStart = mPerChanRead;
     curIndex = (curStart + mBlockSize);
@@ -1344,6 +1342,7 @@ void FormAnalogIn::updateDevice()
     }
     ui->fraControl->setEnabled(true);
     cmdStopClicked();
+
     mSubSysResolution = mAiResolution;
 }
 
