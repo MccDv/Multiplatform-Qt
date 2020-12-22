@@ -72,9 +72,9 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
         if (!devList.contains(uidKey)) {
             /*  Not an Instacal device - try to create and connect it
              *  Find an unused handle (linux doesn't use 0) */
-            tempHandle = 1;
-            if (LIB_PLATFORM == 1)
-                tempHandle = 0;
+            tempHandle = 0;
+            if (LIB_PLATFORM == MV_LINUX)
+                tempHandle = 1;
             uniqueHandle = false;
             while (!uniqueHandle) {
                 uniqueHandle = true;
@@ -85,11 +85,13 @@ int MccDiscover::updateInventory(QString &params, DaqDeviceInterface interfaceTy
                     }
                 }
             }
-            if (LIB_PLATFORM == 2) {
+            if (LIB_PLATFORM == MV_LINUX) {
                 int requestedHandle = tempHandle;
                 tempHandle = libDiscFunctions->mccCreateDaqDevice(params, requestedHandle, devDescriptors[discDev]);
                 if (tempHandle != requestedHandle)
                     continue;
+                devHandles.append(tempHandle);
+            } else {
                 devHandles.append(tempHandle);
             }
             err = libDiscFunctions->mccConnectDaqDevice(params, tempHandle, uidKey);

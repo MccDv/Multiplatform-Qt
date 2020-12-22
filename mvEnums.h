@@ -1,6 +1,10 @@
 #ifndef MVENUMS_H
 #define MVENUMS_H
 
+#define MV_WIN      1
+#define MV_LINUX    2
+#define MV_RPI      3
+
 typedef enum
 {
     FORM_NONE    =-1,

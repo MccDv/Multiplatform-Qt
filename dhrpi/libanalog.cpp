@@ -77,9 +77,17 @@ int LibAnalog::mccAIn(QString &params, DaqDeviceHandle deviceHandle,
                 .arg(data * multiplier, 0, 'f', prec);
 
     params = funcName + argString + funcName + argVals;
-    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(RESULT_SUCCESS));
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
     if(err == RESULT_SUCCESS)
         dataValue = data * multiplier;
+    return err;
+}
+
+int LibAnalog::mccAIn32(QString &params, DaqDeviceHandle deviceHandle, int channel, int iMode, int aiFlags, int Gain, double &dataValue)
+{
+    int err;
+
+    err = mccAIn(params, deviceHandle, channel, iMode, aiFlags, Gain, dataValue);
     return err;
 }
 
@@ -87,7 +95,21 @@ int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int low
                               int highChan, int inputMode, long samples, double &rate,
                               int range, int options, int flags, double *dblData)
 {
-    return 0;
+    int err;
+
+    params = "";
+    (void)deviceHandle;
+    (void)lowChan;
+    (void)highChan;
+    (void)inputMode;
+    (void)samples;
+    (void)range;
+    (void)options;
+    (void)flags;
+    (void)dblData;
+    rate = 0;
+    err = RESULT_SUCCESS;
+    return err;
 }
 
 int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,
@@ -112,6 +134,10 @@ int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int low
 int LibAnalog::mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -119,6 +145,13 @@ int LibAnalog::mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandle,
                                     int &status, long &curIndex, long &curCount)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    status = 0;
+    curIndex = 0;
+    curCount = 0;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -126,6 +159,14 @@ int LibAnalog::mccTIn(QString &params, DaqDeviceHandle deviceHandle,
                           int channel, TempScale scale, TInFlag flags, double &dataValue)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    (void)channel;
+    (void)scale;
+    (void)flags;
+    (void)dataValue;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -133,6 +174,15 @@ int LibAnalog::mccTInArray(QString &params, DaqDeviceHandle deviceHandle, int lo
                                int highChan, TempScale scale, TInArrayFlag flags, double *dataValue)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    (void)lowChan;
+    (void)highChan;
+    (void)scale;
+    (void)flags;
+    (void)dataValue;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -140,19 +190,47 @@ int LibAnalog::mccLoadQueue(QString &params, DaqDeviceHandle deviceHandle, QHash
                                 QHash<int, int> gainList, QHash<int, int> modeList, int numElements)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    (void)chanList;
+    (void)gainList;
+    (void)modeList;
+    (void)numElements;
+    err = RESULT_SUCCESS;
     return err;
 }
 
 int LibAnalog::mccAOut(QString &params, DaqDeviceHandle deviceHandle, int channel, int aoFlags, int Gain, double dataValue)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    (void)channel;
+    (void)aoFlags;
+    (void)Gain;
+    (void)dataValue;
+    err = RESULT_SUCCESS;
     return err;
 }
 
 int LibAnalog::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan, int highChan,
                                long samples, double &rate, int range, int options, int flags, double *dblData)
 {
-    int err, sampsPerChan;
+    int err;
+
+    params = "";
+    (void)deviceHandle;
+    (void)lowChan;
+    (void)highChan;
+    (void)samples;
+    (void)range;
+    (void)options;
+    (void)flags;
+    (void)dblData;
+    rate = 0;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -175,18 +253,25 @@ int LibAnalog::mccAOutScan(QString &params, DaqDeviceHandle deviceHandle, int lo
 int LibAnalog::mccAOutScanStop(QString &params, DaqDeviceHandle deviceHandle)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
 int LibAnalog::mccAOutScanStatus(QString &params, DaqDeviceHandle deviceHandle, int &status, long &curIndex, long &curCount)
 {
     int err;
+
+    params = "";
+    (void)deviceHandle;
+    status = 0;
+    curIndex = 0;
+    curCount = 0;
+    err = RESULT_SUCCESS;
     return err;
 }
-
-
-
-
 
 int LibAnalog::getNumAInChans(QString &params, uint16_t devType, int mode)
 {

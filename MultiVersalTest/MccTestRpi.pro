@@ -62,6 +62,7 @@ HEADERS += \
     ../formdiscover.h \
     ../formmvdevice.h \
     ../mccdiscover.h \
+    ../mvEnums.h \
     ../mvtest.h \
     ../dhrpi/libdiscover.h \
     ../dhrpi/libmisc.h \

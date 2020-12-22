@@ -1,7 +1,7 @@
 #ifndef LIBTYPES_H
 #define LIBTYPES_H
 
-#define LIB_PLATFORM    3
+#define LIB_PLATFORM    3   //MV_RPI
 #define MAX_DEV_COUNT  10
 
 typedef unsigned int UlNumDevs;

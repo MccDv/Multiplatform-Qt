@@ -272,6 +272,9 @@ void FormAnalogIn::aInStart()
     mSamplesPerChan = mPerChanDisplayed;
 
     mDoubleData = (mAiFlags != AIN_FF_NOSCALEDATA);
+    if (LIB_PLATFORM == MV_RPI) {
+        mDoubleData = ((mCurOptions && AIN_FF_NOSCALEDATA) == 0);
+    }
     //if ((!USING_WINDOWS) | (mCurFunction != UL_AINSCAN))
     isDoublePointer = true;
 
@@ -640,7 +643,7 @@ void FormAnalogIn::readInput()
     int range, flagOpts;
 
     flagOpts = mAiFlags;
-    if (LIB_PLATFORM == 3) {
+    if (LIB_PLATFORM == MV_RPI) {
         flagOpts = mCurOptions;
     }
     valueArray = new double[mChanCount];
@@ -653,7 +656,7 @@ void FormAnalogIn::readInput()
             mSampleIndex++;
             if (mAiResolution > 16)
                 err = aInFunctions->mccAIn32(params, mDevHandle,
-                                             chan, mAiMode, mAiFlags, range, dataValue);
+                                             chan, mAiMode, flagOpts, range, dataValue);
             else
                 err = aInFunctions->mccAIn(params, mDevHandle,
                                            chan, mAiMode, flagOpts, range, dataValue);

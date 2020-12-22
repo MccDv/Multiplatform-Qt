@@ -18,9 +18,9 @@ MvTest::MvTest(QWidget *parent)
     cDiscover = new MccDiscover;
     discoveryObj = cDiscover;
     callClassConstructors();
-    mShowWindows = (LIB_PLATFORM == 1);
-    mShowLinux = (LIB_PLATFORM == 2);
-    mShowRpi = (LIB_PLATFORM == 3);
+    mShowWindows = (LIB_PLATFORM == MV_WIN);
+    mShowLinux = (LIB_PLATFORM == MV_LINUX);
+    mShowRpi = (LIB_PLATFORM == MV_RPI);
     oneShotTimer = new QTimer(this);
     oneShotTimer->setSingleShot(true);
 
@@ -40,7 +40,7 @@ MvTest::MvTest(QWidget *parent)
     if (ui->actionIgnore_Instacal->isChecked())
         cDiscover->ignoreInstacal(params);
     ulVersion = libMiscFunctions->mccGetUlVersion(params);
-    ui->lblUlRev->setText("UL Rev: " + ulVersion);
+    ui->lblUlRev->setText("LibRev: " + ulVersion);
 
     connect(boardGroup, SIGNAL(triggered(QAction*)), this, SLOT(setCurrentDevice(QAction*)));
     connect(ui->cmdDiscover, SIGNAL(clicked(bool)), this, SLOT(createDiscChild()));
@@ -424,6 +424,7 @@ void MvTest::activeChildChanged(QMdiSubWindow* activeChild)
     FormTypes curChildType;
     int curFuncSelected, curRangeSelected;
 
+    curRangeSelected = 0;
     curChild = qobject_cast<ChildWindow*>(activeChild);
     if (curChild) {
         curChildType = curChild->getFormType();
@@ -440,8 +441,7 @@ void MvTest::activeChildChanged(QMdiSubWindow* activeChild)
         mCurChild = curChild;
         mCurTimerJob = tjChildStatus;
         oneShotTimer->start(100);
-    } else
-        curChildType = FORM_NONE;
+    }
     foreach (QAction *rangeAct, rangeGroup->actions()) {
         if (rangeAct->data().toInt() == curRangeSelected) {
             rangeAct->setChecked(true);

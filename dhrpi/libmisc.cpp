@@ -17,6 +17,54 @@ int LibMisc::mccIgnoreInstacal(QString &params)
 int LibMisc::mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, int flashCount)
 {
     int err;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    uint devType;
+    bool ok;
+
+    devType = 0;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+
+    hatName = testUtils->getHatTypeName(devType);
+    funcName = hatName.append(": BlinkLED");
+    argString = "(address, flashCount)\n";
+    switch (devType) {
+    case HAT_ID_MCC_118:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc118_blink_led(deviceHandle, flashCount);
+        break;
+#ifdef HAT_05
+    case HAT_ID_MCC_172:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc172_blink_led(deviceHandle, flashCount);
+        break;
+#endif
+#ifdef HAT_06
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_blink_led(deviceHandle, flashCount);
+        break;
+#endif
+    default:
+        argString = "(~)\n";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        argVals = "(~)";
+        break;
+    }
+
+    if(argVals == "")
+        argVals = QString("(%1, %2)")
+                .arg(deviceHandle)
+                .arg(flashCount);
+
+    params = funcName + argString + funcName + argVals;
+    miscErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
     return err;
 }
 
@@ -28,7 +76,7 @@ QString LibMisc::mccGetUlVersion(QString &params)
     QStringList cmdArgs;
 
     params = "";
-    cmdArgs << "--command" << "daqhats_version" << ">>" << "ver.txt";
+    cmdArgs << "--command" << "daqhats_version >> ver.txt";
     returnStr = "unknown";
     versionExe->start("lxterminal", cmdArgs); //
     if (versionFile.open(QIODevice::ReadOnly | QIODevice::Text)){
@@ -42,20 +90,70 @@ QString LibMisc::mccGetUlVersion(QString &params)
 
 QString LibMisc::mccGetUlErrorText(int errValue)
 {
-    QString errText;
-
-    return errText;
+    switch (errValue) {
+    case RESULT_SUCCESS:
+        return "SUCCESS (No error)";
+        break;
+    case RESULT_BAD_PARAMETER:
+        return "BAD_PARAMETER (Invalid parameter)";
+        break;
+    case RESULT_BUSY:
+        return "BUSY (Device is busy)";
+        break;
+    case RESULT_TIMEOUT:
+        return "TIMEOUT (Resource access timeout)";
+        break;
+    case RESULT_LOCK_TIMEOUT:
+        return "LOCK_TIMEOUT (Resource lock timeout)";
+        break;
+    case RESULT_INVALID_DEVICE:
+        return "INVALID_DEVICE (Wrong device type at address)";
+        break;
+    case RESULT_RESOURCE_UNAVAIL:
+        return "RESOURCE_UNAVAIL (Resource unavailable)";
+        break;
+    case RESULT_UNDEFINED:
+        return "UNDEFINED (Some other error -10)";
+        break;
+    default:
+        return QString("Invalid error code (%1)").arg(errValue);
+        break;
+    }
 }
 
 QString LibMisc::mccGetErrConstText(int errValue)
 {
-    return "NO_ERROR";
+    const char* errText;
+    QString returnText;
+    QString funcName, params;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+
+    funcName = "ErrorMessage";
+    argString = "(errorCode)\n";
+    sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+    errText = hat_error_message(errValue);
+    returnText = QString("%1").arg(errText);
+
+    argVals = QString("(%1)").arg(errValue);
+
+    params = funcName + argString + funcName + argVals;
+    miscErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(RESULT_SUCCESS));
+    return returnText;
 }
 
 int LibMisc::mccGetInfoStr(QString &params, int infoItem, unsigned int index,
                                char *infoValue, unsigned int &maxLen)
 {
     int err;
+
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)maxLen;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -63,6 +161,11 @@ int LibMisc::mccGetConfig(QString &params, int configItem, unsigned int index, l
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)infoValue;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -81,6 +184,11 @@ int LibMisc::mccSetConfig(QString &params, int configItem, unsigned int index, l
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)infoValue;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -89,6 +197,12 @@ int LibMisc::mccDevGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)deviceHandle;
+    (void)index;
+    (void)infoValue;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -97,6 +211,12 @@ int LibMisc::mccDevGetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)deviceHandle;
+    (void)index;
+    (void)infoValue;
+    (void)configItem;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -105,6 +225,13 @@ int LibMisc::mccDevGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    maxConfigLen = 0;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -113,6 +240,12 @@ int LibMisc::mccDevSetConfig(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -134,6 +267,12 @@ int LibMisc::mccAiGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -142,6 +281,12 @@ int LibMisc::mccAiGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -150,6 +295,12 @@ int LibMisc::mccAiGetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -158,6 +309,12 @@ int LibMisc::mccAiGetCfgDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -166,6 +323,13 @@ int LibMisc::mccAiGetCfgStr(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    maxConfigLen = 0;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -174,6 +338,12 @@ int LibMisc::mccAiSetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -182,6 +352,12 @@ int LibMisc::mccAoGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -190,6 +366,12 @@ int LibMisc::mccAoGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -198,6 +380,12 @@ int LibMisc::mccAoGetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -206,6 +394,12 @@ int LibMisc::mccAoSetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -214,6 +408,12 @@ int LibMisc::mccDioGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -222,6 +422,12 @@ int LibMisc::mccDioGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -230,6 +436,12 @@ int LibMisc::mccDioGetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -238,6 +450,12 @@ int LibMisc::mccDioSetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -246,6 +464,12 @@ int LibMisc::mccCtrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -254,6 +478,12 @@ int LibMisc::mccCtrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -262,6 +492,12 @@ int LibMisc::mccCtrGetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -270,6 +506,12 @@ int LibMisc::mccCtrSetCfg(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)configItem;
+    (void)index;
+    (void)configValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -278,6 +520,12 @@ int LibMisc::mccTmrGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -286,6 +534,12 @@ int LibMisc::mccTmrGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -294,6 +548,12 @@ int LibMisc::mccDaqInGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -302,6 +562,12 @@ int LibMisc::mccDaqInGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -310,6 +576,12 @@ int LibMisc::mccDaqOutGetInfo(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 
@@ -318,6 +590,12 @@ int LibMisc::mccDaqOutGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
 {
     int err;
 
+    params = "";
+    (void)infoItem;
+    (void)index;
+    (void)infoValue;
+    (void)deviceHandle;
+    err = RESULT_SUCCESS;
     return err;
 }
 

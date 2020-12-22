@@ -1,7 +1,7 @@
 #ifndef LIBTYPES_H
 #define LIBTYPES_H
 
-#define LIB_PLATFORM    1
+#define LIB_PLATFORM    1	//MV_WIN
 #include <QString>
 #include <QHash>
 

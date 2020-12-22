@@ -166,11 +166,12 @@ void FormDiscover::updateDevDetails()
         devStr = cDiscover->getDevString(uniqueIDStr);
         devHdlStr = QString("%1").arg(devHandle);
         msCurDevName = cDiscover->getBoardName(uniqueIDStr);
+        msProductID = "0x" + prodIDStr;
 
         tableText.append("<td>" + msCurDevName + "</td><td>[" + devHdlStr + "]</td></tr><tr>");
         tableText.append("<td>" + dStr + "</td><td>" + devStr + "</td></tr><tr>");
         tableText.append("<td>" + uidStr + "</td><td>" + uniqueIDStr + "</td></tr><tr>");
-        tableText.append("<td>" + pidStr + "</td><td>0x" + prodIDStr + "</td></tr><tr>");
+        tableText.append("<td>" + pidStr + "</td><td>" + msProductID + "</td></tr><tr>");
         tableText.append("<td>" + ifcStr + "</td><td>" + interfacStr + "</td></tr><tr>");
         ui->textEdit->setHtml(tableText);
 
@@ -268,6 +269,7 @@ void FormDiscover::flashLED()
     QString params;
     int err;
 
+    params = msProductID;
     err = ulMiscFunctions->mccFlashLed(params, mDevHandle, 4);
     if (err != MCC_NOERRORS)
         ui->lblInfo->setText(ulMiscFunctions->mccGetErrConstText(err));

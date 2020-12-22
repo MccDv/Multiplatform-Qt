@@ -34,6 +34,7 @@ private:
     DaqDeviceHandle mDevHandle;
     QString msUniqueId, msCurDevName;
     QString msMenuUId;
+    QString msProductID;
     QHash<QString, DaqDeviceHandle> devList;
 
     MvTest *getMainWindow();

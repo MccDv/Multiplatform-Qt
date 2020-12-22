@@ -14,10 +14,6 @@
 #include "errordialog.h"
 #include "mccdiscover.h"
 
-#define MV_WIN      1
-#define MV_LINUX    2
-#define MV_RPI      3
-
 //#include "../remotedialog.h"
 
 QT_BEGIN_NAMESPACE

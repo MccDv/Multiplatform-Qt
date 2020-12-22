@@ -345,6 +345,7 @@ void FormMvDevice::getDevProperties()
     if (aiChanCount > 0)
         getAiProperties();
 
+    configItem = 0;
     infoItems = libMiscFunctions->mccGetAoInfoItems();
     foreach (QString itemName, infoItems.values()) {
         if (itemName == "0:0:Num Chans") {
@@ -389,6 +390,8 @@ void FormMvDevice::getAoProperties()
     int resConfigItem, rangeConfigItem;
     QMap<int, QString> infoItems;
 
+    rangeConfigItem = 0;
+    resConfigItem = 0;
     infoItems = libMiscFunctions->mccGetAoInfoItems();
     foreach (QString itemName, infoItems.values()) {
         if (itemName == "0:0:Resolution")

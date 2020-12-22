@@ -46,34 +46,6 @@ int LibAnalog::mccAIn32(QString &params, DaqDeviceHandle deviceHandle, int chann
 
     err = mccAIn(params, deviceHandle, channel, iMode, aiFlags, Gain, dataValue);
     return err;
-
-    QString funcName, argString, argVals;
-    double data;
-    AiInputMode inputMode;
-    Range range;
-    AInFlag flags;
-    QTime t;
-    QString sStartTime;
-
-    inputMode = (AiInputMode)iMode;
-    range = (Range)Gain;
-    flags = (AInFlag)aiFlags;
-    funcName = "ulAIn";
-    argString = "(boardNum, Chan, inputMode, range, flags, &DataValue)\n";
-    sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
-    err = ulAIn(deviceHandle, channel, inputMode, range, flags, &data);
-    argVals = QString("(%1, %2, %3, %4, %5, %6)")
-            .arg(deviceHandle)
-            .arg(channel)
-            .arg(inputMode)
-            .arg(range)
-            .arg(flags)
-            .arg(data);
-
-    dataValue = data;
-    params = funcName + argString + funcName + argVals;
-    errorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
-    return err;
 }
 
 int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int lowChan,

@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QFile>
 #include "libTypes.h"
-//#include "ulenumlinux.h"
+#include "libutilities.h"
 #include "mvErrorMap.h"
 
 class LibMisc
@@ -109,6 +109,7 @@ public:
     QMap<int, QString> mccGetDaqOutInfoItems();
 
 private:
+    LibUtilities *testUtils;
 
 };
 

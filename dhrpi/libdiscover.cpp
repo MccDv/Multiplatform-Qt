@@ -52,9 +52,9 @@ int LibDiscover::mccGetDaqDeviceInventory(QString &params, DaqDeviceInterface
         std::string stAddr = sAddress.toStdString();
         chrAddress = new char[stAddr.size() + 1];
         strcpy(chrAddress, stAddr.c_str());
-        mccDescriptors->mccProductId = hatInfoList[hatDev].id;
-        strcpy(mccDescriptors->mccProductName, hatInfoList[hatDev].product_name);
-        strcpy(mccDescriptors->mccUniqueId, chrAddress);
+        mccDescriptors[hatDev].mccProductId = hatInfoList[hatDev].id;
+        strcpy(mccDescriptors[hatDev].mccProductName, hatInfoList[hatDev].product_name);
+        strcpy(mccDescriptors[hatDev].mccUniqueId, chrAddress);
     }
     numDescriptors = mNumHats;
     return MCC_NOERRORS;
