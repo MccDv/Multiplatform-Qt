@@ -41,6 +41,7 @@ SOURCES += \
     ../ulwin/libdiscover.cpp \
     ../ulwin/libmisc.cpp \
     ../ulwin/libutilities.cpp \
+    ../ulwin/libdigital.cpp \
     ../ulwin/libanalog.cpp \
     ../qcustomplot.cpp \
     ../queuedialog.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
     ../ulwin/libmisc.h \
     ../ulwin/libutilities.h \
     ../ulwin/mvErrorMap.h \
+    ../ulwin/libdigital.h \
     ../ulwin/libanalog.h \
     ../qcustomplot.h \
     ../queuedialog.h \

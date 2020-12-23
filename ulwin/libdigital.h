@@ -4,7 +4,7 @@
 #include <QString>
 #include "libTypes.h"
 #include "libenum.h"
-#include "MvErrorMap.h"
+#include "mvErrorMap.h"
 #include "libutilities.h"
 #include "mvtest.h"
 #include "../errordialog.h"

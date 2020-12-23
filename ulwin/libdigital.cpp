@@ -40,6 +40,7 @@ int LibDigital::mccDOutArray(QString &params, DaqDeviceHandle deviceHandle, int 
     (void)portLow;
     (void)portHigh;
     (void)dataValue;
+    err = MCC_NOERRORS;
     /*  TO DO
     QString funcName, argString, argVals;
     USHORT digValue;
@@ -120,6 +121,7 @@ int LibDigital::mccDInArray(QString &params, DaqDeviceHandle deviceHandle, int p
     (void)portLow;
     (void)portHigh;
     (void)dataValue;
+    err = MCC_NOERRORS;
     /*  TO DO
     QString funcName, argString, argVals;
     USHORT digValue;
