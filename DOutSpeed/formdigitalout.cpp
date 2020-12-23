@@ -56,9 +56,6 @@ void FormDigitalOut::cmdStartClicked()
     iterations = ui->leRateEstimate->text().toInt();
     elapsedTime = 0;
 
-    //mDataValHigh = 255;
-    //mDataValLow = 0;
-
     if (mbDoBits) {
         bitPort = MCC_FIRSTPORTA;
         if (mPortNum < 10)
@@ -86,6 +83,7 @@ void FormDigitalOut::cmdStartClicked()
                 outArrayLow[arrayElement] = mDataValLow;
                 outArrayHigh[arrayElement] = mDataValHigh;
             }
+            params = msProductID;
             lastArrayPort = mPortNum + mNumArrayPorts + 1;
             err = digitalFuncs->mccDOutArray(params, mDevHandle, mPortNum, lastArrayPort, outArrayLow);
             if (err != MCC_NOERRORS)
@@ -97,6 +95,7 @@ void FormDigitalOut::cmdStartClicked()
             }
             elapsedTime = funcTimer.elapsed() / 2;
         } else {
+            params = msProductID;
             err = digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValLow);
             if (err != MCC_NOERRORS) {
                 msg = libMiscFunctions->mccGetUlErrorText(err);
@@ -105,8 +104,10 @@ void FormDigitalOut::cmdStartClicked()
             }
             funcTimer.start();
             for (int i = 0; i < iterations; i++) {
-                err = digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValHigh);
-                err = digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValLow);
+                params = msProductID;
+                digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValHigh);
+                params = msProductID;
+                digitalFuncs->mccDOut(params, mDevHandle, mPortNum, mDataValLow);
             }
             elapsedTime = (funcTimer.elapsed()) / 2;
         }
@@ -247,12 +248,14 @@ bool FormDigitalOut::checkForDigital()
     bool validBoard;
     int firstBit, defaultPort, defaultNumBits;
     int channelType, numDIChans, portIOType;
+    QString params;
 
     validBoard = false;
     numDIChans = 1;
     channelType = PORTOUT;
     portIOType = PROGPORT;
-    numDIChans = digitalUtils->findPortsOfType(mDevHandle, channelType, portIOType, defaultPort, defaultNumBits, firstBit);
+    params = msProductID;
+    numDIChans = digitalUtils->findPortsOfType(params, mDevHandle, channelType, portIOType, defaultPort, defaultNumBits, firstBit);
     mNumPorts = numDIChans;
     if(numDIChans != 0) {
        validBoard = true;
@@ -286,14 +289,23 @@ void FormDigitalOut::configureOutputs(bool setOutputs)
     long long infoValue;
     QString params;
 
+    params = msProductID;
     direction = MCC_DIG_DIRIN;
     if (setOutputs)
         direction = MCC_DIG_DIROUT;
     for (i = 0; i < mNumPorts; i++) {
-        err = libMiscFunctions->mccDioGetInfo(params, mDevHandle, MCC_DIG_DEVTYPE, i, infoValue);
-        if (err == MCC_NOERRORS)
-            portNum = infoValue;
+        if (LIB_PLATFORM == MV_RPI) {
+            params = msProductID;
+            portNum = DIO_CFG_PORT_DIRECTION_MASK;
+        } else {
+            portNum = 0;
+            err = libMiscFunctions->mccDioGetInfo(params, mDevHandle, MCC_DIG_DEVTYPE, i, infoValue);
+            if (err == MCC_NOERRORS)
+                portNum = infoValue;
+        }
         err = digitalFuncs->mccDConfigPort(params, mDevHandle, portNum, direction);
+        if (err != MCC_NOERRORS)
+            ui->lblStatus->setText(libMiscFunctions->mccGetUlErrorText(err));
     }
 }
 

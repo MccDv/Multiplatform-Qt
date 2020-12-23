@@ -24,7 +24,7 @@ class DigitalUtility
 public:
     DigitalUtility(LibMisc *miscFuncs);
 
-    int findPortsOfType(DaqDeviceHandle devHandle, int portType, int &progAbility, int &defaultPort, int &defaultNumBits, int &firstBit);
+    int findPortsOfType(QString &params, DaqDeviceHandle devHandle, int portType, int &progAbility, int &defaultPort, int &defaultNumBits, int &firstBit);
     int getBitOffset(DaqDeviceHandle devHandle, int portIndex);
 
 private:

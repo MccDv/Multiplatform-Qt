@@ -18,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += "dhrpi/"
+INCLUDEPATH += "../dhrpi/"
 INCLUDEPATH += "../"
 
 # MCC 128 development: HAT_06
@@ -87,5 +87,5 @@ INCLUDEPATH += $$PWD/../../../../opt/qtrpi/raspbian/sysroot-minimal/usr/include/
 DEPENDPATH += $$PWD/../../../../opt/qtrpi/raspbian/sysroot-minimal/usr/include/daqhats
 
 RESOURCES += \
-    resource/UnitestWin.qrc
+    ../resource/UnitestWin.qrc \
     DOutSpeed.qrc

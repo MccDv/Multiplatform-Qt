@@ -5,7 +5,7 @@ DigitalUtility::DigitalUtility(LibMisc *miscFuncs)
     libMiscFuncs = miscFuncs;
 }
 
-int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int &progAbility, int &defaultPort, int &defaultNumBits, int &firstBit)
+int DigitalUtility::findPortsOfType(QString &params, DaqDeviceHandle devHandle, int portType, int &progAbility, int &defaultPort, int &defaultNumBits, int &firstBit)
 {
     int numPorts;
     int portsFound, numBits;
@@ -16,9 +16,10 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
     bool portIsCompatible;
     bool digTypeExists;
     long long infoValue, configValue;
-    QString params, connectionConflict;
+    QString connectionConflict, devType;
 
     portsFound = 0;
+    devType = params;
     err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_NUMDEVS, 0, infoValue);
     numPorts = infoValue;
     if (err != MCC_NOERRORS)
@@ -34,6 +35,7 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
         if (numPorts > 0) {
             //check scan capability by trial and error with error handling disabled
             if (portType == PORTOUTSCAN) {
+                params = devType;
                 err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_DAQONUMCHANTYPES, 0, configValue);
                 configVal = configValue;
                 digTypeExists = false;
@@ -41,6 +43,7 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
                     numPorts = 0;
                 else {
                     for (i = 0; i < configVal; i++) {
+                        params = devType;
                         err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_DAQOCHANTYPE, 0, configValue);
                         typeNum = configValue;
                         if (typeNum == 1)
@@ -66,8 +69,8 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
         case MV_WIN:
             err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_PORTIOTYPE, dioDev, configValue);
             break;
-        case MV_LINUX:
         default:
+            params = devType;
             err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_PORTIOTYPE, dioDev, configValue);
             break;
         }
@@ -80,8 +83,8 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
         case MV_WIN:
             err = libMiscFuncs->mccDioGetCfg(params, devHandle, MCC_DIG_DEVTYPE, dioDev, configValue);
             break;
-        case MV_LINUX:
         default:
+            params = devType;
             err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_DEVTYPE, dioDev, configValue);
         }
         if (err == MCC_NOERRORS)
@@ -120,6 +123,7 @@ int DigitalUtility::findPortsOfType(DaqDeviceHandle devHandle, int portType, int
                 if (progAbility == FIXEDPORT)
                     params = "FIXEDPORT";
                 libMiscFuncs->setPortDirInfo(portType);
+                params = devType;
                 err = libMiscFuncs->mccDioGetInfo(params, devHandle, MCC_DIG_NUMBITS, dioDev, infoValue);
                 numBits = infoValue;
                 defaultNumBits = numBits;

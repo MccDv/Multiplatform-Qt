@@ -15,6 +15,7 @@ public:
 
     LibMisc();
 
+    void setPortDirInfo(int portDirType);
     int mccIgnoreInstacal(QString &params);
     int mccFlashLed(QString &params, DaqDeviceHandle deviceHandle, int flashCount);
     QString mccGetUlVersion(QString &params);
@@ -111,6 +112,7 @@ public:
 private:
     LibUtilities *testUtils;
 
+    int mPortDirType;
 };
 
 #endif // LIBMISC_H

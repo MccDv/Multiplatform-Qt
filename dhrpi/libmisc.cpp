@@ -407,13 +407,66 @@ int LibMisc::mccDioGetInfo(QString &params, DaqDeviceHandle deviceHandle,
                                int infoItem, unsigned int index, long long &infoValue)
 {
     int err;
-
-    params = "";
-    (void)infoItem;
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    uint devType;
+    (void)deviceHandle;
     (void)index;
     (void)infoValue;
-    (void)deviceHandle;
-    err = RESULT_SUCCESS;
+    int numChans;
+    bool ok;
+
+    devType = 0;
+    numChans = 0;
+    infoValue = 0;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+    switch (devType) {
+    case HAT_ID_MCC_152:
+        hatName = testUtils->getHatTypeName(devType);
+        switch (infoItem) {
+#ifdef HAT_05
+        case MCC_DIG_NUMDEVS:
+            funcName = hatName.append(": numDioChans");
+            argString = "() = dioChans\n";
+            sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+            numChans = mcc152_info()->NUM_DIO_CHANNELS;
+            if (numChans > 0)
+                infoValue = 1;
+            break;
+        case MCC_DIG_PORTIOTYPE:
+            infoValue = DPIOT_BITIO;
+            break;
+        case MCC_DIG_NUMBITS:
+            funcName = hatName.append(": numDioChans");
+            argString = "() = dioChans\n";
+            sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+            numChans = mcc152_info()->NUM_DIO_CHANNELS;
+            infoValue = numChans;
+            break;
+#endif  //HAT_05
+        default:
+            break;
+        }
+        break;
+    default:
+        argString = "(~) = dioChans\n";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        numChans = 0;
+        argVals = "(~) = ~0";
+        break;
+    }
+
+    if(argVals == "")
+        argVals = QString(" = %1")
+                .arg(numChans);
+
+    params = funcName + argString + funcName + argVals;
+    miscErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
     return err;
 }
 
@@ -597,6 +650,11 @@ int LibMisc::mccDaqOutGetInfoDbl(QString &params, DaqDeviceHandle deviceHandle,
     (void)deviceHandle;
     err = RESULT_SUCCESS;
     return err;
+}
+
+void LibMisc::setPortDirInfo(int portDirType)
+{
+    mPortDirType = portDirType;
 }
 
 /*  Map parameters start with #:#:. The first number indicates index applies

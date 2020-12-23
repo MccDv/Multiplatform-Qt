@@ -528,14 +528,12 @@ double LibAnalog::getAInVoltsMax(QString &params, uint16_t devType, uint8_t inde
     QTime t;
     QString sStartTime;
     QString hatName;
-    int prec;
     double maxVolts;
 
     (void)index;
     hatName = testUtils->getHatTypeName(devType);
     funcName = hatName.append(": aInMaxVolts");
     argString = "() = maxVolts\n";
-    prec = 6;
     switch (devType) {
     case HAT_ID_MCC_118:
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
@@ -543,21 +541,18 @@ double LibAnalog::getAInVoltsMax(QString &params, uint16_t devType, uint8_t inde
         break;
 #ifdef HAT_03
     case HAT_ID_MCC_134:
-        prec = 9;
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = (mcc134_info()->AI_MAX_VOLTAGE) * 1000;
         break;
 #endif
 #ifdef HAT_05
     case HAT_ID_MCC_172:
-        prec = 12;
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = mcc172_info()->AI_MAX_VOLTAGE;
         break;
 #endif
 #ifdef HAT_06
     case HAT_ID_MCC_128:
-        prec = 12;
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         maxVolts = mcc128_info()->AI_MAX_VOLTAGE[index];
         break;
@@ -582,14 +577,12 @@ double LibAnalog::getAInVoltsMin(QString &params, uint16_t devType, uint8_t inde
     QTime t;
     QString sStartTime;
     QString hatName;
-    int prec;
     double minVolts;
 
     (void)index;
     hatName = testUtils->getHatTypeName(devType);
     funcName = hatName.append(": aInMinVolts");
     argString = "() = minVolts\n";
-    prec = 6;
     switch (devType) {
     case HAT_ID_MCC_118:
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
@@ -597,21 +590,18 @@ double LibAnalog::getAInVoltsMin(QString &params, uint16_t devType, uint8_t inde
         break;
 #ifdef HAT_03
     case HAT_ID_MCC_134:
-        prec = 9;
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = (mcc134_info()->AI_MIN_VOLTAGE) * 1000;
         break;
 #endif
 #ifdef HAT_05
     case HAT_ID_MCC_172:
-        prec = 12;
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = mcc172_info()->AI_MIN_VOLTAGE;
         break;
 #endif
 #ifdef HAT_06
     case HAT_ID_MCC_128:
-        prec = 12;
         sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
         minVolts = mcc128_info()->AI_MIN_VOLTAGE[index];
         break;

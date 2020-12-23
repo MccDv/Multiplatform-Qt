@@ -33,46 +33,45 @@ DEFINES += USE_AIN
 SOURCES += \
     ../childwindow.cpp \
     ../errordialog.cpp \
-    formanalogin.cpp \
     ../formdiscover.cpp \
     ../formmvdevice.cpp \
     ../main.cpp \
     ../mccdiscover.cpp \
     ../mvtest.cpp \
-    ../qcustomplot.cpp \
-    ../queuedialog.cpp \
-    ../ulwin/libanalog.cpp \
     ../ulwin/libdiscover.cpp \
     ../ulwin/libmisc.cpp \
-    ../ulwin/libdigital.cpp \
-    ../ulwin/libutilities.cpp
+    ../ulwin/libutilities.cpp \
+    ../ulwin/libanalog.cpp \
+    ../qcustomplot.cpp \
+    ../queuedialog.cpp \
+    formanalogin.cpp
 
 HEADERS += \
     ../childwindow.h \
     ../errordialog.h \
-    formanalogin.h \
+    ../mvEnums.h \
     ../formdiscover.h \
     ../formmvdevice.h \
     ../mccdiscover.h \
     ../mvtest.h \
-    ../qcustomplot.h \
-    ../queuedialog.h \
     ../ulwin/libTypes.h \
-    ../ulwin/libanalog.h \
     ../ulwin/libdiscover.h \
     ../ulwin/libenum.h \
     ../ulwin/libmisc.h \
     ../ulwin/libutilities.h \
-    ../ulwin/libdigital.h \
-    ../ulwin/mvErrorMap.h
+    ../ulwin/mvErrorMap.h \
+    ../ulwin/libanalog.h \
+    ../qcustomplot.h \
+    ../queuedialog.h \
+    formanalogin.h
 
 FORMS += \
     ../errordialog.ui \
-    formanalogin.ui \
     ../formdiscover.ui \
     ../formmvdevice.ui \
     ../mvtest.ui \
-    ../queuedialog.ui
+    ../queuedialog.ui \
+    formanalogin.ui
 
 INCLUDEPATH += $$PWD/../../DAQ/C
 DEPENDPATH += $$PWD/../../DAQ/C

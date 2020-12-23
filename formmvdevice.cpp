@@ -329,6 +329,7 @@ void FormMvDevice::getDevProperties()
     int aoChanCount = 0;
     QMap<int, QString> infoItems;
 
+    configItem = 0;
     infoItems = libMiscFunctions->mccGetAiInfoItems();
     foreach (QString itemName, infoItems.values()) {
         if (itemName == "0:0:Num Chans") {

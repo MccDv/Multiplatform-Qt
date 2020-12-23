@@ -41,24 +41,25 @@ SOURCES += \
     ../ullinux/libdiscover.cpp \
     ../ullinux/libmisc.cpp \
     ../ullinux/libutilities.cpp \
+    ../ullinux/libanalog.cpp \
     ../qcustomplot.cpp \
     ../queuedialog.cpp \
-    ../ullinux/libanalog.cpp \
     formanalogin.cpp
 
 HEADERS += \
     ../childwindow.h \
     ../errordialog.h \
+    ../mvEnums.h \
     ../formdiscover.h \
     ../formmvdevice.h \
     ../mccdiscover.h \
     ../mvtest.h \
+    ../ullinux/libTypes.h \
     ../ullinux/libdiscover.h \
+    ../ullinux/libenum.h \
     ../ullinux/libmisc.h \
     ../ullinux/libutilities.h \
     ../ullinux/mvErrorMap.h \
-    ../ullinux/libenum.h \
-    ../ullinux/libTypes.h \
     ../ullinux/libanalog.h \
     ../qcustomplot.h \
     ../queuedialog.h \

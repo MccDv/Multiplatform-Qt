@@ -3,6 +3,37 @@
 
 #include "daqhats.h"
 
+#define MCC_DIG_NUMDEVS         501
+#define MCC_DIG_DEVTYPE         502
+#define MCC_DIG_NUMBITS         503
+#define MCC_DIG_PORTIOTYPE      504
+#define MCC_DIG_DIRIN           1
+#define MCC_DIG_DIROUT          0
+
+#define MCC_DIG_DAQINUMCHANTYPES    601
+#define MCC_DIG_DAQICHANTYPE        0
+#define MCC_DIG_DAQONUMCHANTYPES    602
+#define MCC_DIG_DAQOCHANTYPE        0
+
+#define DIO_CFG_PORT_DIRECTION_MASK DIO_DIRECTION
+
+typedef enum
+{
+    DPIOT_IN = 1,		/** Fixed input port */
+    DPIOT_OUT = 2,		/** Fixed output port */
+    DPIOT_IO = 3,		/** Bidirectional (input or output) port */
+    DPIOT_BITIO = 4,	/** Bitwise configurable */
+    DPIOT_NONCONFIG = 5	/** Bidirectional (input or output) port; configuration is not required. */
+} DigitalPortIoType;
+
+typedef enum
+{
+    MCC_AUXPORT = 0,
+    MCC_FIRSTPORTA = 1,
+    MCC_FIRSTPORTCL = 2,
+    MCC_FIRSTPORTCH = 3
+} MccDigitalPortType;
+
 typedef enum
 {
     MCC_BIP10VOLTS      = A_IN_RANGE_BIP_10V,

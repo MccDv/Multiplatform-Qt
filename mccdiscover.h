@@ -6,6 +6,7 @@
 #include <QList>
 #include "libTypes.h"
 #include "mvErrorMap.h"
+#include "mvEnums.h"
 
 #include "libdiscover.h"
 #include "libmisc.h"

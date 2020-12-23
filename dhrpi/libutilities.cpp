@@ -147,8 +147,13 @@ QString LibUtilities::getInfoDescription(int infoType, int infoItem,
      *  function. If infoValue is not an int, it's ignored.      */
 
     QString indexName;
+    (void)infoType;
+    (void)infoItem;
+    (void)infoValue;
+    (void)index;
 
     indexName = "";
+    return "";
 }
 
 QString LibUtilities::getInfoDblDescription(int infoType, int infoItem,
@@ -207,6 +212,11 @@ QString LibUtilities::getConfigDescription(int infoType, int configItem,
      *  function. If configValue is not an int, it's ignored.      */
 
     QString indexName;
+    (void)infoType;
+    (void)configItem;
+    (void)configValue;
+    (void)index;
+    return "";
 
     indexName = "";
     return indexName;
@@ -257,6 +267,8 @@ QString LibUtilities::getConfigStrDescription(int infoType, int configItem, unsi
      *  function.         */
 
     QString indexName;
+    (void)configItem;
+    (void)index;
 
     indexName = "";
     switch (infoType) {
@@ -285,6 +297,7 @@ QString LibUtilities::getConfigStrDescription(int infoType, int configItem, unsi
 
 QString LibUtilities::getFirmwareNames(int fwType)
 {
+    (void)fwType;
     return "Main";
 }
 
@@ -306,6 +319,7 @@ QString LibUtilities::getRangeName(int rangeVal)
 
 QString LibUtilities::getAiChanTypeName(int chanType)
 {
+    (void)chanType;
     return "ChanType";
 }
 
@@ -325,6 +339,7 @@ QString LibUtilities::getAiInputModeName(int inMode)
 
 QString LibUtilities::getAiCalTableTypeName(int tableType)
 {
+    (void)tableType;
     return "";
 }
 
@@ -343,6 +358,7 @@ QString LibUtilities::getAiCalTableName(int index)
 
 QString LibUtilities::getAiRejFreqName(int rejType)
 {
+    (void)rejType;
     return "";
 }
 
@@ -389,17 +405,20 @@ QString LibUtilities::getDaqIChanTypeNames(int typeNum)
 
 QString LibUtilities::getAoSyncModeName(int syncMode)
 {
+    (void)syncMode;
     return "Invalid";
 }
 
 QString LibUtilities::getDaqOChanTypeNames(int typeNum)
 {
-    int mask;
+    (void)typeNum;
+    //int mask;
     return 0;
 }
 
 QString LibUtilities::getTempUnitName(int tempUnit)
 {
+    (void)tempUnit;
     return "Celsius";
 }
 
@@ -425,14 +444,16 @@ QString LibUtilities::getTrigTypeNames(int trigType)
 
 QString LibUtilities::getQueueTypeNames(int queueTypes)
 {
-    int mask;
+    (void)queueTypes;
+    //int mask;
 
     return "queue";
 }
 
 QString LibUtilities::getQueueLimitNames(int queueLimits)
 {
-    return 0;
+    (void)queueLimits;
+    return "";
 }
 
 QString LibUtilities::getDigitalDirection(int digDir)
@@ -449,16 +470,19 @@ QString LibUtilities::getDigitalDirection(int digDir)
 
 QString LibUtilities::getDioPortTypeName(int typeNum)
 {
+    (void)typeNum;
     return "PortType";
 }
 
 QString LibUtilities::getDioPortTypeDesig(int typeNum)
 {
+    (void)typeNum;
     return "1A";
 }
 
 QString LibUtilities::getDPortIoTypeName(int ioType)
 {
+    (void)ioType;
     return "PortIOType";
 }
 
@@ -490,17 +514,19 @@ QString LibUtilities::getCtrTypeName(int ctrType)
 
 QString LibUtilities::getCtrMeasTypeNames(int typeNum)
 {
-    int mask;
-    int maskedVal;
-    QString chanName;
+    (void)typeNum;
+    //int mask;
+    //int maskedVal;
+    //QString chanName;
 
     return "";
 }
 
 QString LibUtilities::getCtrRegTypeNames(int regType)
 {
-    int mask;
-    int maskedVal;
+    (void)regType;
+    //int mask;
+    //int maskedVal;
     QString regName;
 
     regName += "Invalid RegType";
@@ -509,9 +535,10 @@ QString LibUtilities::getCtrRegTypeNames(int regType)
 
 QString LibUtilities::getCtrMeasModeNames(int modeNum)
 {
-    int mask;
-    int maskedVal;
-    QString modeName;
+    (void)modeNum;
+    //int mask;
+    //int maskedVal;
+    //QString modeName;
 
     return "Default";
 
@@ -519,17 +546,20 @@ QString LibUtilities::getCtrMeasModeNames(int modeNum)
 
 QString LibUtilities::getTmrTypeName(int tmrType)
 {
+    (void)tmrType;
     return "Standard";
 }
 
 QString LibUtilities::getEventNames(int eventMask)
 {
+    (void)eventMask;
     return "EventType";
 }
 
 QString LibUtilities::getRegionNames(int memRegion)
 {
-    QString regionNames;
+    (void)memRegion;
+    //QString regionNames;
 
     return "MemRegion";
 }
