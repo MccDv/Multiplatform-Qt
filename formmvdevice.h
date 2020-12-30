@@ -97,9 +97,12 @@ protected:
 
     void setupPlot(QCustomPlot *dataPlot);
     void updatePlot(QCustomPlot *dataPlot, bool autoScale);
-    void initPlotCtlProps();
+    void initPlotCtlProps(QCustomPlot *dataPlot, bool autoScale);
     void replot(QCustomPlot *dataPlot, bool autoScale);
     void plotXLengthConfig(QCustomPlot *dataPlot, bool autoScale);
+
+protected slots:
+    //void plotSelect(QCustomPlot *dataPlot, bool autoScale);
 
 signals:
     void intEnumChanged(int paramEnum, int paramValue);

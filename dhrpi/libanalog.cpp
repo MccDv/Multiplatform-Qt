@@ -95,20 +95,53 @@ int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int low
                               int highChan, int inputMode, long samples, double &rate,
                               int range, int options, int flags, double *dblData)
 {
+    QString funcName, argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    uint devType;
+    bool ok;
+    uint8_t address, chanMask;
+    uint32_t samplesPerChan, scanOptions;
     int err;
 
-    params = "";
-    (void)deviceHandle;
-    (void)lowChan;
-    (void)highChan;
-    (void)inputMode;
-    (void)samples;
-    (void)range;
-    (void)options;
-    (void)flags;
-    (void)dblData;
-    rate = 0;
-    err = RESULT_SUCCESS;
+    devType = 0;
+    chanMask = lowChan;
+    samplesPerChan = samples;
+    scanOptions = options;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+    address = deviceHandle;
+    hatName = testUtils->getHatTypeName(devType);
+    funcName = hatName.append(": AInScanStart");
+    argString = "(mAddress, chanMask, mSamplesPerChan, &rate, mScanOptions)\n";
+    sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+    switch (devType) {
+    case HAT_ID_MCC_118:
+        err = mcc118_a_in_scan_start(address, chanMask, samplesPerChan, rate, scanOptions);
+        break;
+#ifdef HAT_06
+    case HAT_ID_MCC_128:
+        err = mcc128_a_in_scan_start(address, chanMask, samplesPerChan, rate, scanOptions);
+        break;
+#endif //HAT_06
+    default:
+        argString = "(~)\n";
+        err = RESULT_INVALID_DEVICE;
+        argVals = "(~)";
+        break;
+    }
+
+    argVals = QStringLiteral("(%1, %2, %3, %4, %5)")
+            .arg(address)
+            .arg(chanMask)
+            .arg(samplesPerChan)
+            .arg(rate)
+            .arg(scanOptions);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
     return err;
 }
 
@@ -133,25 +166,169 @@ int LibAnalog::mccAInScan(QString &params, DaqDeviceHandle deviceHandle, int low
 
 int LibAnalog::mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle)
 {
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    uint devType;
+    bool ok;
+    uint8_t address;
     int err;
 
-    params = "";
-    (void)deviceHandle;
-    err = RESULT_SUCCESS;
+    devType = 0;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+    hatName = testUtils->getHatTypeName(devType);
+    address = deviceHandle;
+    funcName = hatName.append(": AInScanStop");
+    argString = "(mAddress)\n";
+
+    argVals = QString("(%1)").arg(address);
+    switch (devType) {
+    case HAT_ID_MCC_118:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc118_a_in_scan_stop(address);
+        break;
+#ifdef HAT_05
+    case HAT_ID_MCC_172:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc172_a_in_scan_stop(address);
+        break;
+#endif
+#ifdef HAT_06
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_scan_stop(address);
+        break;
+#endif
+    default:
+        argString = "(~)\n";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        argVals = "(~)";
+        break;
+    }
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    return err;
+}
+
+int LibAnalog::mccAInScanCleanup(QString &params, DaqDeviceHandle deviceHandle)
+{
+    QString funcName, argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    uint devType;
+    bool ok;
+    uint8_t address;
+    int err;
+
+    devType = 0;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+    address = deviceHandle;
+    hatName = testUtils->getHatTypeName(devType);
+    funcName = hatName.append(": AInScanCleanup");
+    argString = "(address)\n";
+    argVals = QStringLiteral("(%1)").arg(address);
+    switch (devType) {
+    case HAT_ID_MCC_118:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc118_a_in_scan_cleanup(address);
+        break;
+#ifdef HAT_05
+    case HAT_ID_MCC_172:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc172_a_in_scan_cleanup(address);
+        break;
+#endif
+#ifdef HAT_06
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_scan_cleanup(address);
+        break;
+#endif
+    default:
+        argString = "(~)\n";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        argVals = "(~)";
+        break;
+    }
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
     return err;
 }
 
 int LibAnalog::mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandle,
                                     int &status, long &curIndex, long &curCount)
 {
+    QString funcName;
+    QString argString, argVals;
+    QTime t;
+    QString sStartTime;
+    QString hatName;
+    uint devType;
+    uint8_t address;
+    uint16_t statReturned;
+    uint32_t numRead;
     int err;
+    bool ok;
 
-    params = "";
-    (void)deviceHandle;
-    status = 0;
+    status = statReturned;
+    curCount = numRead;
     curIndex = 0;
-    curCount = 0;
-    err = RESULT_SUCCESS;
+    devType = 0;
+    if (params.contains("0x"))
+        devType = params.mid(params.indexOf("0x") + 2).toInt(&ok, 16);
+
+    hatName = testUtils->getHatTypeName(devType);
+    address = deviceHandle;
+    funcName = hatName.append(": AInScanStatus");
+    argString = "(mAddress, status, samplesAvailable)\n";
+    switch (devType) {
+    case HAT_ID_MCC_118:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc118_a_in_scan_status(address, &statReturned, &numRead);
+        break;
+#ifdef HAT_05
+    case HAT_ID_MCC_172:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc172_a_in_scan_status(address, &statReturned, &numRead);
+        break;
+#endif
+#ifdef HAT_06
+    case HAT_ID_MCC_128:
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = mcc128_a_in_scan_status(address, &statReturned, &numRead);
+        break;
+#endif
+    default:
+        argString = "(~)\n";
+        sStartTime = t.currentTime().toString("hh:mm:ss.zzz") + "\n";
+        err = RESULT_INVALID_DEVICE;
+        argVals = "(~)";
+        break;
+    }
+
+    if(argVals == "")
+        argVals = QString("(%1, %2, %3)")
+                .arg(address)
+                .arg(statReturned)
+                .arg(numRead);
+
+    params = funcName + argString + funcName + argVals;
+    hatAnalogErrorDialog->addFunction(sStartTime + params + QString("\n%1").arg(err));
+    if(err == RESULT_SUCCESS) {
+        status = statReturned;
+        curCount = numRead;
+    }
     return err;
 }
 

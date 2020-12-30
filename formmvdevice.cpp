@@ -79,10 +79,12 @@ int FormMvDevice::getIntParam(int paramEnum)
     return intParams.value(paramEnum, 0);
 }
 
-void FormMvDevice::initPlotCtlProps()
+void FormMvDevice::initPlotCtlProps(QCustomPlot *dataPlot, bool autoScale)
 {
-#ifdef USES_PLOT
-
+#ifndef USES_PLOT
+    (void)dataPlot;
+    (void)autoScale;
+#else
     mFontHTML[0] = " <font color=blue>";
     mFontHTML[1] = " <font color=red>";
     mFontHTML[2] = " <font color=green>";
@@ -93,7 +95,7 @@ void FormMvDevice::initPlotCtlProps()
     mFontHTML[7] = " <font color=black>";
 
     for (int i = 0; i < 8; i++) {
-        connect(rbPlotSel[i], SIGNAL(clicked(bool)), this, SLOT(plotSelect()));
+        //connect(rbPlotSel[i], SIGNAL(clicked(bool)), this, SLOT(plotSelect(dataPlot, autoScale)));
         rbPlotSel[i]->setVisible(false);
         rbPlotLabels[i]->setVisible(false);
     }
@@ -293,8 +295,7 @@ void FormMvDevice::replot(QCustomPlot *dataPlot, bool autoScale)
     updatePlot(dataPlot, autoScale);
 }
 
-/*
-void FormMvDevice::plotSelect(QCustomPlot *dataPlot, bool autoScale)
+/*void FormMvDevice::plotSelect(QCustomPlot *dataPlot, bool autoScale)
 {
     int ctlIndex;
 
@@ -303,8 +304,7 @@ void FormMvDevice::plotSelect(QCustomPlot *dataPlot, bool autoScale)
         dataPlot->graph(ctlIndex)->setVisible(rbPlotSel[ctlIndex]->isChecked());
     }
     updatePlot(dataPlot, autoScale);
-}
-*/
+}*/
 
 void FormMvDevice::plotXLengthConfig(QCustomPlot *dataPlot, bool autoScale)
 {

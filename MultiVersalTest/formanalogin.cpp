@@ -157,6 +157,12 @@ void FormAnalogIn::aInScanStart()
         setupPlot(qCustomPlot);
 
     if (LIB_PLATFORM != MV_WIN) {
+        int chanMask = mFirstChan;
+        if (LIB_PLATFORM == MV_RPI) {
+            for (int chan = mFirstChan; chan < mChanCount; chan++){
+                chanMask |= (1 << chan);
+            }
+        }
         if (dblBuffer) {
             delete[] dblBuffer;
             dblBuffer = NULL;
@@ -165,7 +171,8 @@ void FormAnalogIn::aInScanStart()
         dblBuffer = new double[bufSize];
         memset(dblBuffer, 0, mBufSize * sizeof(*dblBuffer));
 
-        err = aInFunctions->mccAInScan(params, mDevHandle, mFirstChan, mLastChan,
+        params = msProductID;
+        err = aInFunctions->mccAInScan(params, mDevHandle, chanMask, mLastChan,
                                        mAiMode, mSamplesPerChan, rate, range, mCurOptions, flags, dblBuffer);
     } else {
         mDoublePointer = false;
@@ -200,6 +207,7 @@ void FormAnalogIn::aInScanStart()
         cmdStopClicked();
         return;
     }
+    params = msProductID;
     err = aInFunctions->mccAInScanStatus(params, mDevHandle, status, curIndex, curCount);
     if (err == MCC_NOERRORS)
         mRunning = true;
@@ -215,6 +223,7 @@ void FormAnalogIn::checkScanStatus()
 
     resetIndex = false;
     pacerEmulator->stop();
+    params = msProductID;
     err = aInFunctions->mccAInScanStatus(params, mDevHandle, status, curIndex, curCount);
     if (err != MCC_NOERRORS) {
         ui->lblError->setText(libMiscFunctions->mccGetUlErrorText(err));
@@ -750,10 +759,13 @@ void FormAnalogIn::stopScan()
     mNumScans = 1;
     oneShotTimer->stop();
     if (mCurFunction == UL_AINSCAN) {
+        params = msProductID;
         err = aInFunctions->mccAInScanStop(params, mDevHandle);
         if (err != MCC_NOERRORS)
             ui->lblError->setText(libMiscFunctions->mccGetUlErrorText(err));
         mRunning = false;
+        params = msProductID;
+        err = aInFunctions->mccAInScanCleanup(params, mDevHandle);
     }
 }
 
@@ -1082,6 +1094,9 @@ void FormAnalogIn::plotSelect()
 
 void FormAnalogIn::initializePlotControls()
 {
+    bool autoScale;
+
+    autoScale = ui->rbAutoScale->isChecked();
     connect(ui->rbAutoScale, SIGNAL(clicked(bool)), this, SLOT(setAutoScale()));
     connect(ui->rbFullScale, SIGNAL(clicked(bool)), this, SLOT(setAutoScale()));
 
@@ -1110,7 +1125,7 @@ void FormAnalogIn::initializePlotControls()
     rbRangeLabels[6] = ui->lblRange6;
     rbRangeLabels[7] = ui->lblRange7;
 
-    initPlotCtlProps();
+    initPlotCtlProps(qCustomPlot, autoScale);
 
     mPlot = false;
     mPlotChan = -1;
