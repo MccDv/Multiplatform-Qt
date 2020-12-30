@@ -30,6 +30,7 @@ public:
     int mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle);
     int mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandle,
                          int &status, long &curIndex, long &curCount);
+    int mccAInScanCleanup(QString &params, DaqDeviceHandle deviceHandle);
 
     int mccTIn(QString &params, DaqDeviceHandle deviceHandle, int channel,
                TempScale scale, TInFlag flags, double &dataValue);

@@ -226,6 +226,13 @@ int LibAnalog::mccAInScanStatus(QString &params, DaqDeviceHandle deviceHandle,
     return err;
 }
 
+int LibAnalog::mccAInScanCleanup(QString &params, DaqDeviceHandle deviceHandle)
+{
+    params = "";
+    (void)deviceHandle;
+    return MCC_NOERRORS;
+}
+
 int LibAnalog::mccAInScanStop(QString &params, DaqDeviceHandle deviceHandle)
 {
     int err;
